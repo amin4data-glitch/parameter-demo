@@ -1,0 +1,2981 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Venus – پنل مرچنت</title>
+<style>
+:root {
+  --purple-900: #1a0a2e;
+  --purple-800: #2d1554;
+  --purple-700: #4a1f8c;
+  --purple-600: #6b3bc4;
+  --purple-500: #8b5cf6;
+  --purple-400: #a78bfa;
+  --purple-100: #ede9fe;
+  --purple-50:  #f5f3ff;
+  --gold-600:   #b8860b;
+  --gold-500:   #d4a017;
+  --gold-400:   #f0c040;
+  --gold-100:   #fef9e7;
+  --green-500:  #22c55e;
+  --green-100:  #dcfce7;
+  --red-500:    #ef4444;
+  --red-100:    #fee2e2;
+  --orange-500: #f97316;
+  --orange-100: #ffedd5;
+  --blue-500:   #3b82f6;
+  --blue-100:   #dbeafe;
+  --gray-900:   #111827;
+  --gray-700:   #374151;
+  --gray-500:   #6b7280;
+  --gray-400:   #9ca3af;
+  --gray-300:   #d1d5db;
+  --gray-200:   #e5e7eb;
+  --gray-100:   #f3f4f6;
+  --gray-50:    #f9fafb;
+  --white:      #ffffff;
+  --bg:         #f4f2fa;
+  --card-shadow: 0 2px 12px rgba(106,59,196,0.08);
+  --radius-lg:  16px;
+  --radius-md:  12px;
+  --radius-sm:  8px;
+  --radius-xs:  6px;
+  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--gray-900);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── APP SHELL ─────────────────────────── */
+#app {
+  max-width: 420px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--white);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── SCREENS ───────────────────────────── */
+.screen {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+}
+.screen.active { display: flex; }
+
+/* ── TOP APP BAR ───────────────────────── */
+.topbar {
+  background: var(--white);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--gray-200);
+  flex-shrink: 0;
+  z-index: 10;
+}
+.topbar-title {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gray-900);
+  text-align: center;
+}
+.topbar-icon {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--purple-50);
+  color: var(--purple-600);
+  cursor: pointer;
+  font-size: 18px;
+  border: none;
+  flex-shrink: 0;
+}
+.topbar-icon:active { background: var(--purple-100); }
+
+/* ── SCROLL AREA ───────────────────────── */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 80px;
+}
+.scroll-area::-webkit-scrollbar { display: none; }
+
+/* ── BOTTOM NAV ────────────────────────── */
+.bottom-nav {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--gray-200);
+  display: flex;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  cursor: pointer;
+  gap: 3px;
+  border: none;
+  background: none;
+  color: var(--gray-400);
+  font-size: 10px;
+  font-weight: 500;
+  transition: color 0.15s;
+  position: relative;
+}
+.nav-item.active { color: var(--purple-600); }
+.nav-item .nav-icon { font-size: 22px; }
+.nav-badge {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(10px);
+  background: var(--red-500);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── CARDS ─────────────────────────────── */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+.card-pad { padding: 16px; }
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+.card-link {
+  font-size: 12px;
+  color: var(--purple-600);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* ── CHIPS / BADGES ───────────────────── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.chip-green  { background: var(--green-100); color: #16a34a; }
+.chip-red    { background: var(--red-100);   color: #dc2626; }
+.chip-orange { background: var(--orange-100);color: #ea580c; }
+.chip-blue   { background: var(--blue-100);  color: #2563eb; }
+.chip-purple { background: var(--purple-100);color: var(--purple-700); }
+.chip-gold   { background: var(--gold-100);  color: var(--gold-600); }
+.chip-gray   { background: var(--gray-100);  color: var(--gray-600); }
+
+/* ── BUTTONS ───────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  width: 100%;
+}
+.btn:active { transform: scale(0.98); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--purple-700), var(--purple-500));
+  color: white;
+}
+.btn-secondary {
+  background: var(--purple-50);
+  color: var(--purple-700);
+}
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-600), var(--gold-400));
+  color: white;
+}
+.btn-danger {
+  background: var(--red-100);
+  color: var(--red-500);
+}
+.btn-sm {
+  padding: 7px 12px;
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+}
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--purple-600);
+  color: var(--purple-600);
+}
+
+/* ── FORM INPUTS ───────────────────────── */
+.form-group { margin-bottom: 14px; }
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: 5px;
+}
+.form-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--gray-900);
+  background: var(--gray-50);
+  outline: none;
+  transition: border-color 0.15s;
+  direction: rtl;
+  font-family: inherit;
+}
+.form-input:focus { border-color: var(--purple-500); background: var(--white); }
+.form-input.error { border-color: var(--red-500); }
+.form-hint {
+  font-size: 11px;
+  color: var(--gray-500);
+  margin-top: 4px;
+}
+.form-error {
+  font-size: 11px;
+  color: var(--red-500);
+  margin-top: 4px;
+}
+
+/* ── TOGGLE ────────────────────────────── */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+.toggle-label { font-size: 13px; color: var(--gray-700); font-weight: 500; }
+.toggle {
+  position: relative;
+  width: 44px; height: 24px;
+  cursor: pointer;
+}
+.toggle input { display: none; }
+.toggle-track {
+  position: absolute;
+  inset: 0;
+  background: var(--gray-300);
+  border-radius: 12px;
+  transition: background 0.2s;
+}
+.toggle input:checked + .toggle-track { background: var(--purple-600); }
+.toggle-thumb {
+  position: absolute;
+  top: 3px; right: 3px;
+  width: 18px; height: 18px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.toggle input:checked ~ .toggle-thumb { transform: translateX(-20px); }
+
+/* ── DIVIDER ───────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--gray-100);
+  margin: 12px 0;
+}
+
+/* ── SECTION HEADER ─────────────────────── */
+.section-pad { padding: 0 16px; margin-bottom: 14px; }
+.section-gap { margin-top: 16px; }
+
+/* ── TABS ──────────────────────────────── */
+.tabs {
+  display: flex;
+  background: var(--gray-100);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  margin-bottom: 16px;
+}
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 7px 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray-500);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab-item.active {
+  background: var(--white);
+  color: var(--purple-700);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* ── MODAL ─────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-sheet {
+  background: var(--white);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 20px 16px 32px;
+  animation: slideUp 0.25s ease;
+}
+.modal-handle {
+  width: 36px; height: 4px;
+  background: var(--gray-300);
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+.modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 16px;
+  text-align: center;
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+/* ── STAT CARDS ────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 16px;
+  margin-bottom: 14px;
+}
+.stat-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: var(--card-shadow);
+}
+.stat-label { font-size: 11px; color: var(--gray-500); margin-bottom: 4px; }
+.stat-value { font-size: 20px; font-weight: 800; color: var(--gray-900); }
+.stat-sub { font-size: 10px; color: var(--gray-400); margin-top: 2px; }
+.stat-icon {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+/* ── QUICK ACTIONS ─────────────────────── */
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.qa-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.qa-icon {
+  width: 50px; height: 50px;
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+.qa-label { font-size: 10px; font-weight: 600; color: var(--gray-700); text-align: center; }
+
+/* ── LIST ITEMS ─────────────────────────── */
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.list-item:last-child { border-bottom: none; }
+.list-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--purple-100);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.list-body { flex: 1; min-width: 0; }
+.list-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-900);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.list-sub { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+.list-end { text-align: left; flex-shrink: 0; }
+.list-amount { font-size: 13px; font-weight: 700; color: var(--purple-700); }
+
+/* ── PLAN CARDS ─────────────────────────── */
+.plan-card {
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.plan-silver { background: linear-gradient(135deg, #c0c0c0, #e8e8e8); }
+.plan-gold   { background: linear-gradient(135deg, var(--gold-600), var(--gold-400)); }
+.plan-plat   { background: linear-gradient(135deg, #2d1554, #6b3bc4); }
+.plan-corp   { background: linear-gradient(135deg, #1a1a2e, #374151); }
+.plan-name { font-size: 18px; font-weight: 800; color: white; }
+.plan-disc { font-size: 30px; font-weight: 900; color: white; margin: 4px 0; }
+.plan-note { font-size: 11px; color: rgba(255,255,255,0.85); }
+.plan-lock {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  font-size: 16px;
+  opacity: 0.6;
+}
+.plan-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+.plan-actions .btn { flex: 1; }
+
+/* ── OFFER CARD ─────────────────────────── */
+.offer-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  padding: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.offer-img {
+  width: 60px; height: 60px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--purple-700), var(--purple-400));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.offer-body { flex: 1; min-width: 0; }
+.offer-title { font-size: 13px; font-weight: 700; color: var(--gray-900); }
+.offer-meta { font-size: 11px; color: var(--gray-500); margin-top: 3px; }
+.offer-end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ── REVIEW CARD ─────────────────────────── */
+.review-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.review-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple-700), var(--purple-400));
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.review-name { font-size: 13px; font-weight: 600; }
+.review-date { font-size: 11px; color: var(--gray-400); }
+.stars { color: var(--gold-400); font-size: 13px; letter-spacing: 1px; }
+.review-text { font-size: 12px; color: var(--gray-700); line-height: 1.6; }
+.review-actions { margin-top: 10px; display: flex; gap: 8px; }
+.review-actions .btn { width: auto; }
+
+/* ── CHART PLACEHOLDER ──────────────────── */
+.chart-placeholder {
+  height: 140px;
+  background: linear-gradient(180deg, var(--purple-50) 0%, var(--white) 100%);
+  border-radius: var(--radius-md);
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0 8px 8px;
+  gap: 5px;
+  overflow: hidden;
+}
+.chart-bar {
+  flex: 1;
+  background: linear-gradient(180deg, var(--purple-600), var(--purple-400));
+  border-radius: 4px 4px 0 0;
+  opacity: 0.85;
+}
+
+/* ── EMPTY STATE ─────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  gap: 12px;
+}
+.empty-icon { font-size: 52px; opacity: 0.4; }
+.empty-title { font-size: 16px; font-weight: 700; color: var(--gray-700); }
+.empty-sub { font-size: 13px; color: var(--gray-400); max-width: 220px; }
+
+/* ── LOGIN SCREEN ───────────────────────── */
+#screen-login {
+  background: linear-gradient(160deg, var(--purple-900) 0%, var(--purple-700) 60%, var(--purple-500) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 40px 24px;
+  gap: 0;
+}
+.login-logo {
+  font-size: 52px;
+  margin-bottom: 8px;
+}
+.login-brand {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: 3px;
+}
+.login-tagline {
+  font-size: 13px;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 40px;
+}
+.login-sheet {
+  background: var(--white);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  width: 100%;
+  padding: 28px 24px 40px;
+  margin: 0 -24px;
+}
+.login-sheet-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+}
+.login-sheet-sub {
+  font-size: 13px;
+  color: var(--gray-500);
+  margin-bottom: 24px;
+}
+.otp-inputs {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  direction: ltr;
+  margin: 20px 0;
+}
+.otp-input {
+  width: 48px; height: 52px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  outline: none;
+  color: var(--purple-800);
+}
+.otp-input:focus { border-color: var(--purple-500); }
+.otp-resend {
+  text-align: center;
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-bottom: 20px;
+}
+.otp-resend span { color: var(--purple-600); cursor: pointer; font-weight: 600; }
+
+/* ── DASHBOARD HERO ─────────────────────── */
+.dashboard-hero {
+  background: linear-gradient(135deg, var(--purple-800), var(--purple-600));
+  padding: 20px 16px;
+  color: white;
+}
+.hero-greeting { font-size: 13px; opacity: 0.8; }
+.hero-name { font-size: 20px; font-weight: 800; margin-bottom: 14px; }
+.hero-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.hero-badge.closed {
+  background: rgba(239,68,68,0.25);
+  border-color: rgba(239,68,68,0.5);
+}
+
+/* ── PROFILE AVATAR ─────────────────────── */
+.profile-header {
+  background: linear-gradient(135deg, var(--purple-800), var(--purple-600));
+  padding: 30px 16px 20px;
+  text-align: center;
+  color: white;
+}
+.profile-avatar-wrap {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  border: 3px solid rgba(255,255,255,0.5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  margin: 0 auto 12px;
+  position: relative;
+}
+.profile-edit-btn {
+  position: absolute;
+  bottom: -2px; left: -2px;
+  width: 26px; height: 26px;
+  background: var(--gold-400);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+  border: 2px solid white;
+}
+.profile-name { font-size: 18px; font-weight: 800; }
+.profile-type { font-size: 12px; opacity: 0.75; margin-top: 3px; }
+.profile-chips { display: flex; gap: 8px; justify-content: center; margin-top: 10px; }
+
+/* ── SETTINGS ROWS ──────────────────────── */
+.settings-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--gray-100);
+  cursor: pointer;
+}
+.settings-row:last-child { border-bottom: none; }
+.settings-icon {
+  width: 38px; height: 38px;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.settings-text { flex: 1; }
+.settings-title { font-size: 13px; font-weight: 600; color: var(--gray-900); }
+.settings-sub { font-size: 11px; color: var(--gray-400); }
+.settings-arrow { color: var(--gray-400); font-size: 14px; }
+
+/* ── VERIFICATION DOCS ──────────────────── */
+.doc-upload {
+  border: 2px dashed var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+  color: var(--gray-400);
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: border-color 0.15s;
+}
+.doc-upload:hover { border-color: var(--purple-400); }
+.doc-upload.done { border-color: var(--green-500); color: var(--green-500); border-style: solid; }
+.doc-upload-icon { font-size: 28px; margin-bottom: 6px; }
+.doc-upload-text { font-size: 12px; }
+
+/* ── REDEMPTION SCREEN ──────────────────── */
+.redemption-screen { padding: 20px 16px; }
+.qr-placeholder {
+  width: 180px; height: 180px;
+  border-radius: var(--radius-lg);
+  background: var(--gray-100);
+  margin: 0 auto 24px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px;
+  border: 2px dashed var(--gray-300);
+}
+.qr-icon { font-size: 48px; opacity: 0.4; }
+.qr-label { font-size: 12px; color: var(--gray-400); }
+.or-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  color: var(--gray-400);
+  font-size: 12px;
+}
+.or-divider::before, .or-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gray-200);
+}
+.redemption-result {
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  text-align: center;
+  margin-top: 16px;
+}
+.redemption-result.success {
+  background: var(--green-100);
+  border: 1.5px solid var(--green-500);
+}
+.redemption-result.error {
+  background: var(--red-100);
+  border: 1.5px solid var(--red-500);
+}
+.result-icon { font-size: 42px; margin-bottom: 8px; }
+.result-title { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+.result-sub { font-size: 12px; opacity: 0.75; }
+
+/* ── ANALYTICS ──────────────────────────── */
+.analytics-kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.kpi-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: var(--card-shadow);
+}
+.kpi-label { font-size: 11px; color: var(--gray-500); margin-bottom: 4px; }
+.kpi-value { font-size: 18px; font-weight: 800; color: var(--gray-900); }
+.kpi-change {
+  font-size: 10px;
+  margin-top: 2px;
+}
+.kpi-change.up { color: var(--green-500); }
+.kpi-change.down { color: var(--red-500); }
+
+/* ── TICKET ─────────────────────────────── */
+.ticket-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.ticket-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.ticket-id { font-size: 11px; color: var(--gray-400); }
+.ticket-title { font-size: 13px; font-weight: 700; color: var(--gray-900); }
+.ticket-sub { font-size: 11px; color: var(--gray-500); margin-top: 3px; }
+
+/* ── MENU ITEM ───────────────────────────── */
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.menu-item:last-child { border-bottom: none; }
+.menu-img {
+  width: 52px; height: 52px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--purple-100), var(--purple-50));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.menu-name { font-size: 13px; font-weight: 600; color: var(--gray-900); }
+.menu-price { font-size: 12px; color: var(--purple-700); font-weight: 700; margin-top: 2px; }
+.menu-cat { font-size: 11px; color: var(--gray-400); }
+
+/* ── NOTIFICATION CARD ──────────────────── */
+.notif-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.notif-item:last-child { border-bottom: none; }
+.notif-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--purple-600);
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+.notif-dot.read { background: var(--gray-300); }
+.notif-text { font-size: 12px; color: var(--gray-700); flex: 1; }
+.notif-time { font-size: 10px; color: var(--gray-400); flex-shrink: 0; }
+
+/* ── HOURS TABLE ─────────────────────────── */
+.hours-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.hours-row:last-child { border-bottom: none; }
+.hours-day { font-size: 13px; font-weight: 600; color: var(--gray-700); }
+.hours-time { font-size: 12px; color: var(--gray-500); }
+
+/* ── DAY CHIPS ──────────────────────────── */
+.day-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.day-chip {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--gray-200);
+  color: var(--gray-500);
+  transition: all 0.15s;
+}
+.day-chip.selected {
+  border-color: var(--purple-600);
+  background: var(--purple-100);
+  color: var(--purple-700);
+}
+
+/* ── RATING SUMMARY ─────────────────────── */
+.rating-big { font-size: 56px; font-weight: 900; color: var(--purple-700); line-height: 1; }
+.rating-label { font-size: 12px; color: var(--gray-400); margin-top: 4px; }
+.rating-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.rating-bar-label { font-size: 11px; color: var(--gray-500); width: 12px; text-align: center; }
+.rating-bar-track {
+  flex: 1;
+  height: 6px;
+  background: var(--gray-100);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.rating-bar-fill {
+  height: 100%;
+  background: var(--gold-400);
+  border-radius: 3px;
+}
+.rating-count { font-size: 10px; color: var(--gray-400); width: 24px; text-align: left; }
+
+/* MISC */
+.gold-text { color: var(--gold-600); font-weight: 700; }
+.purple-text { color: var(--purple-700); font-weight: 700; }
+.green-text { color: var(--green-500); font-weight: 700; }
+.text-sm { font-size: 12px; }
+.text-xs { font-size: 11px; }
+.text-muted { color: var(--gray-400); }
+.fw-700 { font-weight: 700; }
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.flex-row { display: flex; align-items: center; gap: 8px; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.text-center { text-align: center; }
+
+.login-steps { display: none; }
+.login-steps.active { display: block; }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-800);
+  border-bottom: 1px solid var(--gray-100);
+}
+.accordion-body { display: none; padding: 10px 0; }
+.accordion.open .accordion-body { display: block; }
+.accordion.open .accordion-chevron { transform: rotate(180deg); }
+.accordion-chevron { transition: transform 0.2s; color: var(--gray-400); }
+
+.progress-bar {
+  height: 6px;
+  background: var(--gray-100);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--purple-600), var(--purple-400));
+  border-radius: 3px;
+}
+
+.compliance-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+}
+.compliance-check { font-size: 16px; flex-shrink: 0; }
+
+.breadcrumb {
+  font-size: 11px;
+  color: var(--gray-400);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--purple-700), var(--gold-500));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--purple-50);
+  color: var(--purple-700);
+  margin: 3px;
+}
+
+.section-title-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.section-title-bar-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+.section-title-bar-line {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, var(--purple-200), transparent);
+  border-radius: 1px;
+}
+
+.venus-fab {
+  position: fixed;
+  bottom: 90px;
+  left: 20px;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-600), var(--gold-400));
+  box-shadow: 0 4px 16px rgba(180,134,11,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  border: none;
+  color: white;
+  z-index: 50;
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ════════════════════════════════════════
+     SCREEN: LOGIN
+════════════════════════════════════════ -->
+<div id="screen-login" class="screen active" style="position:relative;overflow:hidden;">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px 0;">
+    <div class="login-logo">💜</div>
+    <div class="login-brand">VENUS CLUB</div>
+    <div class="login-tagline">باشگاه ونوس</div>
+  </div>
+
+  <div class="login-sheet" style="margin:0;border-radius:24px 24px 0 0;padding:28px 24px 40px;">
+    <!-- Step 1: Phone -->
+    <div id="login-step1" class="login-steps active">
+      <div class="login-sheet-title">خوش آمدید 👋</div>
+      <div class="login-sheet-sub">شماره موبایل یا ایمیل خود را وارد کنید</div>
+      <div class="form-group">
+        <label class="form-label">شماره موبایل</label>
+        <input type="tel" class="form-input" placeholder="09123456789" style="direction:ltr;text-align:right;">
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray-500);cursor:pointer;">
+          <input type="checkbox" style="accent-color:var(--purple-600);"> مالک / مدیر کسب‌وکار هستم
+        </label>
+      </div>
+      <button class="btn btn-primary" onclick="showLoginStep(2)">دریافت کد تأیید</button>
+      <div style="margin-top:16px;text-align:center;font-size:12px;color:var(--gray-400);">
+        هنوز ثبت‌نام نکرده‌اید؟ <span style="color:var(--purple-600);font-weight:600;cursor:pointer;" onclick="showLoginStep(3)">ثبت‌نام کنید</span>
+      </div>
+    </div>
+
+    <!-- Step 2: OTP -->
+    <div id="login-step2" class="login-steps">
+      <div style="text-align:center;margin-bottom:4px;">
+        <span style="font-size:28px;">📱</span>
+      </div>
+      <div class="login-sheet-title" style="text-align:center;">کد تأیید را وارد کنید</div>
+      <div class="login-sheet-sub" style="text-align:center;">کد ۵ رقمی به <strong>۰۹۱۲۳۴۵۶۷۸۹</strong> ارسال شد</div>
+      <div class="otp-inputs">
+        <input type="text" class="otp-input" maxlength="1">
+        <input type="text" class="otp-input" maxlength="1">
+        <input type="text" class="otp-input" maxlength="1">
+        <input type="text" class="otp-input" maxlength="1">
+        <input type="text" class="otp-input" maxlength="1">
+      </div>
+      <div class="otp-resend">دریافت نشد؟ <span>ارسال مجدد (۰:۴۸)</span></div>
+      <button class="btn btn-primary" onclick="navigateTo('dashboard')">ورود</button>
+      <button class="btn btn-secondary" style="margin-top:8px;" onclick="showLoginStep(1)">بازگشت</button>
+    </div>
+
+    <!-- Step 3: Register (for brevity just shown as prompt) -->
+    <div id="login-step3" class="login-steps">
+      <div class="login-sheet-title">ثبت‌نام کسب‌وکار</div>
+      <div class="login-sheet-sub">اطلاعات اولیه کسب‌وکار خود را وارد کنید</div>
+      <div class="form-group">
+        <label class="form-label">نام کسب‌وکار</label>
+        <input class="form-input" placeholder="مثال: رستوران امین خان">
+      </div>
+      <div class="form-group">
+        <label class="form-label">نوع کسب‌وکار</label>
+        <select class="form-input">
+          <option>رستوران / کافه</option>
+          <option>سالن زیبایی</option>
+          <option>ورزشی / تناسب اندام</option>
+          <option>سرگرمی و تفریح</option>
+          <option>هتل / اقامتگاه</option>
+          <option>سایر</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">شماره موبایل</label>
+        <input type="tel" class="form-input" placeholder="09123456789" style="direction:ltr;text-align:right;">
+      </div>
+      <div class="form-group">
+        <label class="form-label">رمز عبور</label>
+        <input type="password" class="form-input" placeholder="حداقل ۸ کاراکتر">
+      </div>
+      <button class="btn btn-primary" onclick="navigateTo('dashboard')">ثبت‌نام و ادامه</button>
+      <button class="btn btn-secondary" style="margin-top:8px;" onclick="showLoginStep(1)">قبلاً ثبت‌نام کرده‌ام</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN: DASHBOARD
+════════════════════════════════════════ -->
+<div id="screen-dashboard" class="screen">
+  <div class="scroll-area">
+    <!-- Hero -->
+    <div class="dashboard-hero">
+      <div class="hero-greeting">سلام، جمعه خوبی داشته باشید 👋</div>
+      <div class="hero-name">رستوران امین خان</div>
+      <div class="hero-status-row">
+        <div class="hero-badge" id="merchant-status-badge">
+          <span>🟢</span> فعال و پذیرای مشتری
+        </div>
+        <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:white;width:auto;padding:5px 12px;border:1px solid rgba(255,255,255,0.3);" onclick="toggleMerchantStatus()">
+          تغییر وضعیت
+        </button>
+      </div>
+      <!-- Contract badge -->
+      <div style="margin-top:12px;background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px;">
+        <span>📋</span>
+        <span style="font-size:11px;opacity:0.9;">قرارداد فعال • اعتبار تا ۱۴۰۵/۱۲/۲۹</span>
+        <span style="margin-right:auto;font-size:10px;opacity:0.7;">مشاهده جزئیات ›</span>
+      </div>
+    </div>
+
+    <!-- Alert: pending document -->
+    <div style="padding:12px 16px;">
+      <div style="background:var(--orange-100);border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-size:18px;">⚠️</span>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--orange-500);">مدارک تأیید در انتظار بررسی</div>
+          <div style="font-size:11px;color:var(--gray-600);margin-top:2px;">جواز کسب هنوز بارگذاری نشده است. برای فعال‌سازی کامل اقدام کنید.</div>
+        </div>
+        <button class="btn btn-sm btn-orange" style="background:var(--orange-500);color:white;width:auto;flex-shrink:0;padding:5px 10px;font-size:11px;" onclick="navigateTo('profile')">بررسی پروفایل</button>
+      </div>
+    </div>
+
+    <!-- Today's Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">💰</div>
+        <div class="stat-label">درآمد امروز</div>
+        <div class="stat-value" style="font-size:16px;">۱۲,۴۸۰,۰۰۰</div>
+        <div class="stat-sub">تومان • +۱۸٪ نسبت به دیروز</div>
+      </div>
+           <div class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-label">میانگین امتیاز</div>
+        <div class="stat-value">۴.۷</div>
+        <div class="stat-sub">از ۲۱۸ نظر</div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div style="padding:0 16px;margin-bottom:14px;">
+      <div class="card card-pad">
+        <div class="card-header">
+          <div class="card-title">دسترسی سریع</div>
+        </div>
+        <div class="quick-actions">
+          <div class="qa-item" onclick="navigateTo('offers'); openAddOfferModal()">
+            <div class="qa-icon" style="background:var(--purple-100);">➕</div>
+            <div class="qa-label">افزودن پیشنهاد</div>
+          </div>
+                    <div class="qa-item" onclick="navigateTo('menu')">
+            <div class="qa-icon" style="background:var(--blue-100);">🍽️</div>
+            <div class="qa-label">بروزرسانی منو</div>
+          </div>
+          <div class="qa-item" onclick="navigateTo('analytics')">
+            <div class="qa-icon" style="background:var(--gold-100);">📊</div>
+            <div class="qa-label">آمار</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Offers Summary -->
+    <div style="padding:0 16px;margin-bottom:14px;">
+      <div class="card card-pad">
+        <div class="card-header">
+          <div class="card-title">پیشنهادهای فعال</div>
+          <span class="card-link" onclick="navigateTo('offers')">همه ›</span>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <div style="flex:1;background:var(--purple-50);border-radius:10px;padding:12px;text-align:center;">
+            <div style="font-size:24px;font-weight:800;color:var(--purple-700);">۵</div>
+            <div style="font-size:11px;color:var(--gray-500);">پیشنهاد فعال برای گلدها</div>
+          </div>
+                   <div style="flex:1;background:var(--green-100);border-radius:10px;padding:12px;text-align:center;">
+            <div style="font-size:24px;font-weight:800;color:var(--green-500);">۱</div>
+            <div style="font-size:11px;color:var(--gray-500);">پیشنهاد فعال برای سیلورها</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Latest Redemptions -->
+    <div style="padding:0 16px;margin-bottom:14px;">
+      <div class="card card-pad">
+        <div class="card-header">
+          <div class="card-title">آخرین مصرف‌ها</div>
+          <span class="card-link" onclick="navigateTo('redemption')">همه ›</span>
+        </div>
+        <div class="list-item">
+          <div class="list-avatar">👤</div>
+          <div class="list-body">
+            <div class="list-title">علی محمدی</div>
+            <div class="list-sub">پیتزا دابل چیز • Gold</div>
+          </div>
+          <div class="list-end">
+            <div class="chip chip-green">✓ تأیید شد</div>
+            <div class="list-amount" style="margin-top:4px;">۱۴:۳۵</div>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="list-avatar">👤</div>
+          <div class="list-body">
+            <div class="list-title">مریم حسینی</div>
+            <div class="list-sub">پاستا قارچ • Silver</div>
+          </div>
+          <div class="list-end">
+            <div class="chip chip-green">✓ تأیید شد</div>
+            <div class="list-amount" style="margin-top:4px;">۱۳:۲۲</div>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="list-avatar">👤</div>
+          <div class="list-body">
+            <div class="list-title">رضا کریمی</div>
+            <div class="list-sub">استیک فیله • Platinum</div>
+          </div>
+          <div class="list-end">
+            <div class="chip chip-red">✗ انقضا</div>
+            <div class="list-amount" style="margin-top:4px;">۱۲:۰۸</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Latest Reviews -->
+    <div style="padding:0 16px;margin-bottom:14px;">
+      <div class="card card-pad">
+        <div class="card-header">
+          <div class="card-title">آخرین نظرات</div>
+          <span class="card-link" onclick="navigateTo('reviews')">همه ›</span>
+        </div>
+        <div class="review-card" style="box-shadow:none;padding:0;margin:0;">
+          <div class="review-header">
+            <div class="review-avatar">س</div>
+            <div>
+              <div class="review-name">سارا احمدی</div>
+              <div class="stars">★★★★★</div>
+            </div>
+          </div>
+          <div class="review-text">غذاها عالی بودند، سرویس سریع و برخورد کارمندا خوب. حتماً دوباره میام! 🍕</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div style="padding:0 16px;margin-bottom:14px;">
+      <div class="card card-pad">
+        <div class="card-header">
+          <div class="card-title">اعلان‌ها</div>
+          <span class="chip chip-purple" style="font-size:10px;">۳ جدید</span>
+        </div>
+        <div class="notif-item">
+          <div class="notif-dot"></div>
+          <div class="notif-text"><strong>پیشنهاد جدید تأیید شد</strong> • پیتزا دابل چیز از ادمین تأیید گردید</div>
+          <div class="notif-time">۱۰ دقیقه</div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-dot"></div>
+          <div class="notif-text"><strong>رزرو جدید</strong> • میز ۶ نفره فردا ساعت ۲۰:۰۰</div>
+          <div class="notif-time">۱ ساعت</div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-dot read"></div>
+          <div class="notif-text">قرارداد Gold شما ۳۰ روز دیگر منقضی می‌شود</div>
+          <div class="notif-time">۲ روز</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Savings Generated -->
+    <div style="padding:0 16px;margin-bottom:24px;">
+      <div class="card" style="background:linear-gradient(135deg,var(--purple-800),var(--purple-600));padding:16px;">
+        <div style="color:rgba(255,255,255,0.75);font-size:12px;margin-bottom:6px;">درآمد شما از باشگاه ونوس</div>
+        <div style="font-size:28px;font-weight:900;color:white;">۱,۲۰۰,۰۰۰,۰۰۰ <span style="font-size:14px;font-weight:500;">تومان</span></div>
+        <div style="color:rgba(255,255,255,0.6);font-size:11px;margin-top:4px;">از ۳۴۱ استفاده موفق</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="navigateTo('dashboard')"><span class="nav-icon">🏠</span>داشبورد</button>
+    <button class="nav-item" onclick="navigateTo('offers')"><span class="nav-icon">🏷️</span>پیشنهادها<span class="nav-badge">۳</span></button>
+    <button class="nav-item" onclick="navigateTo('redemption')"><span class="nav-icon">✅</span>مصرف</button>
+    <button class="nav-item" onclick="navigateTo('menu')"><span class="nav-icon">🍽️</span>منو</button>
+    <button class="nav-item" onclick="navigateTo('profile')"><span class="nav-icon">⚙️</span>پروفایل</button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN: OFFERS
+════════════════════════════════════════ -->
+<div id="screen-offers" class="screen">
+  <div class="topbar">
+    <button class="topbar-icon" onclick="navigateTo('dashboard')">‹</button>
+    <div class="topbar-title">پیشنهادها و دیل‌ها</div>
+    <button class="topbar-icon" onclick="openAddOfferModal()">+</button>
+  </div>
+
+  <div class="scroll-area" style="padding:16px;">
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab-item active" onclick="switchTab(this,'offers-tab')">فعال</div>
+      <div class="tab-item" onclick="switchTab(this,'offers-tab')">معلق</div>
+      <div class="tab-item" onclick="switchTab(this,'offers-tab')">منقضی</div>
+      <div class="tab-item" onclick="switchTab(this,'offers-tab')">پلن‌ها</div>
+    </div>
+
+    <!-- Active Offers -->
+    <div id="tab-active-offers" class="tab-content active">
+      <div class="offer-card">
+        <div class="offer-img">🍕</div>
+        <div class="offer-body">
+          <div class="offer-title">پیتزا دابل چیز – ۵۰٪ تخفیف</div>
+          <div class="offer-meta">Gold اعضا • تا ۱۴۰۳/۱۰/۳۰</div>
+          <div style="margin-top:6px;display:flex;gap:4px;">
+            <span class="chip chip-green">فعال</span>
+            <span class="chip chip-gray">QR</span>
+          </div>
+        </div>
+        <div class="offer-end">
+          <label class="toggle" title="فعال/غیرفعال">
+            <input type="checkbox" checked>
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+          <button class="btn btn-sm btn-secondary" style="width:auto;margin-top:6px;" onclick="openOfferDetailModal()">✏️</button>
+        </div>
+      </div>
+
+      <div class="offer-card">
+        <div class="offer-img" style="background:linear-gradient(135deg,var(--gold-600),var(--gold-400));">🥩</div>
+        <div class="offer-body">
+          <div class="offer-title">استیک فیله – BOGO</div>
+          <div class="offer-meta">Platinum اعضا • همیشه فعال</div>
+          <div style="margin-top:6px;display:flex;gap:4px;">
+            <span class="chip chip-purple">فعال</span>
+            <span class="chip chip-gray">PIN</span>
+          </div>
+        </div>
+        <div class="offer-end">
+          <label class="toggle">
+            <input type="checkbox" checked>
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+          <button class="btn btn-sm btn-secondary" style="width:auto;margin-top:6px;">✏️</button>
+        </div>
+      </div>
+
+      <div class="offer-card">
+        <div class="offer-img" style="background:linear-gradient(135deg,#3b82f6,#60a5fa);">☕</div>
+        <div class="offer-body">
+          <div class="offer-title">کافه‌سرویس صبحانه – ۲۵٪</div>
+          <div class="offer-meta">Silver اعضا • پایان‌هفته‌ها</div>
+          <div style="margin-top:6px;display:flex;gap:4px;">
+            <span class="chip chip-green">فعال</span>
+            <span class="chip chip-orange">محدود</span>
+          </div>
+        </div>
+        <div class="offer-end">
+          <label class="toggle">
+            <input type="checkbox" checked>
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+          <button class="btn btn-sm btn-secondary" style="width:auto;margin-top:6px;">✏️</button>
+        </div>
+      </div>
+
+      <button class="btn btn-secondary" onclick="openAddOfferModal()">+ افزودن پیشنهاد جدید</button>
+    </div>
+
+    <!-- Plans section shown when Plans tab is active -->
+    <div id="tab-plans" class="tab-content" style="display:none;">
+      <div style="font-size:12px;color:var(--gray-500);margin-bottom:12px;padding:8px;background:var(--purple-50);border-radius:8px;">
+        💡 درصد تخفیف توسط ادمین Venus تعیین شده و قابل ویرایش نیست. شما فقط می‌توانید محدودیت‌ها را تنظیم کنید.
+      </div>
+
+      <div class="plan-card plan-silver">
+        <div class="plan-lock">🔒</div>
+        <div class="plan-name">Silver</div>
+        <div class="plan-disc">۲۵٪</div>
+        <div class="plan-note">۱۲۰+ عضو فعال • تخفیف پایه ممبرشیپ</div>
+        <div class="plan-actions">
+          <button class="btn btn-sm" style="background:rgba(255,255,255,0.3);color:white;flex:1;" onclick="openPlanRestrictModal('Silver')">⚙️ محدودیت‌ها</button>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:white;flex:1;">📊 عملکرد</button>
+        </div>
+      </div>
+
+      <div class="plan-card plan-gold">
+        <div class="plan-lock">🔒</div>
+        <div class="plan-name">Gold</div>
+        <div class="plan-disc">۵۰٪</div>
+        <div class="plan-note">۸۵ عضو فعال • BOGO یا ۵۰٪</div>
+        <div class="plan-actions">
+          <button class="btn btn-sm" style="background:rgba(255,255,255,0.3);color:white;flex:1;" onclick="openPlanRestrictModal('Gold')">⚙️ محدودیت‌ها</button>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:white;flex:1;">📊 عملکرد</button>
+        </div>
+      </div>
+
+      <div class="plan-card plan-plat">
+        <div class="plan-lock">🔒</div>
+        <div class="plan-name">Platinum</div>
+        <div class="plan-disc">۶۰٪</div>
+        <div class="plan-note">۳۲ عضو فعال • برترین سطح</div>
+        <div class="plan-actions">
+          <button class="btn btn-sm" style="background:rgba(255,255,255,0.3);color:white;flex:1;" onclick="openPlanRestrictModal('Platinum')">⚙️ محدودیت‌ها</button>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:white;flex:1;">📊 عملکرد</button>
+        </div>
+      </div>
+
+      <div class="plan-card plan-corp">
+        <div class="plan-lock">🔒</div>
+        <div class="plan-name">Corporate</div>
+        <div class="plan-disc" style="font-size:20px;">قراردادی</div>
+        <div class="plan-note">تخفیف بر اساس توافق • ۸ سازمان</div>
+        <div class="plan-actions">
+          <button class="btn btn-sm" style="background:rgba(255,255,255,0.3);color:white;flex:1;" onclick="openPlanRestrictModal('Corporate')">⚙️ محدودیت‌ها</button>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:white;flex:1;">📋 قرارداد</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="navigateTo('dashboard')"><span class="nav-icon">🏠</span>داشبورد</button>
+    <button class="nav-item active" onclick="navigateTo('offers')"><span class="nav-icon">🏷️</span>پیشنهادها</button>
+    <button class="nav-item" onclick="navigateTo('redemption')"><span class="nav-icon">✅</span>مصرف</button>
+    <button class="nav-item" onclick="navigateTo('menu')"><span class="nav-icon">🍽️</span>منو</button>
+    <button class="nav-item" onclick="navigateTo('profile')"><span class="nav-icon">⚙️</span>پروفایل</button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN: REDEMPTION
+════════════════════════════════════════ -->
+<div id="screen-redemption" class="screen">
+  <div class="topbar">
+    <button class="topbar-icon" onclick="navigateTo('dashboard')">‹</button>
+    <div class="topbar-title">تأیید مصرف ونوس دیل</div>
+    <button class="topbar-icon" onclick="navigateTo('redemption-history')">📋</button>
+  </div>
+
+  <div class="scroll-area" style="padding:20px 16px;">
+    <!-- QR Scanner Placeholder -->
+    <div class="qr-placeholder">
+      <div class="qr-icon">📷</div>
+      <div class="qr-label">اسکن QR ونوس دیل</div>
+    </div>
+
+    <div class="or-divider">یا کد PIN وارد کنید</div>
+
+    <div class="form-group">
+      <label class="form-label">کد PIN مشتری</label>
+      <input type="text" class="form-input" placeholder="مثال: 8472" style="direction:ltr;text-align:center;font-size:22px;font-weight:700;letter-spacing:8px;" maxlength="6">
+      <div class="form-hint">کد ۴-۶ رقمی که مشتری نمایش می‌دهد</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+      <button class="btn btn-primary" onclick="showRedemptionResult('success')">تأیید مصرف</button>
+      <button class="btn btn-secondary" onclick="showRedemptionResult('error')">بررسی وضعیت</button>
+    </div>
+
+    <!-- Demo result buttons -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+      <button class="btn btn-sm chip chip-green" style="width:auto;" onclick="showRedemptionResult('success')">نمونه: موفق</button>
+      <button class="btn btn-sm chip chip-red" style="width:auto;" onclick="showRedemptionResult('used')">نمونه: استفاده‌شده</button>
+      <button class="btn btn-sm chip chip-orange" style="width:auto;" onclick="showRedemptionResult('expired')">نمونه: منقضی</button>
+      <button class="btn btn-sm chip chip-gray" style="width:auto;" onclick="showRedemptionResult('invalid')">نمونه: نامعتبر</button>
+    </div>
+
+    <!-- Result Area -->
+    <div id="redemption-result-area"></div>
+
+    <!-- History shortcut -->
+    <div class="card card-pad" style="margin-top:16px;">
+      <div class="card-header">
+        <div class="card-title">آخرین تأییدها</div>
+        <span class="card-link">مشاهده همه</span>
+      </div>
+      <div class="list-item">
+        <div class="list-avatar">👤</div>
+        <div class="list-body">
+          <div class="list-title">علی محمدی – PIN 8472</div>
+          <div class="list-sub">پیتزا دابل چیز • Gold</div>
+        </div>
+        <div class="list-end">
+          <div class="chip chip-green">✓</div>
+          <div class="list-amount" style="margin-top:4px;">۱۴:۳۵</div>
+        </div>
+      </div>
+      <div class="list-item">
+        <div class="list-avatar">👤</div>
+        <div class="list-body">
+          <div class="list-title">زهرا نوری – PIN 6193</div>
+          <div class="list-sub">پاستا قارچ • Silver</div>
+        </div>
+        <div class="list-end">
+          <div class="chip chip-green">✓</div>
+          <div class="list-amount" style="margin-top:4px;">۱۳:۵۰</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="navigateTo('dashboard')"><span class="nav-icon">🏠</span>داشبورد</button>
+    <button class="nav-item" onclick="navigateTo('offers')"><span class="nav-icon">🏷️</span>پیشنهادها</button>
+    <button class="nav-item active" onclick="navigateTo('redemption')"><span class="nav-icon">✅</span>مصرف</button>
+    <button class="nav-item" onclick="navigateTo('menu')"><span class="nav-icon">🍽️</span>منو</button>
+    <button class="nav-item" onclick="navigateTo('profile')"><span class="nav-icon">⚙️</span>پروفایل</button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN: MENU
+════════════════════════════════════════ -->
+<div id="screen-menu" class="screen">
+  <div class="topbar">
+    <button class="topbar-icon" onclick="navigateTo('dashboard')">‹</button>
+    <div class="topbar-title">منو و خدمات</div>
+    <button class="topbar-icon" onclick="openAddMenuItemModal()">+</button>
+  </div>
+
+  <div class="scroll-area" style="padding:16px;">
+    <!-- Categories tabs -->
+    <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;-webkit-overflow-scrolling:touch;scrollbar-width:none;">
+      <div class="day-chip selected">همه</div>
+      <div class="day-chip">پیتزا</div>
+      <div class="day-chip">پاستا</div>
+      <div class="day-chip">گوشت</div>
+      <div class="day-chip">نوشیدنی</div>
+      <div class="day-chip">دسر</div>
+    </div>
+
+    <!-- Info bar -->
+    <div style="background:var(--blue-100);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:11px;color:var(--blue-500);">
+      💡 قیمت میانگین هر دسته را برای محاسبه صرفه‌جویی مشتریان وارد کنید
+    </div>
+
+    <!-- Category: Pizza -->
+    <div class="card card-pad" style="margin-bottom:12px;">
+      <div class="section-title-bar">
+        <div class="section-title-bar-text">🍕 پیتزا</div>
+        <div class="section-title-bar-line"></div>
+        <button class="btn btn-sm btn-secondary" style="width:auto;padding:4px 10px;font-size:11px;">+ آیتم</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:8px;background:var(--purple-50);border-radius:8px;">
+        <span style="font-size:11px;color:var(--gray-600);">قیمت میانگین دسته:</span>
+        <input type="number" style="flex:1;border:1px solid var(--gray-200);border-radius:6px;padding:5px 8px;font-size:12px;direction:ltr;" placeholder="320,000 تومان">
+        <span style="font-size:10px;color:var(--gray-400);">تومان</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-img">🍕</div>
+        <div style="flex:1;">
+          <div class="menu-name">پیتزا دابل چیز</div>
+          <div class="menu-cat">سایز بزرگ</div>
+          <div class="menu-price">۳۲۰,۰۰۰ تومان</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
+          <label class="toggle" style="transform:scale(0.85);">
+            <input type="checkbox" checked>
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+          <button class="btn btn-sm btn-secondary" style="width:auto;padding:4px 8px;font-size:10px;">✏️</button>
+        </div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-img">🍕</div>
+        <div style="flex:1;">
+          <div class="menu-name">پیتزا مارگاریتا</div>
+          <div class="menu-cat">سایز متوسط</div>
+          <div class="menu-price">۲۴۰,۰۰۰ تومان</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
+          <label class="toggle" style="transform:scale(0.85);">
+            <input type="checkbox" checked>
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+          <button class="btn btn-sm btn-secondary" style="width:auto;padding:4px 8px;font-size:10px;">✏️</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category: Pasta -->
+    <div class="card card-pad" style="margin-bottom:12px;">
+      <div class="section-title-bar">
+        <div class="section-title-bar-text">🍝 پاستا</div>
+        <div class="section-title-bar-line"></div>
+        <button class="btn btn-sm btn-secondary" style="width:auto;padding:4px 10px;font-size:11px;">+ آیتم</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:8px;background:var(--purple-50);border-radius:8px;">
+        <span style="font-size:11px;color:var(--gray-600);">قیمت میانگین دسته:</span>
+        <input type="number" style="flex:1;border:1px solid var(--gray-200);border-radius:6px;padding:5px 8px;font-size:12px;direction:ltr;" placeholder="210,000 تومان">
+        <span style="font-size:10px;color:var(--gray-400);">تومان</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-img">🍝</div>
+        <div style="flex:1;">
+          <div class="menu-name">پاستا قارچ و خامه</div>
+          <div class="menu-cat">غذای اصلی</div>
+          <div class="menu-price">۲۱۰,۰۰۰ تومان</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
+          <label class="toggle" style="transform:scale(0.85);">
+            <input type="checkbox" checked>
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+          <button class="btn btn-sm btn-secondary" style="width:auto;padding:4px 8px;font-size:10px;">✏️</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category: Meat -->
+    <div class="card card-pad" style="margin-bottom:12px;">
+      <div class="section-title-bar">
+        <div class="section-title-bar-text">🥩 گوشت و استیک</div>
+        <div class="section-title-bar-line"></div>
+        <button class="btn btn-sm btn-secondary" style="width:auto;padding:4px 10px;font-size:11px;">+ آیتم</button>
+      </div>
+      <div class="menu-item">
+        <div class="menu-img">🥩</div>
+        <div style="flex:1;">
+          <div class="menu-name">استیک فیله ۲۵۰ گرم</div>
+          <div class="menu-cat">غذای اصلی</div>
+          <div class="menu-price">۵۸۰,۰۰۰ تومان</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
+          <label class="toggle" style="transform:scale(0.85);">
+            <input type="checkbox" checked>
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+          <button class="btn btn-sm btn-secondary" style="width:auto;padding:4px 8px;font-size:10px;">✏️</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-secondary" onclick="openAddMenuItemModal()">+ افزودن دسته‌بندی جدید</button>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="navigateTo('dashboard')"><span class="nav-icon">🏠</span>داشبورد</button>
+    <button class="nav-item" onclick="navigateTo('offers')"><span class="nav-icon">🏷️</span>پیشنهادها</button>
+    <button class="nav-item" onclick="navigateTo('redemption')"><span class="nav-icon">✅</span>مصرف</button>
+    <button class="nav-item active" onclick="navigateTo('menu')"><span class="nav-icon">🍽️</span>منو</button>
+    <button class="nav-item" onclick="navigateTo('profile')"><span class="nav-icon">⚙️</span>پروفایل</button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN: PROFILE / SETTINGS
+════════════════════════════════════════ -->
+<div id="screen-profile" class="screen">
+  <div class="topbar">
+    <button class="topbar-icon" onclick="navigateTo('dashboard')">‹</button>
+    <div class="topbar-title">پروفایل و تنظیمات</div>
+    <button class="topbar-icon">✏️</button>
+  </div>
+
+  <div class="scroll-area">
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <div class="profile-avatar-wrap">
+        🍕
+        <div class="profile-edit-btn">📷</div>
+      </div>
+      <div class="profile-name">رستوران امین خان</div>
+      <div class="profile-type">رستوران و کافه/ تهران، یوسف‌آباد</div>
+      <div class="profile-chips">
+        
+        <span class="chip chip-orange">مدارک در انتظار</span>
+      </div>
+    </div>
+
+    <!-- Profile completion -->
+    <div style="padding:16px;">
+      <div class="card card-pad">
+        <div class="card-header">
+          <div class="card-title">تکمیل پروفایل</div>
+          <span class="chip chip-orange">۷۵٪</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:75%;"></div>
+        </div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:2px;">
+          <div class="compliance-item">
+            <span class="compliance-check">✅</span>
+            <span style="font-size:12px;">اطلاعات پایه</span>
+          </div>
+          <div class="compliance-item">
+            <span class="compliance-check">✅</span>
+            <span style="font-size:12px;">ساعات کاری</span>
+          </div>
+          <div class="compliance-item">
+            <span class="compliance-check">✅</span>
+            <span style="font-size:12px;">منوی خدمات</span>
+          </div>
+          <div class="compliance-item">
+            <span class="compliance-check">⚠️</span>
+            <span style="font-size:12px;color:var(--orange-500);">جواز کسب بارگذاری نشده</span>
+          </div>
+          <div class="compliance-item">
+            <span class="compliance-check">❌</span>
+            <span style="font-size:12px;color:var(--red-500);">تصاویر گالری (حداقل ۵ عکس)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings sections -->
+    <div style="padding:0 16px;">
+
+      <!-- Business info -->
+      <div class="card card-pad" style="margin-bottom:12px;">
+        <div class="card-title" style="margin-bottom:14px;">اطلاعات کسب‌وکار</div>
+        <div class="form-group">
+          <label class="form-label">نام کسب‌وکار</label>
+          <input class="form-input" value="رستوران امین خان">
+        </div>
+        <div class="form-group">
+          <label class="form-label">نوع کسب‌وکار</label>
+          <select class="form-input">
+            <option selected>رستوران / کافه</option>
+            <option>سالن زیبایی</option>
+            <option>ورزشی / تناسب اندام</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">توضیحات کوتاه</label>
+          <textarea class="form-input" rows="3">رستوران امین خان با ۱۵ سال سابقه، ارائه‌دهنده بهترین پیتزا و غذاهای ایتالیایی در تهران</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">شماره تماس</label>
+          <input class="form-input" value="۰۲۱-۸۸۱۲۳۴۵۶" style="direction:ltr;text-align:right;">
+        </div>
+        <div class="form-group">
+          <label class="form-label">آدرس</label>
+          <input class="form-input" value="تهران، یوسف‌آباد، خیابان سمنگان، پلاک ۴۲">
+        </div>
+        <button class="btn btn-primary">ذخیره تغییرات</button>
+      </div>
+
+      <!-- Working hours -->
+      <div class="card card-pad" style="margin-bottom:12px;">
+        <div class="card-header">
+          <div class="card-title">ساعات کاری</div>
+          <button class="btn btn-sm btn-secondary" style="width:auto;padding:5px 10px;">ویرایش</button>
+        </div>
+        <div class="hours-row">
+          <div class="hours-day">شنبه</div>
+          <div class="hours-time">۱۲:۰۰ – ۲۳:۳۰</div>
+          <span class="chip chip-green">باز</span>
+        </div>
+        <div class="hours-row">
+          <div class="hours-day">یک‌شنبه</div>
+          <div class="hours-time">۱۲:۰۰ – ۲۳:۳۰</div>
+          <span class="chip chip-green">باز</span>
+        </div>
+        <div class="hours-row">
+          <div class="hours-day">دوشنبه</div>
+          <div class="hours-time">۱۲:۰۰ – ۲۳:۳۰</div>
+          <span class="chip chip-green">باز</span>
+        </div>
+        <div class="hours-row">
+          <div class="hours-day">سه‌شنبه</div>
+          <div class="hours-time">۱۲:۰۰ – ۲۳:۳۰</div>
+          <span class="chip chip-green">باز</span>
+        </div>
+        <div class="hours-row">
+          <div class="hours-day">چهارشنبه</div>
+          <div class="hours-time">۱۲:۰۰ – ۲۳:۳۰</div>
+          <span class="chip chip-green">باز</span>
+        </div>
+        <div class="hours-row">
+          <div class="hours-day">پنج‌شنبه</div>
+          <div class="hours-time">۱۲:۰۰ – ۲۴:۰۰</div>
+          <span class="chip chip-green">باز</span>
+        </div>
+        <div class="hours-row">
+          <div class="hours-day">جمعه</div>
+          <div class="hours-time">تعطیل</div>
+          <span class="chip chip-red">بسته</span>
+        </div>
+      </div>
+
+      <!-- Documents -->
+      <div class="card card-pad" style="margin-bottom:12px;">
+        <div class="card-title" style="margin-bottom:14px;">مدارک و تأیید هویت</div>
+        <div class="doc-upload done">
+          <div class="doc-upload-icon">✅</div>
+          <div class="doc-upload-text">کارت ملی – بارگذاری شده</div>
+        </div>
+        <div class="doc-upload done">
+          <div class="doc-upload-icon">✅</div>
+          <div class="doc-upload-text">تصویر محل کسب‌وکار – بارگذاری شده</div>
+        </div>
+        <div class="doc-upload">
+          <div class="doc-upload-icon">📄</div>
+          <div class="doc-upload-text">جواز کسب – بارگذاری نشده (ضروری)</div>
+        </div>
+        <div class="doc-upload">
+          <div class="doc-upload-icon">📄</div>
+          <div class="doc-upload-text">گواهی بهداشت – اختیاری</div>
+        </div>
+      </div>
+
+      <!-- Gallery -->
+      <div class="card card-pad" style="margin-bottom:12px;">
+        <div class="card-header">
+          <div class="card-title">گالری تصاویر</div>
+          <button class="btn btn-sm btn-secondary" style="width:auto;padding:5px 10px;">+ افزودن</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">
+          <div style="aspect-ratio:1;background:linear-gradient(135deg,var(--purple-100),var(--purple-50));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;">🍕</div>
+          <div style="aspect-ratio:1;background:linear-gradient(135deg,var(--gold-100),var(--white));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;">🥩</div>
+          <div style="aspect-ratio:1;background:linear-gradient(135deg,var(--blue-100),var(--white));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;">☕</div>
+          <div style="aspect-ratio:1;background:linear-gradient(135deg,var(--purple-100),var(--purple-50));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;">🍝</div>
+          <div style="aspect-ratio:1;border:2px dashed var(--gray-200);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--gray-300);">+</div>
+          <div style="aspect-ratio:1;border:2px dashed var(--gray-200);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--gray-300);">+</div>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--red-500);">* حداقل ۵ تصویر مورد نیاز است (۲ تصویر بیشتر نیاز دارید)</div>
+      </div>
+
+      <!-- Settings rows -->
+      <div class="card card-pad" style="margin-bottom:12px;">
+        <div class="card-title" style="margin-bottom:12px;">تنظیمات حساب</div>
+        <div class="settings-row" onclick="navigateTo('support')">
+          <div class="settings-icon" style="background:var(--blue-100);">🎫</div>
+          <div class="settings-text">
+            <div class="settings-title">تیکت‌های پشتیبانی</div>
+            <div class="settings-sub">۲ تیکت باز</div>
+          </div>
+          <div class="settings-arrow">›</div>
+        </div>
+        <div class="settings-row" onclick="navigateTo('analytics')">
+          <div class="settings-icon" style="background:var(--gold-100);">📊</div>
+          <div class="settings-text">
+            <div class="settings-title">آمار</div>
+            <div class="settings-sub">عملکرد و گزارش</div>
+          </div>
+          <div class="settings-arrow">›</div>
+        </div>
+        <div class="settings-row" onclick="navigateTo('reviews')">
+          <div class="settings-icon" style="background:var(--orange-100);">⭐</div>
+          <div class="settings-text">
+            <div class="settings-title">نظرات مشتریان</div>
+            <div class="settings-sub">میانگین ۴.۷ از ۲۱۸ نظر</div>
+          </div>
+          <div class="settings-arrow">›</div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-icon" style="background:var(--purple-100);">👥</div>
+          <div class="settings-text">
+            <div class="settings-title">-</div>
+            <div class="settings-sub">-</div>
+          </div>
+          <div class="settings-arrow">›</div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-icon" style="background:var(--green-100);">🔔</div>
+          <div class="settings-text">
+            <div class="settings-title">اعلان‌ها</div>
+            <div class="settings-sub">تنظیم پوش‌نوتیفیکیشن</div>
+          </div>
+          <div class="settings-arrow">›</div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-icon" style="background:var(--gray-100);">🔒</div>
+          <div class="settings-text">
+            <div class="settings-title">امنیت</div>
+            <div class="settings-sub">تغییر رمز / ۲FA</div>
+          </div>
+          <div class="settings-arrow">›</div>
+        </div>
+      </div>
+
+      <!-- Danger zone -->
+      <div class="card card-pad" style="margin-bottom:24px;border:1.5px solid var(--red-100);">
+        <div class="card-title" style="margin-bottom:12px;color:var(--red-500);">منطقه خطر</div>
+        <button class="btn btn-danger" style="margin-bottom:8px;" onclick="openCloseModal()">⏸ تعلیق موقت کسب‌وکار</button>
+        <button class="btn btn-sm" style="background:transparent;color:var(--red-500);border:1px solid var(--red-200);">📤 درخواست خروج از Venus</button>
+      </div>
+
+      <button class="btn btn-secondary" style="margin-bottom:20px;" onclick="navigateTo('login')">🚪 خروج از حساب</button>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="navigateTo('dashboard')"><span class="nav-icon">🏠</span>داشبورد</button>
+    <button class="nav-item" onclick="navigateTo('offers')"><span class="nav-icon">🏷️</span>پیشنهادها</button>
+    <button class="nav-item" onclick="navigateTo('redemption')"><span class="nav-icon">✅</span>مصرف</button>
+    <button class="nav-item" onclick="navigateTo('menu')"><span class="nav-icon">🍽️</span>منو</button>
+    <button class="nav-item active" onclick="navigateTo('profile')"><span class="nav-icon">⚙️</span>پروفایل</button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN: REVIEWS
+════════════════════════════════════════ -->
+<div id="screen-reviews" class="screen">
+  <div class="topbar">
+    <button class="topbar-icon" onclick="navigateTo('profile')">‹</button>
+    <div class="topbar-title">نظرات و امتیازات</div>
+    <button class="topbar-icon">⋮</button>
+  </div>
+
+  <div class="scroll-area" style="padding:16px;">
+    <!-- Rating summary -->
+    <div class="card card-pad" style="margin-bottom:14px;">
+      <div style="display:flex;gap:16px;align-items:center;">
+        <div style="text-align:center;">
+          <div class="rating-big">۴.۷</div>
+          <div class="stars" style="font-size:16px;">★★★★★</div>
+          <div class="rating-label">از ۲۱۸ نظر</div>
+        </div>
+        <div style="flex:1;">
+          <div class="rating-bar-row">
+            <div class="rating-bar-label">۵</div>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width:72%;"></div></div>
+            <div class="rating-count">157</div>
+          </div>
+          <div class="rating-bar-row">
+            <div class="rating-bar-label">۴</div>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width:18%;"></div></div>
+            <div class="rating-count">39</div>
+          </div>
+          <div class="rating-bar-row">
+            <div class="rating-bar-label">۳</div>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width:6%;"></div></div>
+            <div class="rating-count">13</div>
+          </div>
+          <div class="rating-bar-row">
+            <div class="rating-bar-label">۲</div>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width:2%;background:var(--orange-500);"></div></div>
+            <div class="rating-count">5</div>
+          </div>
+          <div class="rating-bar-row">
+            <div class="rating-bar-label">۱</div>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width:2%;background:var(--red-500);"></div></div>
+            <div class="rating-count">4</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tags -->
+    <div class="card card-pad" style="margin-bottom:14px;">
+      <div class="card-title" style="margin-bottom:10px;">بیشترین موضوعات نظرات</div>
+      <div>
+        <span class="tag-chip">🍕 کیفیت غذا (۱۴۳)</span>
+        <span class="tag-chip">⚡ سرعت سرویس (۸۷)</span>
+        <span class="tag-chip">🤝 برخورد کارمندان (۶۴)</span>
+        <span class="tag-chip">🏠 محیط (۵۱)</span>
+        <span class="tag-chip">💰 قیمت (۳۸)</span>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="tabs" style="margin-bottom:14px;">
+      <div class="tab-item active">همه</div>
+      
+      <div class="tab-item">۵ ستاره</div>
+      <div class="tab-item">پایین‌تر</div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-avatar">س</div>
+        <div style="flex:1;">
+          <div class="review-name">سارا احمدی</div>
+          <div class="review-date">۱۴۰۳/۱۰/۱۴</div>
+        </div>
+        <div class="stars">★★★★★</div>
+      </div>
+      <div class="review-text">غذاها عالی بودند، سرویس سریع و برخورد کارمندا خوب. حتماً دوباره میام! پیتزا دابل چیز فوق‌العاده بود 🍕</div>
+      <div class="review-actions">
+        
+        <button class="btn btn-sm" style="width:auto;background:transparent;color:var(--gray-400);border:1px solid var(--gray-200);">🚩 گزارش</button>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-avatar" style="background:linear-gradient(135deg,var(--gold-600),var(--gold-400));">ر</div>
+        <div style="flex:1;">
+          <div class="review-name">رضا کریمی</div>
+          <div class="review-date">۱۴۰۳/۱۰/۱۲</div>
+        </div>
+        <div class="stars">★★★★☆</div>
+      </div>
+      <div class="review-text">استیک خوب بود ولی خدمت‌رسانی یکم کند بود. قیمت با تخفیف Venus عالی شد.</div>
+      <div style="margin-top:8px;background:var(--purple-50);border-radius:8px;padding:10px;font-size:12px;color:var(--gray-700);">
+        
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-avatar" style="background:linear-gradient(135deg,var(--red-500),#f87171);">م</div>
+        <div style="flex:1;">
+          <div class="review-name">مهدی طاهری</div>
+          <div class="review-date">۱۴۰۳/۱۰/۰۸</div>
+        </div>
+        <div class="stars" style="color:var(--orange-500);">★★★☆☆</div>
+      </div>
+      <div class="review-text">کیفیت غذا متوسط بود. انتظارم بالاتر بود.</div>
+      <div class="review-actions">
+       
+        <button class="btn btn-sm" style="width:auto;background:transparent;color:var(--gray-400);border:1px solid var(--gray-200);">🚩 گزارش</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="navigateTo('dashboard')"><span class="nav-icon">🏠</span>داشبورد</button>
+    <button class="nav-item" onclick="navigateTo('offers')"><span class="nav-icon">🏷️</span>پیشنهادها</button>
+    <button class="nav-item" onclick="navigateTo('redemption')"><span class="nav-icon">✅</span>مصرف</button>
+    <button class="nav-item" onclick="navigateTo('menu')"><span class="nav-icon">🍽️</span>منو</button>
+    <button class="nav-item active" onclick="navigateTo('profile')"><span class="nav-icon">⚙️</span>پروفایل</button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN: ANALYTICS
+════════════════════════════════════════ -->
+<div id="screen-analytics" class="screen">
+  <div class="topbar">
+    <button class="topbar-icon" onclick="navigateTo('profile')">‹</button>
+    <div class="topbar-title">آمار</div>
+    <select style="border:none;font-size:12px;color:var(--purple-700);font-weight:600;outline:none;background:var(--purple-50);border-radius:6px;padding:4px 8px;">
+      <option>این ماه</option>
+      <option>ماه گذشته</option>
+      <option>۳ ماه گذشته</option>
+    </select>
+  </div>
+
+  <div class="scroll-area" style="padding:16px;">
+    <!-- KPI grid -->
+    <div class="analytics-kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">بازدید پروفایل</div>
+        <div class="kpi-value">۳,۴۱۲</div>
+        <div class="kpi-change up">↑ ۲۳٪ نسبت به قبل</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">کلیک روی پیشنهاد</div>
+        <div class="kpi-value">۱,۸۴۷</div>
+        <div class="kpi-change up">↑ ۱۱٪</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">درآمد کل</div>
+        <div class="kpi-value" style="font-size:14px;">۲۴۸م</div>
+        <div class="kpi-change up">↑ ۳۱٪ تومان</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">تعداد مشتریان ورودی</div>
+        <div class="kpi-value" style="font-size:14px;"> ۱۴۲نفر</div>
+        <div class="kpi-change up">↑ ۲۱٪ افزایش هفتگی</div>
+      </div>
+    </div>
+
+    <!-- Trend chart -->
+    <div class="card card-pad" style="margin-bottom:14px;">
+      <div class="card-header">
+        <div class="card-title">روند درآمد در باشگاه ونوس </div>
+      </div>
+      <div class="chart-placeholder">
+        <div class="chart-bar" style="height:40%;"></div>
+        <div class="chart-bar" style="height:55%;"></div>
+        <div class="chart-bar" style="height:48%;"></div>
+        <div class="chart-bar" style="height:70%;"></div>
+        <div class="chart-bar" style="height:62%;"></div>
+        <div class="chart-bar" style="height:80%;"></div>
+        <div class="chart-bar" style="height:72%;"></div>
+        <div class="chart-bar" style="height:90%;"></div>
+        <div class="chart-bar" style="height:85%;"></div>
+        <div class="chart-bar" style="height:95%;"></div>
+        <div class="chart-bar" style="height:88%;"></div>
+        <div class="chart-bar" style="height:100%;background:linear-gradient(180deg,var(--gold-400),var(--gold-600));"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;">
+        <span style="font-size:10px;color:var(--gray-400);">فروردین</span>
+        <span style="font-size:10px;color:var(--gray-400);">دی ← این ماه</span>
+      </div>
+    </div>
+
+    <!-- Peak hours -->
+    <div class="card card-pad" style="margin-bottom:14px;">
+      <div class="card-header">
+        <div class="card-title">ساعت اوج مرتجعه مشتریان باشگاه</div>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:4px;height:60px;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <div style="flex:1;width:100%;background:var(--purple-100);border-radius:4px 4px 0 0;position:relative;">
+            <div style="position:absolute;bottom:0;left:0;right:0;background:var(--purple-400);border-radius:4px 4px 0 0;height:20%;"></div>
+          </div>
+          <div style="font-size:9px;color:var(--gray-400);">۱۰</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <div style="flex:1;width:100%;background:var(--purple-100);border-radius:4px 4px 0 0;position:relative;">
+            <div style="position:absolute;bottom:0;left:0;right:0;background:var(--purple-400);border-radius:4px 4px 0 0;height:35%;"></div>
+          </div>
+          <div style="font-size:9px;color:var(--gray-400);">۱۲</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <div style="flex:1;width:100%;background:var(--purple-100);border-radius:4px 4px 0 0;position:relative;">
+            <div style="position:absolute;bottom:0;left:0;right:0;background:var(--gold-400);border-radius:4px 4px 0 0;height:90%;"></div>
+          </div>
+          <div style="font-size:9px;color:var(--gray-400);">۱۴</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <div style="flex:1;width:100%;background:var(--purple-100);border-radius:4px 4px 0 0;position:relative;">
+            <div style="position:absolute;bottom:0;left:0;right:0;background:var(--purple-400);border-radius:4px 4px 0 0;height:50%;"></div>
+          </div>
+          <div style="font-size:9px;color:var(--gray-400);">۱۶</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <div style="flex:1;width:100%;background:var(--purple-100);border-radius:4px 4px 0 0;position:relative;">
+            <div style="position:absolute;bottom:0;left:0;right:0;background:var(--purple-600);border-radius:4px 4px 0 0;height:100%;"></div>
+          </div>
+          <div style="font-size:9px;color:var(--gold-600);font-weight:700;">۲۰</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <div style="flex:1;width:100%;background:var(--purple-100);border-radius:4px 4px 0 0;position:relative;">
+            <div style="position:absolute;bottom:0;left:0;right:0;background:var(--purple-400);border-radius:4px 4px 0 0;height:85%;"></div>
+          </div>
+          <div style="font-size:9px;color:var(--gray-400);">۲۱</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <div style="flex:1;width:100%;background:var(--purple-100);border-radius:4px 4px 0 0;position:relative;">
+            <div style="position:absolute;bottom:0;left:0;right:0;background:var(--purple-300);border-radius:4px 4px 0 0;height:60%;"></div>
+          </div>
+          <div style="font-size:9px;color:var(--gray-400);">۲۲</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <div style="flex:1;width:100%;background:var(--purple-100);border-radius:4px 4px 0 0;position:relative;">
+            <div style="position:absolute;bottom:0;left:0;right:0;background:var(--purple-200);border-radius:4px 4px 0 0;height:25%;"></div>
+          </div>
+          <div style="font-size:9px;color:var(--gray-400);">۲۳</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--gray-500);margin-top:8px;">🔥 اوج مراجعه: ساعت ۲۰:۰۰ – ۲۱:۰۰</div>
+    </div>
+
+    <!-- Top categories -->
+    <div class="card card-pad" style="margin-bottom:14px;">
+      <div class="card-title" style="margin-bottom:12px;">دسته‌بندی‌های پرفروش</div>
+      <div class="list-item">
+        <div class="list-avatar" style="background:var(--purple-100);">🍕</div>
+        <div class="list-body">
+          <div class="list-title">پیتزا</div>
+          <div class="list-sub">۱۸۴ مصرف</div>
+          <div class="progress-bar" style="margin-top:5px;"><div class="progress-fill" style="width:90%;"></div></div>
+        </div>
+        <div class="list-end"><div class="list-amount">۵۴٪</div></div>
+      </div>
+      <div class="list-item">
+        <div class="list-avatar" style="background:var(--gold-100);">🥩</div>
+        <div class="list-body">
+          <div class="list-title">گوشت و استیک</div>
+          <div class="list-sub">۸۷ مصرف</div>
+          <div class="progress-bar" style="margin-top:5px;"><div class="progress-fill" style="width:43%;background:linear-gradient(90deg,var(--gold-600),var(--gold-400));"></div></div>
+        </div>
+        <div class="list-end"><div class="list-amount" style="color:var(--gold-600);">۲۵٪</div></div>
+      </div>
+      <div class="list-item">
+        <div class="list-avatar" style="background:var(--blue-100);">🍝</div>
+        <div class="list-body">
+          <div class="list-title">پاستا</div>
+          <div class="list-sub">۵۲ مصرف</div>
+          <div class="progress-bar" style="margin-top:5px;"><div class="progress-fill" style="width:25%;background:linear-gradient(90deg,var(--blue-500),#60a5fa);"></div></div>
+        </div>
+        <div class="list-end"><div class="list-amount" style="color:var(--blue-500);">۱۵٪</div></div>
+      </div>
+    </div>
+
+    <!-- Plan performance -->
+    <div class="card card-pad" style="margin-bottom:24px;">
+      <div class="card-title" style="margin-bottom:12px;">عملکرد پلن‌ها</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="chip chip-gray" style="min-width:68px;justify-content:center;">Silver</span>
+          <div class="progress-bar" style="flex:1;margin:0;"><div class="progress-fill" style="width:35%;background:linear-gradient(90deg,#c0c0c0,#e8e8e8);"></div></div>
+          <span style="font-size:12px;font-weight:700;min-width:32px;text-align:left;">۱۲۰</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="chip chip-gold" style="min-width:68px;justify-content:center;">Gold</span>
+          <div class="progress-bar" style="flex:1;margin:0;"><div class="progress-fill" style="width:70%;background:linear-gradient(90deg,var(--gold-600),var(--gold-400));"></div></div>
+          <span style="font-size:12px;font-weight:700;min-width:32px;text-align:left;">۱۸۵</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="chip chip-purple" style="min-width:68px;justify-content:center;">Platinum</span>
+          <div class="progress-bar" style="flex:1;margin:0;"><div class="progress-fill" style="width:14%;"></div></div>
+          <span style="font-size:12px;font-weight:700;min-width:32px;text-align:left;">۳۶</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="navigateTo('dashboard')"><span class="nav-icon">🏠</span>داشبورد</button>
+    <button class="nav-item" onclick="navigateTo('offers')"><span class="nav-icon">🏷️</span>پیشنهادها</button>
+    <button class="nav-item" onclick="navigateTo('redemption')"><span class="nav-icon">✅</span>مصرف</button>
+    <button class="nav-item" onclick="navigateTo('menu')"><span class="nav-icon">🍽️</span>منو</button>
+    <button class="nav-item active" onclick="navigateTo('profile')"><span class="nav-icon">⚙️</span>پروفایل</button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN: SUPPORT
+════════════════════════════════════════ -->
+<div id="screen-support" class="screen">
+  <div class="topbar">
+    <button class="topbar-icon" onclick="navigateTo('profile')">‹</button>
+    <div class="topbar-title">پشتیبانی و تیکت‌ها</div>
+    <button class="topbar-icon" onclick="openNewTicketModal()">+</button>
+  </div>
+
+  <div class="scroll-area" style="padding:16px;">
+    <!-- Chat support CTA -->
+    <div class="card" style="background:linear-gradient(135deg,var(--purple-700),var(--purple-500));padding:16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;">
+      <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">💬</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:700;color:white;">چت زنده با پشتیبانی</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px;">پاسخگوی ساعت ۸ تا ۲۲</div>
+      </div>
+      <button class="btn btn-sm" style="background:rgba(255,255,255,0.2);color:white;width:auto;border:1px solid rgba(255,255,255,0.4);">شروع</button>
+    </div>
+
+    <!-- Ticket Tabs -->
+    <div class="tabs" style="margin-bottom:14px;">
+      <div class="tab-item active">باز (۲)</div>
+      <div class="tab-item">در حال بررسی</div>
+      <div class="tab-item">بسته شده</div>
+    </div>
+
+    <!-- Tickets -->
+    <div class="ticket-card">
+      <div class="ticket-header">
+        <span class="ticket-id">#TK-۱۰۴۸</span>
+        <span class="chip chip-orange">در انتظار</span>
+      </div>
+      <div class="ticket-title">مشکل در بارگذاری تصویر منو</div>
+      <div class="ticket-sub">۳ روز پیش • پشتیبانی فنی</div>
+    </div>
+
+    <div class="ticket-card">
+      <div class="ticket-header">
+        <span class="ticket-id">#TK-۱۰۳۵</span>
+        <span class="chip chip-blue">در حال بررسی</span>
+      </div>
+      <div class="ticket-title">درخواست تغییر شماره تلفن ادمین رستوران</div>
+      <div class="ticket-sub">۵ روز پیش • مالی / قرارداد</div>
+    </div>
+
+    <!-- FAQ accordion -->
+    <div class="card card-pad" style="margin-top:14px;">
+      <div class="card-title" style="margin-bottom:14px;">سوالات متداول</div>
+
+      <div class="accordion" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          چطور ونوس دیل مشتری را تأیید کنم؟
+          <span class="accordion-chevron">▾</span>
+        </div>
+        <div class="accordion-body">
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">
+            از منوی «مصرف» وارد شوید. می‌توانید QR کد مشتری را اسکن یا PIN ۴-۶ رقمی را وارد کنید. در صورت معتبر بودن، دکمه «تأیید مصرف» را بزنید.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          چطور پیشنهاد جدید بسازم؟
+          <span class="accordion-chevron">▾</span>
+        </div>
+        <div class="accordion-body">
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">
+            از منوی «پیشنهادها» دکمه «+» را بزنید. نوع تخفیف (BOGO یا درصد)، پلن‌های مجاز، تاریخ اعتبار و حدنصاب مصرف را تعریف کنید.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          چطور محدودیت روی پلن‌ها بذارم؟
+          <span class="accordion-chevron">▾</span>
+        </div>
+        <div class="accordion-body">
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">
+            در بخش «پیشنهادها» تب «پلن‌ها» را انتخاب کنید. روی هر پلن دکمه «محدودیت‌ها» را بزنید تا بتوانید روزها، ساعات، دسته‌های منو و سایر شرایط را تنظیم کنید.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Request exit -->
+    <div class="card card-pad" style="margin-top:14px;margin-bottom:24px;border:1.5px solid var(--red-100);">
+      <div style="font-size:13px;font-weight:700;color:var(--red-500);margin-bottom:6px;">درخواست خروج از Venus</div>
+      <div style="font-size:12px;color:var(--gray-500);margin-bottom:12px;">درخواست خروج پس از پایان دوره قرارداد بررسی می‌شود.</div>
+      <button class="btn btn-danger">📤 ثبت درخواست خروج</button>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="navigateTo('dashboard')"><span class="nav-icon">🏠</span>داشبورد</button>
+    <button class="nav-item" onclick="navigateTo('offers')"><span class="nav-icon">🏷️</span>پیشنهادها</button>
+    <button class="nav-item" onclick="navigateTo('redemption')"><span class="nav-icon">✅</span>مصرف</button>
+    <button class="nav-item" onclick="navigateTo('menu')"><span class="nav-icon">🍽️</span>منو</button>
+    <button class="nav-item active" onclick="navigateTo('profile')"><span class="nav-icon">⚙️</span>پروفایل</button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════════════
+     MODALS
+════════════════════════════════════════ -->
+
+<!-- Modal: Add Offer -->
+<div class="modal-overlay" id="modal-add-offer">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">افزودن پیشنهاد جدید</div>
+
+    <div class="form-group">
+      <label class="form-label">نوع پیشنهاد</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div id="offer-type-club" style="border:2px solid var(--purple-600);border-radius:10px;padding:12px;text-align:center;cursor:pointer;background:var(--purple-50);" onclick="selectOfferType('club')">
+          <div style="font-size:22px;">🏷️</div>
+          <div style="font-size:12px;font-weight:700;color:var(--purple-700);margin-top:4px;">باشگاه ونوس</div>
+          <div style="font-size:10px;color:var(--gray-400);">برای اعضا</div>
+        </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">عنوان پیشنهاد</label>
+      <input class="form-input" placeholder="مثال: پیتزا دابل چیز – ۵۰٪ تخفیف">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">نوع تخفیف</label>
+      <select class="form-input">
+        <option>BOGO – یک بخر یکی مجانی</option>
+        <option>درصد تخفیف (بر اساس قرارداد)</option>
+        <option>مبلغ ثابت</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">پلن‌های مجاز</label>
+      <div class="day-chips">
+        <div class="day-chip selected">Silver</div>
+        <div class="day-chip selected">Gold</div>
+        <div class="day-chip">Platinum</div>
+        <div class="day-chip">Corporate</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group">
+        <label class="form-label">شروع</label>
+        <input type="date" class="form-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">پایان</label>
+        <input type="date" class="form-input">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">حداکثر مصرف کل</label>
+      <input type="number" class="form-input" placeholder="مثال: ۱۰۰">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">روش تأیید</label>
+      <select class="form-input">
+        <option>QR کد</option>
+        <option>PIN</option>
+        <option>هر دو</option>
+      </select>
+    </div>
+
+    <div class="toggle-row">
+      <span class="toggle-label">نیاز به رزرو قبلی</span>
+      <label class="toggle">
+        <input type="checkbox">
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+
+    <div class="divider"></div>
+
+    <button class="btn btn-primary" onclick="closeModal('modal-add-offer'); showSuccessToast()">ثبت و ارسال برای تأیید</button>
+    <button class="btn btn-secondary" style="margin-top:8px;" onclick="closeModal('modal-add-offer')">انصراف</button>
+  </div>
+</div>
+
+<!-- Modal: Plan Restrictions -->
+<div class="modal-overlay" id="modal-plan-restrict">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="restrict-modal-title">محدودیت‌های پلن Gold</div>
+
+    <div style="background:var(--purple-50);border-radius:8px;padding:10px 12px;margin-bottom:16px;font-size:11px;color:var(--purple-700);">
+      🔒 درصد تخفیف این پلن: <strong>۵۰٪</strong> (توسط ادمین تنظیم شده – غیرقابل تغییر)
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">روزهای مجاز</label>
+      <div class="day-chips">
+        <div class="day-chip selected">شنبه</div>
+        <div class="day-chip selected">یک‌شنبه</div>
+        <div class="day-chip selected">دوشنبه</div>
+        <div class="day-chip selected">سه‌شنبه</div>
+        <div class="day-chip selected">چهارشنبه</div>
+        <div class="day-chip selected">پنج‌شنبه</div>
+        <div class="day-chip">جمعه</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group">
+        <label class="form-label">از ساعت</label>
+        <input type="time" class="form-input" value="12:00">
+      </div>
+      <div class="form-group">
+        <label class="form-label">تا ساعت</label>
+        <input type="time" class="form-input" value="22:00">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">دسته‌های منو مجاز</label>
+      <div class="day-chips">
+        <div class="day-chip selected">پیتزا</div>
+        <div class="day-chip selected">پاستا</div>
+        <div class="day-chip">گوشت</div>
+        <div class="day-chip">نوشیدنی</div>
+        <div class="day-chip">دسر</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">حداقل مبلغ سفارش (تومان)</label>
+      <input type="number" class="form-input" placeholder="مثال: 150,000" style="direction:ltr;">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">حداکثر مصرف روزانه (نفر)</label>
+      <input type="number" class="form-input" placeholder="مثال: 20">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">حداکثر استفاده هر مشتری (در ماه)</label>
+      <input type="number" class="form-input" placeholder="مثال: 2">
+    </div>
+
+    <div class="toggle-row">
+      <span class="toggle-label">نیاز به رزرو قبلی</span>
+      <label class="toggle">
+        <input type="checkbox">
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <span class="toggle-label">فعال برای همه شعبه‌ها</span>
+      <label class="toggle">
+        <input type="checkbox" checked>
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+
+    <div class="form-group" style="margin-top:10px;">
+      <label class="form-label">تاریخ‌های تعطیل / بلک‌اوت</label>
+      <input class="form-input" placeholder="مثال: ۱۴۰۳/۱۰/۲۵، ۱۴۰۳/۱۱/۰۱">
+      <div class="form-hint">تاریخ‌های شمسی با ویرگول جدا کنید</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">یادداشت برای مشتری (اختیاری)</label>
+      <textarea class="form-input" rows="2" placeholder="مثال: این تخفیف فقط در قسمت رستوران داخلی معتبر است"></textarea>
+    </div>
+
+    <div class="divider"></div>
+    <button class="btn btn-primary" onclick="closeModal('modal-plan-restrict'); showSuccessToast()">ذخیره محدودیت‌ها</button>
+    <button class="btn btn-secondary" style="margin-top:8px;" onclick="closeModal('modal-plan-restrict')">انصراف</button>
+  </div>
+</div>
+
+<!-- Modal: Add Menu Item -->
+<div class="modal-overlay" id="modal-add-menu">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">افزودن آیتم منو</div>
+
+    <div class="form-group">
+      <label class="form-label">تصویر آیتم</label>
+      <div class="doc-upload">
+        <div class="doc-upload-icon">🖼️</div>
+        <div class="doc-upload-text">لمس کنید برای بارگذاری عکس</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">نام آیتم</label>
+      <input class="form-input" placeholder="مثال: پیتزا پپرونی">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">دسته‌بندی</label>
+      <select class="form-input">
+        <option>پیتزا</option>
+        <option>پاستا</option>
+        <option>گوشت و استیک</option>
+        <option>نوشیدنی</option>
+        <option>دسر</option>
+      </select>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group">
+        <label class="form-label">قیمت (تومان)</label>
+        <input type="number" class="form-input" placeholder="280000" style="direction:ltr;">
+      </div>
+      <div class="form-group">
+        <label class="form-label">قیمت میانگین</label>
+        <input type="number" class="form-input" placeholder="280000" style="direction:ltr;">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">توضیحات کوتاه</label>
+      <textarea class="form-input" rows="2" placeholder="مواد تشکیل‌دهنده یا توضیح مختصر"></textarea>
+    </div>
+
+    <div class="toggle-row">
+      <span class="toggle-label">موجود است</span>
+      <label class="toggle">
+        <input type="checkbox" checked>
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+
+    <div class="divider"></div>
+    <button class="btn btn-primary" onclick="closeModal('modal-add-menu'); showSuccessToast()">ذخیره آیتم</button>
+    <button class="btn btn-secondary" style="margin-top:8px;" onclick="closeModal('modal-add-menu')">انصراف</button>
+  </div>
+</div>
+
+<!-- Modal: Close Merchant -->
+<div class="modal-overlay" id="modal-close-merchant">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" style="color:var(--orange-500);">⏸ تعلیق موقت کسب‌وکار</div>
+
+    <div style="background:var(--orange-100);border-radius:10px;padding:14px;margin-bottom:16px;font-size:12px;color:var(--orange-500);">
+      با تعلیق موقت، پیشنهادهای شما از دید اعضا پنهان می‌شود. می‌توانید در هر زمان بازگردید.
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">دلیل تعلیق</label>
+      <select class="form-input">
+        <option>تعطیلات / مرخصی</option>
+        <option>تعمیرات</option>
+        <option>ظرفیت پر شده</option>
+        <option>مناسبت خاص</option>
+        <option>سایر</option>
+      </select>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group">
+        <label class="form-label">از تاریخ</label>
+        <input type="date" class="form-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">تا تاریخ</label>
+        <input type="date" class="form-input">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">پیام به مشتریان</label>
+      <textarea class="form-input" rows="2" placeholder="اختیاری: توضیح کوتاه برای مشتریان"></textarea>
+    </div>
+
+    <div class="divider"></div>
+    <button class="btn btn-danger" onclick="closeModal('modal-close-merchant'); toggleMerchantStatus()">تأیید تعلیق</button>
+    <button class="btn btn-secondary" style="margin-top:8px;" onclick="closeModal('modal-close-merchant')">انصراف</button>
+  </div>
+</div>
+
+<!-- Modal: Offer Detail (Edit) -->
+<div class="modal-overlay" id="modal-offer-detail">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">ویرایش پیشنهاد</div>
+
+    <div style="background:var(--green-100);border-radius:8px;padding:10px;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+      <span>✅</span>
+      <span style="font-size:12px;color:var(--green-500);font-weight:600;">پیشنهاد فعال و تأیید شده</span>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">عنوان</label>
+      <input class="form-input" value="پیتزا دابل چیز – ۵۰٪ تخفیف">
+    </div>
+
+    <div class="toggle-row">
+      <span class="toggle-label">وضعیت فعال</span>
+      <label class="toggle">
+        <input type="checkbox" checked>
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <span class="toggle-label">نیاز به رزرو</span>
+      <label class="toggle">
+        <input type="checkbox">
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+
+    <div class="form-group" style="margin-top:10px;">
+      <label class="form-label">حداکثر مصرف باقی‌مانده</label>
+      <input type="number" class="form-input" value="67">
+    </div>
+
+    <div style="background:var(--gray-50);border-radius:8px;padding:10px;margin-bottom:14px;">
+      <div style="font-size:11px;color:var(--gray-500);margin-bottom:6px;">آمار این پیشنهاد</div>
+      <div style="display:flex;gap:16px;">
+        <div><div style="font-size:16px;font-weight:700;color:var(--purple-700);">۳۳</div><div style="font-size:10px;color:var(--gray-400);">مصرف شده</div></div>
+        <div><div style="font-size:16px;font-weight:700;color:var(--gold-600);">۵,۲۸۰ک</div><div style="font-size:10px;color:var(--gray-400);">صرفه‌جویی</div></div>
+        <div><div style="font-size:16px;font-weight:700;color:var(--green-500);">۴.۸</div><div style="font-size:10px;color:var(--gray-400);">امتیاز</div></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <button class="btn btn-primary" onclick="closeModal('modal-offer-detail'); showSuccessToast()">ذخیره تغییرات</button>
+    <button class="btn btn-danger" style="margin-top:8px;" onclick="closeModal('modal-offer-detail')">حذف پیشنهاد</button>
+    <button class="btn btn-secondary" style="margin-top:8px;" onclick="closeModal('modal-offer-detail')">انصراف</button>
+  </div>
+</div>
+
+<!-- Modal: New Ticket -->
+<div class="modal-overlay" id="modal-new-ticket">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">ثبت تیکت جدید</div>
+
+    <div class="form-group">
+      <label class="form-label">موضوع</label>
+      <select class="form-input">
+        <option>مشکل فنی</option>
+        <option>مالی / قرارداد</option>
+        <option>پیشنهاد / پلن</option>
+        <option>مصرف / تأیید  اس</option>
+        <option>سایر</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">عنوان</label>
+      <input class="form-input" placeholder="خلاصه مشکل">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">توضیحات</label>
+      <textarea class="form-input" rows="4" placeholder="جزئیات مشکل را بنویسید..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">اولویت</label>
+      <select class="form-input">
+        <option>معمولی</option>
+        <option>بالا</option>
+        <option>اورژانسی</option>
+      </select>
+    </div>
+
+    <div class="divider"></div>
+    <button class="btn btn-primary" onclick="closeModal('modal-new-ticket'); showSuccessToast()">ثبت تیکت</button>
+    <button class="btn btn-secondary" style="margin-top:8px;" onclick="closeModal('modal-new-ticket')">انصراف</button>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div id="toast" style="position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gray-900);color:white;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:300;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap;">
+  ✅ عملیات با موفقیت انجام شد
+</div>
+
+<script>
+// ── Navigation ──────────────────────────
+const screens = {
+  login: 'screen-login',
+  dashboard: 'screen-dashboard',
+  offers: 'screen-offers',
+  redemption: 'screen-redemption',
+  menu: 'screen-menu',
+  profile: 'screen-profile',
+  reviews: 'screen-reviews',
+  analytics: 'screen-analytics',
+  support: 'screen-support',
+};
+
+function navigateTo(name) {
+  Object.values(screens).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+  const target = document.getElementById(screens[name]);
+  if (target) target.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ── Login steps ──────────────────────────
+function showLoginStep(n) {
+  document.querySelectorAll('.login-steps').forEach(el => el.classList.remove('active'));
+  document.getElementById('login-step'+n).classList.add('active');
+}
+
+// ── Tabs ──────────────────────────────────
+function switchTab(el, group) {
+  const parent = el.parentElement;
+  parent.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+
+  // Determine which tab was clicked
+  const tabs = Array.from(parent.querySelectorAll('.tab-item'));
+  const idx = tabs.indexOf(el);
+
+  if (group === 'offers-tab') {
+    // Show/hide content based on index
+    const contents = [
+      document.getElementById('tab-active-offers'),
+      document.getElementById('tab-paused-offers'),
+      document.getElementById('tab-expired-offers'),
+      document.getElementById('tab-plans'),
+    ];
+    // Create placeholders if not exist
+    if (!document.getElementById('tab-paused-offers')) {
+      const div = document.createElement('div');
+      div.id = 'tab-paused-offers';
+      div.className = 'tab-content';
+      div.innerHTML = `<div class="empty-state"><div class="empty-icon">⏸</div><div class="empty-title">هیچ پیشنهاد معلقی ندارید</div><div class="empty-sub">پیشنهادهایی که غیرفعال کرده‌اید اینجا نمایش داده می‌شوند</div></div>`;
+      document.getElementById('tab-active-offers').parentElement.appendChild(div);
+    }
+    if (!document.getElementById('tab-expired-offers')) {
+      const div = document.createElement('div');
+      div.id = 'tab-expired-offers';
+      div.className = 'tab-content';
+      div.innerHTML = `<div class="offer-card" style="opacity:0.6;"><div class="offer-img" style="background:var(--gray-200);">🎁</div><div class="offer-body"><div class="offer-title">پیتزا ماریانا – ویژه پاییز</div><div class="offer-meta">منقضی شده • ۱۴۰۳/۰۷/۳۰</div><div style="margin-top:6px;"><span class="chip chip-gray">منقضی</span></div></div></div>`;
+      document.getElementById('tab-active-offers').parentElement.appendChild(div);
+    }
+
+    const allContents = [
+      document.getElementById('tab-active-offers'),
+      document.getElementById('tab-paused-offers'),
+      document.getElementById('tab-expired-offers'),
+      document.getElementById('tab-plans'),
+    ];
+    allContents.forEach((c,i) => {
+      if (c) c.style.display = (i === idx) ? 'block' : 'none';
+    });
+  }
+}
+
+// ── Modals ────────────────────────────────
+function openAddOfferModal() {
+  document.getElementById('modal-add-offer').classList.add('open');
+}
+function openPlanRestrictModal(planName) {
+  document.getElementById('restrict-modal-title').textContent = `محدودیت‌های پلن ${planName}`;
+  document.getElementById('modal-plan-restrict').classList.add('open');
+}
+function openAddMenuItemModal() {
+  document.getElementById('modal-add-menu').classList.add('open');
+}
+function openCloseModal() {
+  document.getElementById('modal-close-merchant').classList.add('open');
+}
+function openOfferDetailModal() {
+  document.getElementById('modal-offer-detail').classList.add('open');
+}
+function openNewTicketModal() {
+  document.getElementById('modal-new-ticket').classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+});
+
+// ── Merchant status toggle ─────────────────
+let merchantOpen = true;
+function toggleMerchantStatus() {
+  merchantOpen = !merchantOpen;
+  const badge = document.getElementById('merchant-status-badge');
+  if (badge) {
+    badge.innerHTML = merchantOpen
+      ? '<span>🟢</span> فعال و پذیرای مشتری'
+      : '<span>🔴</span> موقتاً تعطیل';
+    badge.className = 'hero-badge' + (merchantOpen ? '' : ' closed');
+  }
+  showSuccessToast(merchantOpen ? '✅ کسب‌وکار فعال شد' : '⏸ کسب‌وکار موقتاً تعطیل شد');
+}
+
+// ── Offer type selection ──────────────────
+function selectOfferType(type) {
+  const club = document.getElementById('offer-type-club');
+  const deal = document.getElementById('offer-type-deal');
+  if (type === 'club') {
+    club.style.border = '2px solid var(--purple-600)';
+    club.style.background = 'var(--purple-50)';
+    club.querySelector('.offer-title,div:nth-child(2)').style.color = 'var(--purple-700)';
+    deal.style.border = '2px solid var(--gray-200)';
+    deal.style.background = '';
+  } else {
+    deal.style.border = '2px solid var(--gold-500)';
+    deal.style.background = 'var(--gold-100)';
+    club.style.border = '2px solid var(--gray-200)';
+    club.style.background = '';
+  }
+}
+
+// ── Day chips toggle ──────────────────────
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('day-chip') && e.target.closest('.modal-overlay')) {
+    e.target.classList.toggle('selected');
+  }
+});
+
+// ── Redemption results ────────────────────
+function showRedemptionResult(type) {
+  const area = document.getElementById('redemption-result-area');
+  const templates = {
+    success: `
+      <div class="redemption-result success">
+        <div class="result-icon">🎉</div>
+        <div class="result-title" style="color:var(--green-500);">مصرف موفق تأیید شد</div>
+        <div class="result-sub">پیتزا دابل چیز – Gold</div>
+        <div style="margin-top:12px;display:flex;gap:16px;justify-content:center;">
+          <div><div style="font-weight:700;font-size:14px;color:var(--gray-900);">علی محمدی</div><div style="font-size:10px;color:var(--gray-400);">مشتری</div></div>
+          <div><div style="font-weight:700;font-size:14px;color:var(--purple-700);">۱۶۰,۰۰۰ ت</div><div style="font-size:10px;color:var(--gray-400);">تخفیف دریافتی</div></div>
+          <div><div style="font-weight:700;font-size:14px;color:var(--gold-600);">Gold</div><div style="font-size:10px;color:var(--gray-400);">پلن</div></div>
+        </div>
+        <div style="margin-top:12px;font-size:11px;color:var(--green-500);">۱۴:۳۷ – ۱۴۰۳/۱۰/۱۵</div>
+      </div>`,
+    used: `
+      <div class="redemption-result error">
+        <div class="result-icon">🔴</div>
+        <div class="result-title" style="color:var(--red-500);">قبلاً استفاده شده</div>
+        <div class="result-sub">این ونوس دیل قبلاً در ۱۴:۱۰ امروز مصرف شده است</div>
+      </div>`,
+    expired: `
+      <div class="redemption-result" style="background:var(--orange-100);border:1.5px solid var(--orange-500);">
+        <div class="result-icon">⏰</div>
+        <div class="result-title" style="color:var(--orange-500);">ونوس دیل منقضی شده</div>
+        <div class="result-sub">این ونوس دیل تاریخ اعتبارش در ۱۴۰۳/۰۹/۳۰ گذشته</div>
+      </div>`,
+    invalid: `
+      <div class="redemption-result error">
+        <div class="result-icon">❌</div>
+        <div class="result-title" style="color:var(--red-500);">کد نامعتبر</div>
+        <div class="result-sub">کد وارد شده در سیستم یافت نشد. دوباره بررسی کنید.</div>
+      </div>`,
+  };
+  area.innerHTML = templates[type] || '';
+}
+
+// ── Accordion ─────────────────────────────
+function toggleAccordion(el) {
+  el.classList.toggle('open');
+}
+
+// ── Toast ─────────────────────────────────
+function showSuccessToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg || '✅ عملیات با موفقیت انجام شد';
+  toast.style.opacity = '1';
+  toast.style.transform = 'translateX(-50%) translateY(0)';
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(20px)';
+  }, 2500);
+}
+
+// ── OTP auto-advance ──────────────────────
+document.querySelectorAll('.otp-input').forEach((input, idx, arr) => {
+  input.addEventListener('input', function() {
+    if (this.value.length === 1 && idx < arr.length - 1) {
+      arr[idx + 1].focus();
+    }
+  });
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Backspace' && !this.value && idx > 0) {
+      arr[idx - 1].focus();
+    }
+  });
+});
+
+// ── Initial screen ─────────────────────────
+// Already set by .active class on screen-login
+</script>
+</body>
+</html>
