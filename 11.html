@@ -1,0 +1,2032 @@
+```html
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Venus Club</title>
+<style>
+  :root {
+    --brand: #7C3AED;
+    --brand-dark: #5B21B6;
+    --brand-light: #EDE9FE;
+    --brand-gradient: linear-gradient(135deg, #7C3AED 0%, #A855F7 60%, #EC4899 100%);
+    --accent: #F59E0B;
+    --accent-light: #FEF3C7;
+    --green: #10B981;
+    --green-light: #D1FAE5;
+    --red: #EF4444;
+    --red-light: #FEE2E2;
+    --blue: #3B82F6;
+    --blue-light: #DBEAFE;
+    --text: #111827;
+    --text2: #6B7280;
+    --text3: #9CA3AF;
+    --bg: #F9FAFB;
+    --card: #FFFFFF;
+    --border: #E5E7EB;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 2px 16px rgba(124,58,237,0.08);
+    --shadow-card: 0 1px 8px rgba(0,0,0,0.07);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: #1a0533; }
+  body { display: flex; justify-content: center; align-items: center; }
+
+  .device {
+    width: 390px;
+    height: 844px;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    border-radius: 44px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5), 0 0 0 12px #0d0d0d, 0 0 0 14px #333;
+  }
+
+  .screen { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; display: none; flex-direction: column; background: var(--bg); }
+  .screen.active { display: flex; }
+  .screen::-webkit-scrollbar { display: none; }
+
+  /* ===== SPLASH with language toggle ===== */
+  #splash { background: var(--brand-gradient); align-items: center; justify-content: center; text-align: center; }
+  .splash-logo { width: 90px; height: 90px; background: rgba(255,255,255,0.15); border-radius: 28px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 44px; backdrop-filter: blur(10px); border: 1.5px solid rgba(255,255,255,0.25); }
+  .splash-title { color: #fff; font-size: 30px; font-weight: 800; letter-spacing: -0.5px; }
+  .splash-sub { color: rgba(255,255,255,0.75); font-size: 13px; margin-top: 6px; }
+  .splash-tagline { color: rgba(255,255,255,0.6); font-size: 11px; margin-top: 4px; font-style: italic; }
+  .lang-toggle-row { display: flex; gap: 12px; justify-content: center; margin-top: 40px; }
+  .lang-btn { background: rgba(255,255,255,0.15); color: #fff; border: 1.5px solid rgba(255,255,255,0.25); padding: 10px 28px; border-radius: 40px; font-size: 15px; font-weight: 700; cursor: pointer; backdrop-filter: blur(4px); transition: all 0.2s; min-width: 100px; }
+  .lang-btn.active { background: #fff; color: var(--brand-dark); border-color: #fff; box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+  .lang-btn:active { transform: scale(0.96); }
+  .splash-btn { margin-top: 32px; background: #fff; color: var(--brand-dark); font-size: 16px; font-weight: 700; border: none; border-radius: 50px; padding: 16px 48px; cursor: pointer; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+  .splash-btn:active { transform: scale(0.97); }
+  .splash-secondary { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 14px; cursor: pointer; text-decoration: underline; }
+
+  /* ===== AUTH ===== */
+  #auth { background: #fff; }
+  .auth-header { background: var(--brand-gradient); padding: 56px 24px 40px; text-align: center; position: relative; }
+  .auth-back { position: absolute; top: 54px; left: 20px; color: rgba(255,255,255,0.85); font-size: 22px; cursor: pointer; background: rgba(255,255,255,0.15); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .auth-logo-sm { font-size: 32px; margin-bottom: 8px; }
+  .auth-title { color: #fff; font-size: 22px; font-weight: 800; }
+  .auth-sub { color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 4px; }
+  .auth-body { padding: 28px 24px 40px; flex: 1; }
+  .auth-tabs { display: flex; background: var(--bg); border-radius: 12px; padding: 4px; margin-bottom: 24px; }
+  .auth-tab { flex: 1; padding: 10px; text-align: center; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text2); transition: all 0.2s; }
+  .auth-tab.active { background: #fff; color: var(--brand); box-shadow: var(--shadow-card); }
+  .field-group { margin-bottom: 16px; }
+  .field-label { font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px; display: block; }
+  .field-input { width: 100%; border: 1.5px solid var(--border); border-radius: 12px; padding: 13px 16px; font-size: 15px; color: var(--text); outline: none; transition: border-color 0.2s; background: #fff; }
+  .field-input:focus { border-color: var(--brand); }
+  .field-hint { font-size: 11px; color: var(--text3); margin-top: 4px; }
+  .btn-primary { width: 100%; background: var(--brand-gradient); color: #fff; font-size: 16px; font-weight: 700; border: none; border-radius: 14px; padding: 16px; cursor: pointer; margin-top: 8px; box-shadow: 0 4px 20px rgba(124,58,237,0.3); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-outline { width: 100%; background: transparent; color: var(--brand); font-size: 14px; font-weight: 600; border: 1.5px solid var(--brand); border-radius: 14px; padding: 14px; cursor: pointer; margin-top: 10px; }
+  .auth-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+  .auth-divider-line { flex: 1; height: 1px; background: var(--border); }
+  .auth-divider-text { font-size: 12px; color: var(--text3); }
+  .otp-row { display: flex; gap: 10px; justify-content: center; margin: 20px 0; direction: ltr; }
+  .otp-box { width: 52px; height: 56px; border: 2px solid var(--border); border-radius: 12px; text-align: center; font-size: 22px; font-weight: 700; color: var(--brand); outline: none; }
+  .otp-box:focus { border-color: var(--brand); }
+
+  /* ===== BOTTOM NAV ===== */
+  .bottom-nav { position: sticky; bottom: 0; background: #fff; border-top: 1px solid var(--border); display: flex; padding: 8px 0 20px; z-index: 100; box-shadow: 0 -4px 20px rgba(0,0,0,0.06); }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 4px 0; }
+  .nav-icon { font-size: 22px; }
+  .nav-label { font-size: 10px; font-weight: 600; color: var(--text3); }
+  .nav-item.active .nav-label { color: var(--brand); }
+  .nav-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--brand); margin: 0 auto; }
+
+  /* ===== HOME ===== */
+  .home-header { background: var(--brand-gradient); padding: 48px 20px 60px; position: relative; overflow: hidden; }
+  .home-header::after { content: ''; position: absolute; bottom: -30px; left: 0; right: 0; height: 60px; background: var(--bg); border-radius: 32px 32px 0 0; }
+  .home-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .home-greeting { color: rgba(255,255,255,0.85); font-size: 13px; }
+  .home-name { color: #fff; font-size: 20px; font-weight: 800; margin-top: 2px; }
+  .home-avatar { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 20px; border: 2px solid rgba(255,255,255,0.3); cursor: pointer; }
+  .home-notif { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; position: relative; }
+  .notif-badge { position: absolute; top: -2px; right: -2px; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); font-size: 8px; color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; border: 2px solid transparent; }
+  .membership-card { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 16px 18px; margin: 0 0 8px; }
+  .mem-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .mem-badge { background: var(--accent); color: #fff; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px; }
+  .mem-expire { color: rgba(255,255,255,0.7); font-size: 11px; }
+  .mem-name { color: #fff; font-size: 17px; font-weight: 700; }
+  .mem-en { color: rgba(255,255,255,0.65); font-size: 11px; margin-top: 2px; }
+  .mem-stats { display: flex; gap: 0; margin-top: 14px; }
+  .mem-stat { flex: 1; text-align: center; }
+  .mem-stat + .mem-stat { border-right: 1px solid rgba(255,255,255,0.2); }
+  .mem-stat-val { color: #fff; font-size: 16px; font-weight: 800; }
+  .mem-stat-lbl { color: rgba(255,255,255,0.65); font-size: 10px; margin-top: 2px; }
+  .home-body { padding: 4px 16px 16px; }
+  .sec-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 12px; }
+  .sec-title { font-size: 15px; font-weight: 800; color: var(--text); }
+  .sec-more { font-size: 12px; color: var(--brand); font-weight: 600; cursor: pointer; }
+  .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 4px; }
+  .qa-item { background: var(--card); border-radius: var(--radius-sm); padding: 14px 8px; text-align: center; cursor: pointer; box-shadow: var(--shadow-card); }
+  .qa-item:active { transform: scale(0.95); }
+  .qa-icon { font-size: 24px; margin-bottom: 6px; }
+  .qa-label { font-size: 10px; font-weight: 600; color: var(--text2); line-height: 1.3; }
+  .category-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; }
+  .category-scroll::-webkit-scrollbar { display: none; }
+  .cat-pill { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; min-width: 60px; }
+  .cat-icon-wrap { width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .cat-lbl { font-size: 10px; font-weight: 600; color: var(--text2); text-align: center; }
+  .deal-card { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow-card); margin-bottom: 10px; cursor: pointer; position: relative; overflow: hidden; }
+  .deal-card:active { transform: scale(0.99); }
+  .deal-badge { position: absolute; top: 14px; right: 14px; background: var(--brand-gradient); color: #fff; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px; }
+  .deal-badge.bogo { background: var(--green); }
+  .deal-badge.hot { background: var(--red); }
+  .deal-merchant { font-size: 11px; color: var(--text3); margin-bottom: 4px; display: flex; align-items: center; gap: 4px; }
+  .deal-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .deal-title-en { font-size: 12px; color: var(--text3); }
+  .deal-meta { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+  .deal-saving { color: var(--green); font-size: 13px; font-weight: 700; }
+  .deal-timer { display: flex; align-items: center; gap: 4px; color: var(--red); font-size: 12px; font-weight: 600; }
+  .deal-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+  .deal-remaining { font-size: 11px; color: var(--text3); }
+  .deal-remaining strong { color: var(--accent); }
+  .deal-cta { background: var(--brand-light); color: var(--brand); font-size: 12px; font-weight: 700; border: none; border-radius: 8px; padding: 7px 14px; cursor: pointer; }
+  .h-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 4px; }
+  .h-scroll::-webkit-scrollbar { display: none; }
+  .merchant-mini { min-width: 160px; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-card); cursor: pointer; }
+  .merchant-mini-img { height: 90px; background: var(--brand-gradient); display: flex; align-items: center; justify-content: center; font-size: 36px; }
+  .merchant-mini-body { padding: 10px 12px; }
+  .merchant-mini-name { font-size: 13px; font-weight: 700; color: var(--text); }
+  .merchant-mini-cat { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .stars { color: var(--accent); font-size: 11px; margin-top: 4px; }
+  .savings-banner { background: var(--green-light); border-radius: var(--radius); padding: 16px; display: flex; align-items: center; gap: 14px; margin: 4px 0 8px; }
+  .savings-icon { font-size: 32px; }
+  .savings-label { font-size: 12px; color: var(--text2); }
+  .savings-amount { font-size: 22px; font-weight: 800; color: var(--green); margin-top: 2px; }
+  .savings-sub { font-size: 11px; color: var(--text3); }
+
+  /* ===== MERCHANT ===== */
+  #merchant { background: var(--bg); }
+  .merchant-hero { position: relative; height: 200px; background: var(--brand-gradient); display: flex; align-items: center; justify-content: center; font-size: 60px; flex-shrink: 0; }
+  .merchant-back { position: absolute; top: 48px; right: 16px; width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; color: #fff; }
+  .merchant-fav { position: absolute; top: 48px; left: 16px; width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; }
+  .merchant-share { position: absolute; bottom: 16px; left: 16px; width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; }
+  .merchant-info { background: var(--card); margin: 0 16px; border-radius: 20px; padding: 18px; transform: translateY(-24px); box-shadow: var(--shadow); }
+  .merchant-name { font-size: 19px; font-weight: 800; color: var(--text); }
+  .merchant-name-en { font-size: 13px; color: var(--text3); margin-top: 2px; }
+  .merchant-tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+  .tag { background: var(--brand-light); color: var(--brand); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  .tag.green { background: var(--green-light); color: var(--green); }
+  .merchant-meta-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text2); margin-top: 6px; }
+  .merchant-rating-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+  .rating-big { font-size: 24px; font-weight: 900; color: var(--text); }
+  .rating-stars { color: var(--accent); font-size: 16px; }
+  .rating-count { font-size: 12px; color: var(--text3); }
+  .merchant-body { padding: 0 16px 16px; margin-top: -12px; }
+  .info-card { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow-card); margin-bottom: 10px; }
+  .info-card-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+  .info-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+  .info-row:last-child { margin-bottom: 0; }
+  .info-icon { font-size: 16px; min-width: 22px; text-align: center; }
+  .info-text { font-size: 13px; color: var(--text2); line-height: 1.4; }
+  .info-text strong { color: var(--text); font-weight: 600; }
+  .offer-tabs { display: flex; background: var(--bg); border-radius: 12px; padding: 4px; margin-bottom: 12px; }
+  .offer-tab { flex: 1; padding: 9px; text-align: center; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: 600; color: var(--text2); }
+  .offer-tab.active { background: var(--card); color: var(--brand); box-shadow: var(--shadow-card); }
+  .offer-card { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow-card); margin-bottom: 10px; cursor: pointer; }
+  .offer-card.used { opacity: 0.6; }
+  .offer-card.expired { opacity: 0.5; }
+  .offer-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .offer-type { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .offer-type.bogo { background: var(--green-light); color: var(--green); }
+  .offer-type.pct { background: var(--brand-light); color: var(--brand); }
+  .offer-type.deal { background: var(--accent-light); color: #92400E; }
+  .offer-status { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+  .offer-status.active { background: var(--green-light); color: var(--green); }
+  .offer-status.used { background: var(--border); color: var(--text3); }
+  .offer-status.expired { background: var(--red-light); color: var(--red); }
+  .offer-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .offer-title-en { font-size: 11px; color: var(--text3); margin-bottom: 8px; }
+  .offer-rules { font-size: 11px; color: var(--text2); line-height: 1.5; }
+  .offer-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .offer-limit { font-size: 11px; color: var(--text3); }
+  .offer-limit strong { color: var(--brand); }
+  .btn-redeem { background: var(--brand-gradient); color: #fff; font-size: 12px; font-weight: 700; border: none; border-radius: 10px; padding: 9px 18px; cursor: pointer; }
+  .btn-redeem:disabled { background: var(--border); color: var(--text3); cursor: default; }
+
+  /* ===== REDEEM ===== */
+  #redeem { background: var(--bg); }
+  .redeem-header { background: var(--brand-gradient); padding: 48px 20px 30px; text-align: center; position: relative; }
+  .redeem-back { position: absolute; top: 54px; right: 20px; color: #fff; font-size: 22px; cursor: pointer; }
+  .redeem-title { color: #fff; font-size: 20px; font-weight: 800; }
+  .redeem-sub { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 4px; }
+  .redeem-body { padding: 20px 20px 100px; }
+  .redeem-offer-box { background: var(--card); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); margin-bottom: 16px; }
+  .redeem-merchant { font-size: 13px; color: var(--text3); margin-bottom: 6px; }
+  .redeem-offer-title { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+  .redeem-badge { display: inline-block; background: var(--green-light); color: var(--green); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 12px; }
+  .redeem-rules-box { background: var(--bg); border-radius: var(--radius-sm); padding: 12px 14px; }
+  .redeem-rule { font-size: 12px; color: var(--text2); display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .redeem-rule:last-child { margin-bottom: 0; }
+  .redeem-method-tabs { display: flex; gap: 10px; margin: 16px 0; }
+  .method-tab { flex: 1; border: 2px solid var(--border); border-radius: var(--radius); padding: 14px; text-align: center; cursor: pointer; background: var(--card); }
+  .method-tab.active { border-color: var(--brand); background: var(--brand-light); }
+  .method-tab-icon { font-size: 28px; margin-bottom: 6px; }
+  .method-tab-label { font-size: 12px; font-weight: 700; color: var(--text2); }
+  .method-tab.active .method-tab-label { color: var(--brand); }
+  .pin-box { background: var(--card); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-card); text-align: center; }
+  .pin-label { font-size: 13px; color: var(--text2); margin-bottom: 14px; }
+  .pin-input-row { display: flex; gap: 10px; justify-content: center; margin-bottom: 16px; direction: ltr; }
+  .pin-digit { width: 52px; height: 60px; border: 2px solid var(--border); border-radius: 12px; text-align: center; font-size: 24px; font-weight: 800; color: var(--brand); outline: none; }
+  .pin-digit:focus { border-color: var(--brand); }
+  .qr-box { background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-card); text-align: center; display: none; }
+  .qr-placeholder { width: 160px; height: 160px; background: var(--bg); border-radius: 12px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 80px; border: 2px dashed var(--border); }
+  .qr-label { font-size: 13px; color: var(--text2); }
+  .success-box { background: var(--green-light); border-radius: var(--radius); padding: 24px; text-align: center; display: none; }
+  .success-icon { font-size: 52px; margin-bottom: 12px; }
+  .success-title { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .success-sub { font-size: 13px; color: var(--text2); }
+  .success-saving { font-size: 22px; font-weight: 900; color: var(--green); margin: 12px 0; }
+
+  /* ===== MEMBERSHIP ===== */
+  #membership { background: var(--bg); }
+  .mem-hero { background: var(--brand-gradient); padding: 48px 20px 80px; position: relative; overflow: hidden; }
+  .mem-hero::after { content: ''; position: absolute; bottom: -30px; left: 0; right: 0; height: 60px; background: var(--bg); border-radius: 32px 32px 0 0; }
+  .mem-hero-title { color: #fff; font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+  .mem-hero-sub { color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 20px; }
+  .mem-plan-card { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 1.5px solid rgba(255,255,255,0.25); border-radius: 20px; padding: 20px; }
+  .mem-plan-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .mem-plan-name { color: #fff; font-size: 20px; font-weight: 800; }
+  .mem-plan-badge { background: var(--accent); color: #fff; font-size: 12px; font-weight: 800; padding: 6px 14px; border-radius: 20px; }
+  .mem-plan-expire { color: rgba(255,255,255,0.75); font-size: 13px; display: flex; align-items: center; gap: 6px; }
+  .progress-bar { background: rgba(255,255,255,0.2); border-radius: 20px; height: 6px; margin: 14px 0 8px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 20px; }
+  .mem-body { padding: 4px 16px 16px; margin-top: -20px; }
+  .plan-options { display: flex; flex-direction: column; gap: 12px; }
+  .plan-option { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow-card); border: 2px solid transparent; cursor: pointer; }
+  .plan-option.recommended { border-color: var(--brand); }
+  .plan-option-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .plan-name { font-size: 16px; font-weight: 800; color: var(--text); }
+  .plan-name-en { font-size: 11px; color: var(--text3); font-weight: 500; }
+  .plan-rec-badge { background: var(--brand-gradient); color: #fff; font-size: 10px; font-weight: 800; padding: 3px 10px; border-radius: 20px; }
+  .plan-price { font-size: 20px; font-weight: 900; color: var(--brand); }
+  .plan-period { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .plan-features { display: flex; flex-direction: column; gap: 4px; margin-top: 10px; }
+  .plan-feat { font-size: 12px; color: var(--text2); display: flex; gap: 6px; align-items: center; }
+  .plan-feat-icon { color: var(--green); }
+  .sharing-card { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow-card); margin-bottom: 10px; }
+  .sharing-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+  .member-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .member-row:last-child { border-bottom: none; }
+  .member-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--brand-light); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .member-info { flex: 1; }
+  .member-name { font-size: 14px; font-weight: 600; color: var(--text); }
+  .member-phone { font-size: 12px; color: var(--text3); }
+  .member-status { font-size: 11px; font-weight: 600; }
+  .member-status.active { color: var(--green); }
+  .member-status.pending { color: var(--accent); }
+  .member-remove { color: var(--red); font-size: 18px; cursor: pointer; }
+  .add-member-btn { width: 100%; border: 2px dashed var(--border); border-radius: var(--radius-sm); padding: 14px; text-align: center; cursor: pointer; color: var(--brand); font-size: 13px; font-weight: 600; background: transparent; margin-top: 6px; }
+
+  /* ===== DISCOVER ===== */
+  #discover { background: var(--bg); }
+  .discover-header { background: var(--brand-gradient); padding: 48px 16px 20px; }
+  .discover-title { color: #fff; font-size: 20px; font-weight: 800; margin-bottom: 14px; }
+  .search-bar { background: #fff; border-radius: 14px; display: flex; align-items: center; gap: 10px; padding: 12px 14px; }
+  .search-icon { font-size: 18px; color: var(--text3); }
+  .search-input { flex: 1; border: none; outline: none; font-size: 14px; color: var(--text); }
+  .search-input::placeholder { color: var(--text3); }
+  .discover-body { padding: 16px; }
+  .city-row { display: flex; align-items: center; gap: 8px; background: var(--card); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; box-shadow: var(--shadow-card); }
+  .city-icon { font-size: 18px; }
+  .city-name { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; }
+  .city-change { font-size: 12px; color: var(--brand); font-weight: 600; cursor: pointer; }
+  .filter-pills { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 14px; }
+  .filter-pills::-webkit-scrollbar { display: none; }
+  .pill { background: var(--card); border: 1.5px solid var(--border); color: var(--text2); font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 20px; cursor: pointer; white-space: nowrap; }
+  .pill.active { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .merchant-list-card { background: var(--card); border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow-card); margin-bottom: 10px; display: flex; gap: 14px; cursor: pointer; }
+  .merchant-list-card:active { transform: scale(0.99); }
+  .merchant-list-img { width: 72px; height: 72px; border-radius: var(--radius-sm); background: var(--brand-gradient); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; }
+  .merchant-list-info { flex: 1; }
+  .merchant-list-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .merchant-list-cat { font-size: 11px; color: var(--text3); margin-bottom: 4px; }
+  .merchant-list-meta { display: flex; align-items: center; gap: 8px; }
+  .star-sm { color: var(--accent); font-size: 12px; }
+  .merchant-list-offer { background: var(--brand-light); color: var(--brand); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
+
+  /* ===== PROFILE ===== */
+  #profile { background: var(--bg); }
+  .profile-hero { background: var(--brand-gradient); padding: 48px 20px 60px; text-align: center; position: relative; overflow: hidden; }
+  .profile-hero::after { content: ''; position: absolute; bottom: -30px; left: 0; right: 0; height: 60px; background: var(--bg); border-radius: 32px 32px 0 0; }
+  .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.2); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 40px; border: 3px solid rgba(255,255,255,0.35); }
+  .profile-name { color: #fff; font-size: 20px; font-weight: 800; }
+  .profile-phone { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 4px; }
+  .profile-mem-chip { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 6px 14px; margin-top: 10px; color: #fff; font-size: 12px; font-weight: 600; }
+  .profile-body { padding: 4px 16px 100px; margin-top: -20px; }
+  .menu-section { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow-card); margin-bottom: 12px; overflow: hidden; }
+  .menu-item { display: flex; align-items: center; gap: 14px; padding: 15px 16px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .menu-item:last-child { border-bottom: none; }
+  .menu-item:active { background: var(--bg); }
+  .menu-item-icon { font-size: 20px; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+  .menu-item-icon.purple { background: var(--brand-light); }
+  .menu-item-icon.green { background: var(--green-light); }
+  .menu-item-icon.orange { background: var(--accent-light); }
+  .menu-item-icon.blue { background: var(--blue-light); }
+  .menu-item-icon.red { background: var(--red-light); }
+  .menu-item-text { flex: 1; }
+  .menu-item-label { font-size: 14px; font-weight: 600; color: var(--text); }
+  .menu-item-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .menu-item-arrow { color: var(--text3); font-size: 18px; }
+  .menu-item-badge { background: var(--red); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 20px; }
+  .referral-card { background: var(--brand-gradient); border-radius: var(--radius); padding: 18px; margin-bottom: 12px; }
+  .referral-title { color: #fff; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .referral-sub { color: rgba(255,255,255,0.75); font-size: 12px; margin-bottom: 14px; }
+  .referral-code-box { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .referral-code { color: #fff; font-size: 18px; font-weight: 900; letter-spacing: 3px; direction: ltr; }
+  .referral-copy { color: rgba(255,255,255,0.8); font-size: 12px; font-weight: 600; cursor: pointer; background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 8px; border: none; }
+
+  /* ===== HISTORY ===== */
+  #history { background: var(--bg); }
+  .history-header { background: var(--brand-gradient); padding: 48px 20px 24px; }
+  .history-title { color: #fff; font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+  .history-sub { color: rgba(255,255,255,0.7); font-size: 13px; }
+  .history-body { padding: 16px; }
+  .history-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .summary-card { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow-card); }
+  .summary-icon { font-size: 22px; margin-bottom: 8px; }
+  .summary-val { font-size: 20px; font-weight: 900; color: var(--text); }
+  .summary-lbl { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .history-item { background: var(--card); border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow-card); margin-bottom: 8px; display: flex; gap: 12px; align-items: center; }
+  .history-item-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .history-item-info { flex: 1; }
+  .history-item-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .history-item-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .history-item-saving { font-size: 14px; font-weight: 700; color: var(--green); }
+
+  /* ===== SUPPORT ===== */
+  #support { background: var(--bg); }
+  .support-header { background: var(--brand-gradient); padding: 48px 20px 24px; }
+  .support-title { color: #fff; font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+  .support-sub { color: rgba(255,255,255,0.7); font-size: 13px; }
+  .support-body { padding: 16px; }
+  .support-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .support-opt { background: var(--card); border-radius: var(--radius); padding: 18px 14px; box-shadow: var(--shadow-card); cursor: pointer; text-align: center; }
+  .support-opt-icon { font-size: 28px; margin-bottom: 8px; }
+  .support-opt-label { font-size: 13px; font-weight: 700; color: var(--text); }
+  .support-opt-sub { font-size: 11px; color: var(--text3); margin-top: 3px; }
+  .notif-item { background: var(--card); border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow-card); margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; }
+  .notif-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand); margin-top: 6px; flex-shrink: 0; }
+  .notif-dot.read { background: var(--border); }
+  .notif-info { flex: 1; }
+  .notif-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .notif-sub { font-size: 12px; color: var(--text2); }
+  .notif-time { font-size: 11px; color: var(--text3); margin-top: 4px; }
+  .ticket-item { background: var(--card); border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow-card); margin-bottom: 8px; }
+  .ticket-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .ticket-id { font-size: 12px; color: var(--text3); direction: ltr; }
+  .ticket-status { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+  .ticket-status.open { background: var(--blue-light); color: var(--blue); }
+  .ticket-status.closed { background: var(--green-light); color: var(--green); }
+  .ticket-subject { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .ticket-date { font-size: 11px; color: var(--text3); }
+
+  /* ===== MODALS ===== */
+  .modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; display: none; align-items: flex-end; }
+  .modal-overlay.active { display: flex; }
+  .modal-sheet { background: var(--card); border-radius: 24px 24px 0 0; padding: 20px 20px 40px; width: 100%; max-height: 80%; overflow-y: auto; }
+  .modal-sheet::-webkit-scrollbar { display: none; }
+  .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px; }
+  .modal-title { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+  .modal-sub { font-size: 13px; color: var(--text3); margin-bottom: 20px; }
+  .city-option { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .city-option:last-child { border-bottom: none; }
+  .city-option-icon { font-size: 20px; }
+  .city-option-name { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; }
+  .city-option.selected .city-option-name { color: var(--brand); }
+  .city-option-check { color: var(--brand); font-size: 18px; }
+
+  .empty-state { text-align: center; padding: 48px 20px; }
+  .empty-icon { font-size: 52px; margin-bottom: 16px; opacity: 0.5; }
+  .empty-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .empty-sub { font-size: 13px; color: var(--text3); }
+  .empty-btn { background: var(--brand-gradient); color: #fff; font-size: 14px; font-weight: 700; border: none; border-radius: 12px; padding: 13px 28px; cursor: pointer; margin-top: 16px; }
+
+  .toast { position: absolute; bottom: 100px; left: 20px; right: 20px; background: #1a1a2e; color: #fff; border-radius: 12px; padding: 14px 18px; font-size: 13px; font-weight: 600; z-index: 300; display: none; align-items: center; gap: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+  .toast.active { display: flex; animation: slideUp 0.3s ease; }
+  @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .countdown { font-variant-numeric: tabular-nums; direction: ltr; display: inline-block; }
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .toggle-row:last-child { border-bottom: none; }
+  .toggle-label { font-size: 14px; color: var(--text); }
+  .toggle-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .toggle-switch { width: 46px; height: 26px; background: var(--border); border-radius: 13px; position: relative; cursor: pointer; transition: background 0.2s; }
+  .toggle-switch.on { background: var(--brand); }
+  .toggle-knob { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; background: #fff; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+  .toggle-switch.on .toggle-knob { transform: translateX(-20px); }
+  .expiry-chip { background: var(--red-light); color: var(--red); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px; }
+  .expiry-chip.warn { background: var(--accent-light); color: #92400E; }
+
+  @media (max-width: 420px) {
+    .device { width: 100vw; height: 100vh; border-radius: 0; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="device">
+
+  <!-- ========== SPLASH ========== -->
+  <div id="splash" class="screen active">
+    <div class="splash-logo">💎</div>
+    <div class="splash-title" id="splash-title">باشگاه ونوس</div>
+    <div class="splash-sub" id="splash-sub">Venus Club</div>
+    <div class="splash-tagline" id="splash-tagline">پس‌انداز بیشتر، زندگی بهتر</div>
+    
+    <div class="lang-toggle-row">
+      <button class="lang-btn active" id="lang-fa" data-lang="fa" onclick="setLanguage('fa')">فارسی</button>
+      <button class="lang-btn" id="lang-en" data-lang="en" onclick="setLanguage('en')">English</button>
+    </div>
+    
+    <button class="splash-btn" id="splash-btn" onclick="go('auth')">ورود</button>
+    <div class="splash-secondary" id="splash-secondary" onclick="go('auth')">حساب ندارید؟ ثبت‌نام کنید</div>
+  </div>
+
+  <!-- ========== AUTH ========== -->
+  <div id="auth" class="screen">
+    <div class="auth-header">
+      <div class="auth-back" onclick="go('splash')">→</div>
+      <div class="auth-logo-sm">💎</div>
+      <div class="auth-title" id="auth-title">خوش آمدید</div>
+      <div class="auth-sub" id="auth-sub">ورود یا ثبت‌نام در باشگاه ونوس</div>
+    </div>
+    <div class="auth-body">
+      <div id="auth-login-panel">
+        <div class="auth-tabs">
+          <div class="auth-tab active" id="auth-tab-login" onclick="switchAuthTab('login')">ورود</div>
+          <div class="auth-tab" id="auth-tab-signup" onclick="switchAuthTab('signup')">ثبت‌نام</div>
+        </div>
+        <div class="field-group">
+          <label class="field-label" id="field-mobile-label">موبایل یا ایمیل</label>
+          <input class="field-input" type="text" placeholder="09123456789 یا email@example.com" dir="ltr">
+        </div>
+        <div class="field-group">
+          <label class="field-label" id="field-pass-label">رمز عبور</label>
+          <input class="field-input" type="password" placeholder="••••••••" dir="ltr">
+          <div class="field-hint" id="field-pass-hint">رمز عبور خود را فراموش کرده‌اید؟ · <span style="color:var(--brand);cursor:pointer" onclick="showToast('🔗 لینک بازیابی ارسال شد')">بازیابی</span></div>
+        </div>
+        <button class="btn-primary" id="btn-otp" onclick="go('auth-otp')">ورود با رمز یک‌بار</button>
+        <button class="btn-outline" id="btn-signin" onclick="go('home')">ورود</button>
+        <div class="auth-divider"><div class="auth-divider-line"></div><div class="auth-divider-text" id="auth-or">یا</div><div class="auth-divider-line"></div></div>
+        <button class="btn-outline" onclick="go('home')" style="display:flex;align-items:center;justify-content:center;gap:8px" id="btn-google">📱 ورود با گوگل</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- OTP Screen -->
+  <div id="auth-otp" class="screen">
+    <div class="auth-header">
+      <div class="auth-back" onclick="go('auth')">→</div>
+      <div class="auth-logo-sm">📲</div>
+      <div class="auth-title" id="otp-title">کد تأیید</div>
+      <div class="auth-sub" id="otp-sub">کد ارسال شده به ۰۹۱۲۳**۶۷۸۹ را وارد کنید</div>
+    </div>
+    <div class="auth-body">
+      <div class="otp-row">
+        <input class="otp-box" maxlength="1" type="number">
+        <input class="otp-box" maxlength="1" type="number">
+        <input class="otp-box" maxlength="1" type="number">
+        <input class="otp-box" maxlength="1" type="number">
+        <input class="otp-box" maxlength="1" type="number">
+      </div>
+      <div style="text-align:center;font-size:13px;color:var(--text3);margin-bottom:20px" id="otp-resend">ارسال مجدد کد در <span style="color:var(--brand);font-weight:700" id="otp-timer">02:00</span></div>
+      <button class="btn-primary" id="otp-verify-btn" onclick="go('home')">تأیید</button>
+      <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--text2);cursor:pointer" id="otp-change" onclick="go('auth')">← تغییر شماره</div>
+    </div>
+  </div>
+
+  <!-- ========== HOME ========== -->
+  <div id="home" class="screen">
+    <div class="home-header">
+      <div class="home-top">
+        <div>
+          <div class="home-greeting" id="home-greeting">سلام، خوش آمدید 👋</div>
+          <div class="home-name" id="home-name">سارا محمدی</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div class="home-notif" onclick="go('support')">
+            🔔
+            <div class="notif-badge">3</div>
+          </div>
+          <div class="home-avatar" onclick="go('profile')">👤</div>
+        </div>
+      </div>
+      <div class="membership-card" onclick="go('membership')">
+        <div class="mem-top">
+          <div>
+            <div class="mem-name" id="mem-name">عضویت طلایی</div>
+            <div class="mem-en" id="mem-en">Gold Membership</div>
+          </div>
+          <div class="mem-badge" id="mem-badge">✨ طلایی</div>
+        </div>
+        <div class="mem-expire">
+          <span class="expiry-chip warn" id="mem-expire-label">⏳ ۴۵ روز مانده</span>
+        </div>
+        <div class="mem-stats">
+          <div class="mem-stat"><div class="mem-stat-val">۲۳</div><div class="mem-stat-lbl" id="stat-used">کوپن استفاده شده</div></div>
+          <div class="mem-stat"><div class="mem-stat-val">۸.۲M</div><div class="mem-stat-lbl" id="stat-savings">صرفه‌جویی (ت)</div></div>
+          <div class="mem-stat"><div class="mem-stat-val">۳</div><div class="mem-stat-lbl" id="stat-family">اعضای خانواده</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-body">
+      <div class="savings-banner">
+        <div class="savings-icon">💰</div>
+        <div>
+          <div class="savings-label" id="savings-label">کل صرفه‌جویی این ماه</div>
+          <div class="savings-amount">۲,۳۴۰,۰۰۰ ت</div>
+          <div class="savings-sub" id="savings-sub">از ۸ پیشنهاد استفاده شده</div>
+        </div>
+      </div>
+
+      <div class="sec-header"><div class="sec-title" id="quick-title">دسترسی سریع</div></div>
+      <div class="quick-actions">
+        <div class="qa-item" onclick="go('discover')"><div class="qa-icon">🔍</div><div class="qa-label" id="qa-search">جستجو</div></div>
+        <div class="qa-item" onclick="go('membership')"><div class="qa-icon">💳</div><div class="qa-label" id="qa-membership">عضویت</div></div>
+        <div class="qa-item" onclick="go('history')"><div class="qa-icon">📊</div><div class="qa-label" id="qa-history">تاریخچه</div></div>
+        <div class="qa-item" onclick="go('support')"><div class="qa-icon">🎧</div><div class="qa-label" id="qa-support">پشتیبانی</div></div>
+      </div>
+
+      <div class="sec-header"><div class="sec-title" id="cat-title">دسته‌بندی‌ها</div><div class="sec-more" id="cat-more" onclick="go('discover')">همه</div></div>
+      <div class="category-scroll">
+        <div class="cat-pill active" onclick="go('discover')"><div class="cat-icon-wrap" style="background:var(--brand-light)">🍽️</div><div class="cat-lbl" id="cat-food">رستوران</div></div>
+        <div class="cat-pill" onclick="go('discover')"><div class="cat-icon-wrap" style="background:#FEF3C7">☕</div><div class="cat-lbl" id="cat-cafe">کافه</div></div>
+        <div class="cat-pill" onclick="go('discover')"><div class="cat-icon-wrap" style="background:#D1FAE5">💆</div><div class="cat-lbl" id="cat-health">سلامت</div></div>
+        <div class="cat-pill" onclick="go('discover')"><div class="cat-icon-wrap" style="background:#DBEAFE">🎬</div><div class="cat-lbl" id="cat-fun">سرگرمی</div></div>
+        <div class="cat-pill" onclick="go('discover')"><div class="cat-icon-wrap" style="background:#FCE7F3">🛍️</div><div class="cat-lbl" id="cat-shop">خرید</div></div>
+        <div class="cat-pill" onclick="go('discover')"><div class="cat-icon-wrap" style="background:#F3F4F6">🏨</div><div class="cat-lbl" id="cat-hotel">هتل</div></div>
+      </div>
+
+      <div class="sec-header"><div class="sec-title" id="hot-title">پیشنهاد ویژه 🔥</div><div class="sec-more" id="hot-more">همه</div></div>
+      <div class="deal-card" onclick="go('merchant')">
+        <div class="deal-badge hot" id="hot-badge">🔥 ویژه</div>
+        <div class="deal-merchant" id="deal-merchant-1">🍽️ رستوران آریانا</div>
+        <div class="deal-title" id="deal-title-1">یک پرس رایگان با خرید یک پرس</div>
+        <div class="deal-title-en" id="deal-en-1">Buy One Get One Free – Main Course</div>
+        <div class="deal-meta">
+          <div class="deal-saving" id="deal-save-1">تا ۳۵۰,۰۰۰ت صرفه‌جویی</div>
+          <div class="deal-timer">⏱ <span class="countdown" id="ct1">05:42:18</span></div>
+        </div>
+        <div class="deal-footer">
+          <div class="deal-remaining" id="deal-rem-1">فقط <strong>۷</strong> عدد باقی مانده</div>
+          <button class="deal-cta" onclick="event.stopPropagation();go('merchant')" id="deal-view-1">مشاهده</button>
+        </div>
+      </div>
+      <div class="deal-card" onclick="go('merchant')">
+        <div class="deal-badge" id="deal-badge-2">۳۰٪ تخفیف</div>
+        <div class="deal-merchant" id="deal-merchant-2">☕ کافه روشا</div>
+        <div class="deal-title" id="deal-title-2">۳۰٪ تخفیف تمام نوشیدنی‌ها</div>
+        <div class="deal-title-en" id="deal-en-2">30% Off All Beverages</div>
+        <div class="deal-meta">
+          <div class="deal-saving" id="deal-save-2">تا ۱۸۰,۰۰۰ت صرفه‌جویی</div>
+          <div class="deal-timer">⏱ <span class="countdown" id="ct2">23:15:04</span></div>
+        </div>
+        <div class="deal-footer">
+          <div class="deal-remaining" id="deal-rem-2">فقط <strong>۱۵</strong> عدد باقی مانده</div>
+          <button class="deal-cta" onclick="event.stopPropagation();go('merchant')" id="deal-view-2">مشاهده</button>
+        </div>
+      </div>
+
+      <div class="sec-header"><div class="sec-title" id="nearby-title">نزدیک شما</div><div class="sec-more" id="nearby-more" onclick="go('discover')">نقشه</div></div>
+      <div class="h-scroll">
+        <div class="merchant-mini" onclick="go('merchant')"><div class="merchant-mini-img">🍣</div><div class="merchant-mini-body"><div class="merchant-mini-name" id="mini-name-1">سوشی کیو</div><div class="merchant-mini-cat" id="mini-cat-1">ژاپنی</div><div class="stars">★★★★☆ 4.3</div></div></div>
+        <div class="merchant-mini" onclick="go('merchant')"><div class="merchant-mini-img" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">☕</div><div class="merchant-mini-body"><div class="merchant-mini-name" id="mini-name-2">کافه نگار</div><div class="merchant-mini-cat" id="mini-cat-2">کافه</div><div class="stars">★★★★★ 4.8</div></div></div>
+        <div class="merchant-mini" onclick="go('merchant')"><div class="merchant-mini-img" style="background:linear-gradient(135deg,#10b981,#34d399)">💆</div><div class="merchant-mini-body"><div class="merchant-mini-name" id="mini-name-3">آرامش اسپا</div><div class="merchant-mini-cat" id="mini-cat-3">سلامت</div><div class="stars">★★★★☆ 4.5</div></div></div>
+        <div class="merchant-mini" onclick="go('merchant')"><div class="merchant-mini-img" style="background:linear-gradient(135deg,#3b82f6,#60a5fa)">🎬</div><div class="merchant-mini-body"><div class="merchant-mini-name" id="mini-name-4">سینما پارسیان</div><div class="merchant-mini-cat" id="mini-cat-4">سرگرمی</div><div class="stars">★★★★☆ 4.1</div></div></div>
+      </div>
+    </div>
+
+    <div class="bottom-nav">
+      <div class="nav-item active" onclick="go('home')"><div class="nav-icon">🏠</div><div class="nav-label" id="nav-home">خانه</div><div class="nav-dot"></div></div>
+      <div class="nav-item" onclick="go('discover')"><div class="nav-icon">🔍</div><div class="nav-label" id="nav-discover">کشف</div></div>
+      <div class="nav-item" onclick="go('membership')"><div class="nav-icon">💳</div><div class="nav-label" id="nav-membership">عضویت</div></div>
+      <div class="nav-item" onclick="go('history')"><div class="nav-icon">📊</div><div class="nav-label" id="nav-history">تاریخچه</div></div>
+      <div class="nav-item" onclick="go('profile')"><div class="nav-icon">👤</div><div class="nav-label" id="nav-profile">پروفایل</div></div>
+    </div>
+  </div>
+
+  <!-- ========== MERCHANT ========== -->
+  <div id="merchant" class="screen">
+    <div class="merchant-hero">🍽️
+      <div class="merchant-back" onclick="go('home')">→</div>
+      <div class="merchant-fav" id="fav-btn" onclick="toggleFav()">🤍</div>
+      <div class="merchant-share" onclick="showToast('🔗 لینک کپی شد')">📤</div>
+    </div>
+    <div class="merchant-info">
+      <div class="merchant-name" id="merc-name">رستوران آریانا</div>
+      <div class="merchant-name-en" id="merc-name-en">Ariyana Restaurant · Persian & International Cuisine</div>
+      <div class="merchant-tags">
+        <span class="tag" id="merc-tag-1">🍽️ رستوران</span>
+        <span class="tag" id="merc-tag-2">🥙 ایرانی</span>
+        <span class="tag green" id="merc-tag-3">✅ باز است</span>
+        <span class="tag" id="merc-tag-4">📍 تهران</span>
+      </div>
+      <div class="merchant-rating-row">
+        <div class="rating-big">4.6</div>
+        <div>
+          <div class="rating-stars">★★★★★</div>
+          <div class="rating-count" id="merc-review-count">۲۴۸ نظر</div>
+        </div>
+      </div>
+    </div>
+    <div class="merchant-body">
+      <div class="info-card">
+        <div class="info-card-title" id="merc-offer-title">🎫 پیشنهادها</div>
+        <div class="offer-tabs">
+          <div class="offer-tab active" id="otab-active" onclick="switchOfferTab('active',this)">فعال</div>
+          <div class="offer-tab" id="otab-used" onclick="switchOfferTab('used',this)">استفاده شده</div>
+          <div class="offer-tab" id="otab-expired" onclick="switchOfferTab('expired',this)">منقضی</div>
+        </div>
+        <div id="offers-active">
+          <div class="offer-card" onclick="go('redeem')">
+            <div class="offer-header">
+              <span class="offer-type bogo" id="off-type-1">🔄 BOGO</span>
+              <span class="offer-status active" id="off-status-1">● فعال</span>
+            </div>
+            <div class="offer-title" id="off-title-1">یک پرس رایگان با خرید یک پرس</div>
+            <div class="offer-title-en" id="off-en-1">Buy 1 Get 1 Free – Main Course</div>
+            <div class="offer-rules" id="off-rules-1">• حداقل خرید ۲۵۰,۰۰۰ تومان<br>• برای غذای اصلی معتبر است<br>• قابل ترکیب با تخفیف دیگر نیست</div>
+            <div class="offer-footer">
+              <div class="offer-limit" id="off-limit-1">استفاده: <strong>۲ از ۴</strong></div>
+              <button class="btn-redeem" onclick="event.stopPropagation();go('redeem')" id="off-btn-1">استفاده</button>
+            </div>
+          </div>
+        </div>
+        <div id="offers-used" style="display:none">
+          <div class="offer-card used">
+            <div class="offer-header">
+              <span class="offer-type bogo">🔄 BOGO</span>
+              <span class="offer-status used" id="off-used-status">● استفاده شده</span>
+            </div>
+            <div class="offer-title" id="off-used-title">یک پرس رایگان با خرید یک پرس</div>
+            <div class="offer-footer">
+              <div class="offer-limit" id="off-used-date">تاریخ استفاده: ۱۴۰۳/۰۳/۱۵</div>
+              <button class="btn-redeem" disabled id="off-used-btn">استفاده شد</button>
+            </div>
+          </div>
+        </div>
+        <div id="offers-expired" style="display:none">
+          <div class="empty-state" style="padding:24px">
+            <div class="empty-icon">⏰</div>
+            <div class="empty-title" id="empty-title">پیشنهاد منقضی‌ای وجود ندارد</div>
+            <div class="empty-sub" id="empty-sub">تمام پیشنهادها فعال هستند</div>
+          </div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title" id="merc-loc-title">📍 اطلاعات مکان</div>
+        <div class="info-row"><span class="info-icon">📍</span><span class="info-text" id="merc-addr">تهران، خیابان ولیعصر، پلاک ۱۲۳</span></div>
+        <div class="info-row"><span class="info-icon">📞</span><span class="info-text" id="merc-phone">۰۲۱-۱۲۳۴-۵۶۷۸</span></div>
+        <div class="info-row"><span class="info-icon">🕐</span><span class="info-text" id="merc-hours">شنبه – پنجشنبه: ۱۲:۰۰ – ۲۳:۳۰</span></div>
+        <div class="info-row"><span class="info-icon">🅿️</span><span class="info-text" id="merc-park">پارکینگ اختصاصی دارد</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== REDEEM ========== -->
+  <div id="redeem" class="screen">
+    <div class="redeem-header">
+      <div class="redeem-back" onclick="go('merchant')">→</div>
+      <div class="redeem-title" id="redeem-title">💎 استفاده از کوپن</div>
+      <div class="redeem-sub" id="redeem-sub">کد پین از صندوق‌دار دریافت کنید</div>
+    </div>
+    <div class="redeem-body">
+      <div class="redeem-offer-box">
+        <div class="redeem-merchant" id="redeem-merc">🍽️ رستوران آریانا</div>
+        <div class="redeem-offer-title" id="redeem-off-title">یک پرس رایگان با خرید یک پرس</div>
+        <div class="redeem-badge" id="redeem-badge">🔄 BOGO</div>
+        <div class="redeem-rules-box">
+          <div class="redeem-rule" id="rrule-1">ℹ️ حداقل خرید ۲۵۰,۰۰۰ تومان</div>
+          <div class="redeem-rule" id="rrule-2">ℹ️ برای غذای اصلی معتبر است</div>
+          <div class="redeem-rule" id="rrule-3">ℹ️ قابل جمع با تخفیف دیگر نیست</div>
+          <div class="redeem-rule" id="rrule-4">ℹ️ استفاده: ۲ از ۴ بار</div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:10px" id="verify-method">روش تأیید</div>
+      <div class="redeem-method-tabs">
+        <div class="method-tab active" id="pin-tab" onclick="switchRedeemMethod('pin')">
+          <div class="method-tab-icon">🔢</div>
+          <div class="method-tab-label" id="pin-label">کد پین</div>
+        </div>
+        <div class="method-tab" id="qr-tab" onclick="switchRedeemMethod('qr')">
+          <div class="method-tab-icon">📱</div>
+          <div class="method-tab-label" id="qr-label">کد QR</div>
+        </div>
+      </div>
+      <div class="pin-box" id="pin-box">
+        <div class="pin-label" id="pin-desc">کد ۴ رقمی دریافتی از صندوق‌دار را وارد کنید</div>
+        <div class="pin-input-row">
+          <input class="pin-digit" maxlength="1" type="number" id="p1">
+          <input class="pin-digit" maxlength="1" type="number" id="p2">
+          <input class="pin-digit" maxlength="1" type="number" id="p3">
+          <input class="pin-digit" maxlength="1" type="number" id="p4">
+        </div>
+        <button class="btn-primary" id="pin-confirm" onclick="attemptRedeem()">تأیید و استفاده</button>
+      </div>
+      <div class="qr-box" id="qr-box">
+        <div class="qr-placeholder">📷</div>
+        <div class="qr-label" id="qr-desc">کد QR خود را نشان دهید</div>
+        <div style="background:var(--bg);border-radius:10px;padding:12px;margin-top:14px;font-size:18px;font-weight:900;color:var(--brand);letter-spacing:4px;direction:ltr">VC-842931</div>
+      </div>
+      <div class="success-box" id="success-box">
+        <div class="success-icon">✅</div>
+        <div class="success-title" id="success-title">تبریک! کوپن استفاده شد</div>
+        <div class="success-sub" id="success-sub">صرفه‌جویی شما از این تراکنش:</div>
+        <div class="success-saving">۳۵۰,۰۰۰ تومان</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:16px" id="success-note">مبلغ ذخیره شده در پروفایل شما ثبت شد</div>
+        <button class="btn-primary" id="success-back" onclick="go('merchant')">بازگشت</button>
+        <button class="btn-outline" style="margin-top:10px" id="success-share" onclick="showToast('📤 اشتراک گذاشته شد')">اشتراک‌گذاری</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MEMBERSHIP ========== -->
+  <div id="membership" class="screen">
+    <div class="mem-hero">
+      <div style="position:relative;z-index:1">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div>
+            <div class="mem-hero-title" id="mem-hero-title">عضویت من</div>
+            <div class="mem-hero-sub" id="mem-hero-sub">باشگاه ونوس</div>
+          </div>
+          <div style="cursor:pointer;color:rgba(255,255,255,0.7);font-size:20px" onclick="go('home')">✕</div>
+        </div>
+        <div class="mem-plan-card">
+          <div class="mem-plan-row">
+            <div class="mem-plan-name" id="mplan-name">✨ طلایی</div>
+            <div class="mem-plan-badge" id="mplan-badge">فعال</div>
+          </div>
+          <div class="mem-plan-expire" id="mplan-expire">📅 انقضا: ۱۴۰۳/۰۶/۰۱</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div>
+          <div style="display:flex;justify-content:space-between">
+            <span style="font-size:11px;color:rgba(255,255,255,0.65)" id="mplan-days-passed">۲۱۵ روز گذشته</span>
+            <span style="font-size:11px;color:rgba(255,255,255,0.65)" id="mplan-days-left">۴۵ روز مانده</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mem-body">
+      <div class="info-card" style="margin-top:0">
+        <div class="info-card-title" id="benefits-title">🎁 مزایای عضویت</div>
+        <div class="plan-feat"><span class="plan-feat-icon">✅</span> <span id="benefit-1">دسترسی به تمام پیشنهادهای رستوران‌ها</span></div>
+        <div class="plan-feat" style="margin-top:8px"><span class="plan-feat-icon">✅</span> <span id="benefit-2">اشتراک با ۳ نفر از خانواده</span></div>
+        <div class="plan-feat" style="margin-top:8px"><span class="plan-feat-icon">✅</span> <span id="benefit-3">BOGO در اکثر مکان‌ها</span></div>
+        <div class="plan-feat" style="margin-top:8px"><span class="plan-feat-icon">✅</span> <span id="benefit-4">صرفه‌جویی نامحدود در تمام دوره</span></div>
+        <button class="btn-primary" style="margin-top:16px" id="renew-btn" onclick="showToast('🔄 تمدید عضویت')">تمدید عضویت</button>
+      </div>
+
+      <div class="sec-header"><div class="sec-title" id="upgrade-title">ارتقاء عضویت</div></div>
+      <div class="plan-options">
+        <div class="plan-option" onclick="showToast('⬆️ ارتقاء به نقره‌ای')">
+          <div class="plan-option-top">
+            <div><div class="plan-name" id="silver-name">🥈 نقره‌ای</div><div class="plan-name-en" id="silver-en">Silver</div></div>
+            <div><div class="plan-price">۴۹۹,۰۰۰ ت</div><div class="plan-period" id="silver-period">سالانه</div></div>
+          </div>
+          <div class="plan-features">
+            <div class="plan-feat"><span class="plan-feat-icon">✅</span> <span id="silver-feat-1">تا ۲ عضو خانوادگی</span></div>
+            <div class="plan-feat"><span class="plan-feat-icon">✅</span> <span id="silver-feat-2">۵۰۰+ پیشنهاد فعال</span></div>
+          </div>
+        </div>
+        <div class="plan-option recommended" onclick="showToast('⬆️ ارتقاء به پلاتینیوم')">
+          <div class="plan-option-top">
+            <div><div class="plan-name" id="plat-name">💎 پلاتینیوم</div><div class="plan-name-en" id="plat-en">Platinum</div><div class="plan-rec-badge" id="plat-badge">پیشنهادی</div></div>
+            <div><div class="plan-price">۱,۲۹۹,۰۰۰ ت</div><div class="plan-period" id="plat-period">سالانه</div></div>
+          </div>
+          <div class="plan-features">
+            <div class="plan-feat"><span class="plan-feat-icon">✅</span> <span id="plat-feat-1">تا ۳ عضو خانوادگی + VIP</span></div>
+            <div class="plan-feat"><span class="plan-feat-icon">✅</span> <span id="plat-feat-2">۱۰۰۰+ پیشنهاد ویژه</span></div>
+            <div class="plan-feat"><span class="plan-feat-icon">✅</span> <span id="plat-feat-3">دسترسی هتل و سفر</span></div>
+          </div>
+        </div>
+        <div class="plan-option" onclick="showToast('🏢 پلن سازمانی')">
+          <div class="plan-option-top">
+            <div><div class="plan-name" id="enter-name">🏢 سازمانی</div><div class="plan-name-en" id="enter-en">Enterprise</div></div>
+            <div><div class="plan-price" id="enter-price">تماس بگیرید</div></div>
+          </div>
+          <div class="plan-features">
+            <div class="plan-feat"><span class="plan-feat-icon">✅</span> <span id="enter-feat-1">برای کسب‌وکارها</span></div>
+            <div class="plan-feat"><span class="plan-feat-icon">✅</span> <span id="enter-feat-2">اعضای نامحدود</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-header"><div class="sec-title" id="family-title">اشتراک خانوادگی</div></div>
+      <div class="sharing-card">
+        <div class="sharing-title" id="family-head">👨‍👩‍👧 اعضای خانواده <span style="color:var(--text3);font-size:12px;font-weight:400" id="family-count">(۲ از ۳)</span></div>
+        <div class="member-row">
+          <div class="member-avatar">👩</div>
+          <div class="member-info"><div class="member-name" id="fam-name-1">نگار محمدی</div><div class="member-phone">۰۹۱۲۳۴۵۶۷۸۹</div></div>
+          <div class="member-status active" id="fam-status-1">● فعال</div>
+          <div class="member-remove" onclick="showToast('❌ عضو حذف شد')">🗑️</div>
+        </div>
+        <div class="member-row">
+          <div class="member-avatar">👦</div>
+          <div class="member-info"><div class="member-name" id="fam-name-2">دانیال محمدی</div><div class="member-phone">۰۹۱۰۱۱۱۲۱۳۱</div></div>
+          <div class="member-status pending" id="fam-status-2">⏳ در انتظار</div>
+          <div class="member-remove" onclick="showToast('❌ دعوت‌نامه لغو شد')">🗑️</div>
+        </div>
+        <button class="add-member-btn" id="add-member-btn" onclick="showToast('➕ دعوت عضو جدید')">+ دعوت عضو جدید</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== DISCOVER ========== -->
+  <div id="discover" class="screen">
+    <div class="discover-header">
+      <div class="discover-title" id="disc-title">کشف پیشنهادها 🗺️</div>
+      <div class="search-bar">
+        <div class="search-icon">🔍</div>
+        <input class="search-input" type="text" placeholder="جستجوی رستوران، کافه..." id="search-placeholder">
+      </div>
+    </div>
+    <div class="discover-body">
+      <div class="city-row">
+        <div class="city-icon">📍</div>
+        <div class="city-name" id="city-name-display">تهران</div>
+        <div class="city-change" id="city-change-btn" onclick="openCityModal()">تغییر</div>
+      </div>
+      <div class="filter-pills">
+        <div class="pill active" id="pill-all">همه</div>
+        <div class="pill" onclick="switchPill(this)" id="pill-rest">رستوران 🍽️</div>
+        <div class="pill" onclick="switchPill(this)" id="pill-cafe">کافه ☕</div>
+        <div class="pill" onclick="switchPill(this)" id="pill-health">سلامت 💆</div>
+        <div class="pill" onclick="switchPill(this)" id="pill-fun">سرگرمی 🎬</div>
+        <div class="pill" onclick="switchPill(this)" id="pill-shop">خرید 🛍️</div>
+        <div class="pill" onclick="switchPill(this)" id="pill-bogo">BOGO 🔄</div>
+      </div>
+      <div id="merchant-list">
+        <div class="merchant-list-card" onclick="go('merchant')">
+          <div class="merchant-list-img">🍽️</div>
+          <div class="merchant-list-info">
+            <div class="merchant-list-name" id="ml-name-1">رستوران آریانا</div>
+            <div class="merchant-list-cat" id="ml-cat-1">ایرانی و بین‌المللی</div>
+            <div class="merchant-list-meta">
+              <span class="star-sm">★ 4.6</span>
+              <span style="font-size:11px;color:var(--text3)" id="ml-reviews-1">۲۴۸ نظر</span>
+              <span class="merchant-list-offer" id="ml-offer-1">BOGO</span>
+            </div>
+          </div>
+        </div>
+        <div class="merchant-list-card" onclick="go('merchant')">
+          <div class="merchant-list-img" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">☕</div>
+          <div class="merchant-list-info">
+            <div class="merchant-list-name" id="ml-name-2">کافه روشا</div>
+            <div class="merchant-list-cat" id="ml-cat-2">کافه و نوشیدنی</div>
+            <div class="merchant-list-meta">
+              <span class="star-sm">★ 4.8</span>
+              <span style="font-size:11px;color:var(--text3)" id="ml-reviews-2">۱۸۲ نظر</span>
+              <span class="merchant-list-offer" id="ml-offer-2">۳۰٪</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="go('home')"><div class="nav-icon">🏠</div><div class="nav-label" id="nav-home-2">خانه</div></div>
+      <div class="nav-item active"><div class="nav-icon">🔍</div><div class="nav-label" id="nav-discover-2">کشف</div><div class="nav-dot"></div></div>
+      <div class="nav-item" onclick="go('membership')"><div class="nav-icon">💳</div><div class="nav-label" id="nav-membership-2">عضویت</div></div>
+      <div class="nav-item" onclick="go('history')"><div class="nav-icon">📊</div><div class="nav-label" id="nav-history-2">تاریخچه</div></div>
+      <div class="nav-item" onclick="go('profile')"><div class="nav-icon">👤</div><div class="nav-label" id="nav-profile-2">پروفایل</div></div>
+    </div>
+  </div>
+
+  <!-- ========== HISTORY ========== -->
+  <div id="history" class="screen">
+    <div class="history-header">
+      <div class="history-title" id="hist-title">📊 تاریخچه و صرفه‌جویی</div>
+      <div class="history-sub" id="hist-sub">کل صرفه‌جویی شما تا امروز</div>
+    </div>
+    <div class="history-body">
+      <div class="history-summary">
+        <div class="summary-card"><div class="summary-icon">💰</div><div class="summary-val">۸.۲M ت</div><div class="summary-lbl" id="h-total">کل صرفه‌جویی</div></div>
+        <div class="summary-card"><div class="summary-icon">🎫</div><div class="summary-val">۲۳</div><div class="summary-lbl" id="h-coupons">کوپن استفاده شده</div></div>
+        <div class="summary-card"><div class="summary-icon">🏪</div><div class="summary-val">۱۱</div><div class="summary-lbl" id="h-venues">مکان بازدیدشده</div></div>
+        <div class="summary-card"><div class="summary-icon">⭐</div><div class="summary-val">۴.۸</div><div class="summary-lbl" id="h-rating">امتیاز میانگین</div></div>
+      </div>
+      <div class="sec-header"><div class="sec-title" id="h-recent">تراکنش‌های اخیر</div></div>
+      <div class="history-item">
+        <div class="history-item-icon" style="background:var(--brand-light)">🍽️</div>
+        <div class="history-item-info"><div class="history-item-title" id="h-item-1-title">رستوران آریانا · BOGO</div><div class="history-item-sub" id="h-item-1-date">۱۴۰۳/۰۳/۲۵</div></div>
+        <div class="history-item-saving">+۳۵۰,۰۰۰ت</div>
+      </div>
+      <div class="history-item">
+        <div class="history-item-icon" style="background:var(--accent-light)">☕</div>
+        <div class="history-item-info"><div class="history-item-title" id="h-item-2-title">کافه روشا · ۳۰٪ تخفیف</div><div class="history-item-sub" id="h-item-2-date">۱۴۰۳/۰۳/۲۰</div></div>
+        <div class="history-item-saving">+۱۸۰,۰۰۰ت</div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="go('home')"><div class="nav-icon">🏠</div><div class="nav-label" id="nav-home-3">خانه</div></div>
+      <div class="nav-item" onclick="go('discover')"><div class="nav-icon">🔍</div><div class="nav-label" id="nav-discover-3">کشف</div></div>
+      <div class="nav-item" onclick="go('membership')"><div class="nav-icon">💳</div><div class="nav-label" id="nav-membership-3">عضویت</div></div>
+      <div class="nav-item active"><div class="nav-icon">📊</div><div class="nav-label" id="nav-history-3">تاریخچه</div><div class="nav-dot"></div></div>
+      <div class="nav-item" onclick="go('profile')"><div class="nav-icon">👤</div><div class="nav-label" id="nav-profile-3">پروفایل</div></div>
+    </div>
+  </div>
+
+  <!-- ========== SUPPORT ========== -->
+  <div id="support" class="screen">
+    <div class="support-header">
+      <div class="support-title" id="support-title">🎧 پشتیبانی</div>
+      <div class="support-sub" id="support-sub">چطور می‌توانیم کمک کنیم؟</div>
+    </div>
+    <div class="support-body">
+      <div class="support-options">
+        <div class="support-opt" onclick="showToast('💬 چت آنلاین')">
+          <div class="support-opt-icon">💬</div>
+          <div class="support-opt-label" id="s-chat">چت آنلاین</div>
+          <div class="support-opt-sub" id="s-chat-sub">پاسخ سریع</div>
+        </div>
+        <div class="support-opt" onclick="showToast('🎫 تیکت جدید')">
+          <div class="support-opt-icon">🎫</div>
+          <div class="support-opt-label" id="s-ticket">ثبت تیکت</div>
+          <div class="support-opt-sub" id="s-ticket-sub">ردیابی مشکل</div>
+        </div>
+        <div class="support-opt" onclick="showToast('⚠️ گزارش تخلف ثبت شد')">
+          <div class="support-opt-icon">⚠️</div>
+          <div class="support-opt-label" id="s-report">گزارش تخلف</div>
+          <div class="support-opt-sub" id="s-report-sub">مشکل کوپن</div>
+        </div>
+        <div class="support-opt" onclick="showToast('❓ سوالات متداول')">
+          <div class="support-opt-icon">❓</div>
+          <div class="support-opt-label" id="s-faq">سوالات متداول</div>
+          <div class="support-opt-sub" id="s-faq-sub">پاسخ سریع</div>
+        </div>
+      </div>
+      <div class="sec-header"><div class="sec-title" id="notif-title">اعلان‌ها</div><div class="sec-more" id="notif-more" onclick="showToast('همه خوانده شد')">خواندن همه</div></div>
+      <div class="notif-item">
+        <div class="notif-dot"></div>
+        <div class="notif-info">
+          <div class="notif-title" id="notif-1-title">عضویت شما ۴۵ روز دیگر منقضی می‌شود</div>
+          <div class="notif-sub" id="notif-1-sub">همین حالا تمدید کنید و ۱۰٪ تخفیف بگیرید</div>
+          <div class="notif-time" id="notif-1-time">۲ ساعت پیش</div>
+        </div>
+      </div>
+      <div class="notif-item">
+        <div class="notif-dot"></div>
+        <div class="notif-info">
+          <div class="notif-title" id="notif-2-title">پیشنهاد جدید: رستوران آریانا</div>
+          <div class="notif-sub" id="notif-2-sub">BOGO جدید برای غذای اصلی اضافه شد</div>
+          <div class="notif-time" id="notif-2-time">۵ ساعت پیش</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PROFILE ========== -->
+  <div id="profile" class="screen">
+    <div class="profile-hero">
+      <div class="profile-avatar">👤</div>
+      <div class="profile-name" id="p-name">سارا محمدی</div>
+      <div class="profile-phone" id="p-phone">+98 912 345 6789</div>
+      <div class="profile-mem-chip" id="p-chip">✨ عضو طلایی</div>
+    </div>
+    <div class="profile-body">
+      <div class="referral-card">
+        <div class="referral-title" id="ref-title">🎁 دوستانتان را دعوت کنید</div>
+        <div class="referral-sub" id="ref-sub">با هر دعوت، ۵۰,۰۰۰ تومان اعتبار هدیه بگیرید</div>
+        <div class="referral-code-box">
+          <div class="referral-code">VENUS-S21K</div>
+          <button class="referral-copy" id="ref-copy" onclick="showToast('✅ کد کپی شد')">کپی</button>
+        </div>
+      </div>
+      <div class="menu-section">
+        <div class="menu-item" onclick="showToast('✏️ ویرایش پروفایل')">
+          <div class="menu-item-icon purple">👤</div>
+          <div class="menu-item-text"><div class="menu-item-label" id="p-info">اطلاعات شخصی</div><div class="menu-item-sub" id="p-info-sub">نام، موبایل، ایمیل</div></div>
+          <div class="menu-item-arrow">‹</div>
+        </div>
+        <div class="menu-item" onclick="go('membership')">
+          <div class="menu-item-icon purple">💳</div>
+          <div class="menu-item-text"><div class="menu-item-label" id="p-mem">عضویت من</div><div class="menu-item-sub" id="p-mem-sub">طلایی – ۴۵ روز مانده</div></div>
+          <div class="menu-item-arrow">‹</div>
+        </div>
+        <div class="menu-item" onclick="go('history')">
+          <div class="menu-item-icon green">📊</div>
+          <div class="menu-item-text"><div class="menu-item-label" id="p-hist">تاریخچه و صرفه‌جویی</div><div class="menu-item-sub" id="p-hist-sub">۲۳ کوپن · ۸.۲M ت صرفه‌جویی</div></div>
+          <div class="menu-item-arrow">‹</div>
+        </div>
+      </div>
+      <div class="menu-section">
+        <div class="menu-item" onclick="openCityModal()">
+          <div class="menu-item-icon orange">🏙️</div>
+          <div class="menu-item-text"><div class="menu-item-label" id="p-city">شهر من</div><div class="menu-item-sub" id="p-city-sub">تهران</div></div>
+          <div class="menu-item-arrow">‹</div>
+        </div>
+        <div class="menu-item" onclick="showToast('🔔 تنظیمات اعلان')">
+          <div class="menu-item-icon blue">🔔</div>
+          <div class="menu-item-text"><div class="menu-item-label" id="p-notif">اعلان‌ها</div><div class="menu-item-sub" id="p-notif-sub">پیشنهاد، انقضا، خبر</div></div>
+          <div><div class="menu-item-badge">3</div></div>
+        </div>
+        <div class="menu-item" onclick="showToast('🔒 تنظیمات حریم خصوصی')">
+          <div class="menu-item-icon blue">🔒</div>
+          <div class="menu-item-text"><div class="menu-item-label" id="p-privacy">حریم خصوصی</div><div class="menu-item-sub" id="p-privacy-sub">داده‌ها، ترجیحات</div></div>
+          <div class="menu-item-arrow">‹</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title" id="notif-settings-title">🔔 تنظیمات اعلان</div>
+        <div class="toggle-row">
+          <div><div class="toggle-label" id="toggle-offers">پیشنهادهای ویژه</div><div class="toggle-sub" id="toggle-offers-sub">دریافت اعلان پیشنهاد جدید</div></div>
+          <div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-label" id="toggle-expiry">انقضای عضویت</div><div class="toggle-sub" id="toggle-expiry-sub">یادآوری قبل از انقضا</div></div>
+          <div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-label" id="toggle-nearby">پیشنهادهای نزدیک</div><div class="toggle-sub" id="toggle-nearby-sub">بر اساس موقعیت مکانی</div></div>
+          <div class="toggle-switch" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+        </div>
+      </div>
+      <div class="menu-section">
+        <div class="menu-item" onclick="go('support')">
+          <div class="menu-item-icon green">🎧</div>
+          <div class="menu-item-text"><div class="menu-item-label" id="p-support">پشتیبانی</div><div class="menu-item-sub" id="p-support-sub">تیکت، چت، گزارش</div></div>
+          <div class="menu-item-arrow">‹</div>
+        </div>
+        <div class="menu-item" onclick="showToast('📋 درباره ونوس باشگاه')">
+          <div class="menu-item-icon orange">ℹ️</div>
+          <div class="menu-item-text"><div class="menu-item-label" id="p-about">درباره ونوس باشگاه</div><div class="menu-item-sub" id="p-about-sub">نسخه ۱.۰.۰</div></div>
+          <div class="menu-item-arrow">‹</div>
+        </div>
+        <div class="menu-item" onclick="go('splash')">
+          <div class="menu-item-icon red">🚪</div>
+          <div class="menu-item-text"><div class="menu-item-label" id="p-signout">خروج</div></div>
+          <div class="menu-item-arrow">‹</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="go('home')"><div class="nav-icon">🏠</div><div class="nav-label" id="nav-home-4">خانه</div></div>
+      <div class="nav-item" onclick="go('discover')"><div class="nav-icon">🔍</div><div class="nav-label" id="nav-discover-4">کشف</div></div>
+      <div class="nav-item" onclick="go('membership')"><div class="nav-icon">💳</div><div class="nav-label" id="nav-membership-4">عضویت</div></div>
+      <div class="nav-item" onclick="go('history')"><div class="nav-icon">📊</div><div class="nav-label" id="nav-history-4">تاریخچه</div></div>
+      <div class="nav-item active"><div class="nav-icon">👤</div><div class="nav-label" id="nav-profile-4">پروفایل</div><div class="nav-dot"></div></div>
+    </div>
+  </div>
+
+  <!-- ===== MODALS ===== -->
+  <div class="modal-overlay" id="city-modal" onclick="closeCityModal(event)">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title" id="city-modal-title">انتخاب شهر</div>
+      <div class="modal-sub" id="city-modal-sub">شهر خود را برای مشاهده پیشنهادهای محلی انتخاب کنید</div>
+      <div class="city-option selected" onclick="selectCity(this,'تهران')"><span class="city-option-icon">📍</span><span class="city-option-name" id="city-tehran">تهران</span><span class="city-option-check">✓</span></div>
+      <div class="city-option" onclick="selectCity(this,'اصفهان')"><span class="city-option-icon">🏛️</span><span class="city-option-name" id="city-isfahan">اصفهان</span></div>
+      <div class="city-option" onclick="selectCity(this,'شیراز')"><span class="city-option-icon">🌹</span><span class="city-option-name" id="city-shiraz">شیراز</span></div>
+      <div class="city-option" onclick="selectCity(this,'مشهد')"><span class="city-option-icon">☪️</span><span class="city-option-name" id="city-mashhad">مشهد</span></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+</div>
+
+<script>
+// ============================
+// LANGUAGE SYSTEM
+// ============================
+let currentLang = 'fa';
+
+const LANG = {
+  fa: {
+    // Splash
+    splashTitle: 'باشگاه ونوس',
+    splashSub: 'Venus Club',
+    splashTag: 'پس‌انداز بیشتر، زندگی بهتر',
+    splashBtn: 'ورود',
+    splashSecondary: 'حساب ندارید؟ ثبت‌نام کنید',
+    // Auth
+    authTitle: 'خوش آمدید',
+    authSub: 'ورود یا ثبت‌نام در باشگاه ونوس',
+    authLogin: 'ورود',
+    authSignup: 'ثبت‌نام',
+    fieldMobile: 'موبایل یا ایمیل',
+    fieldPass: 'رمز عبور',
+    fieldHint: 'رمز عبور خود را فراموش کرده‌اید؟',
+    recover: 'بازیابی',
+    btnOtp: 'ورود با رمز یک‌بار',
+    btnSignin: 'ورود',
+    or: 'یا',
+    btnGoogle: '📱 ورود با گوگل',
+    // OTP
+    otpTitle: 'کد تأیید',
+    otpSub: 'کد ارسال شده به ۰۹۱۲۳**۶۷۸۹ را وارد کنید',
+    otpResend: 'ارسال مجدد کد در',
+    otpVerify: 'تأیید',
+    otpChange: '← تغییر شماره',
+    // Home
+    homeGreeting: 'سلام، خوش آمدید 👋',
+    homeName: 'سارا محمدی',
+    memName: 'عضویت طلایی',
+    memEn: 'Gold Membership',
+    memBadge: '✨ طلایی',
+    memExpire: '⏳ ۴۵ روز مانده',
+    statUsed: 'کوپن استفاده شده',
+    statSavings: 'صرفه‌جویی (ت)',
+    statFamily: 'اعضای خانواده',
+    savingsLabel: 'کل صرفه‌جویی این ماه',
+    savingsSub: 'از ۸ پیشنهاد استفاده شده',
+    quickTitle: 'دسترسی سریع',
+    qaSearch: 'جستجو',
+    qaMembership: 'عضویت',
+    qaHistory: 'تاریخچه',
+    qaSupport: 'پشتیبانی',
+    catTitle: 'دسته‌بندی‌ها',
+    catMore: 'همه',
+    catFood: 'رستوران',
+    catCafe: 'کافه',
+    catHealth: 'سلامت',
+    catFun: 'سرگرمی',
+    catShop: 'خرید',
+    catHotel: 'هتل',
+    hotTitle: 'پیشنهاد ویژه 🔥',
+    hotMore: 'همه',
+    dealMerchant1: '🍽️ رستوران آریانا',
+    dealTitle1: 'یک پرس رایگان با خرید یک پرس',
+    dealEn1: 'Buy One Get One Free – Main Course',
+    dealSave1: 'تا ۳۵۰,۰۰۰ت صرفه‌جویی',
+    dealRem1: 'فقط {0} عدد باقی مانده',
+    dealView: 'مشاهده',
+    dealBadge2: '۳۰٪ تخفیف',
+    dealMerchant2: '☕ کافه روشا',
+    dealTitle2: '۳۰٪ تخفیف تمام نوشیدنی‌ها',
+    dealEn2: '30% Off All Beverages',
+    dealSave2: 'تا ۱۸۰,۰۰۰ت صرفه‌جویی',
+    dealRem2: 'فقط {0} عدد باقی مانده',
+    nearbyTitle: 'نزدیک شما',
+    nearbyMore: 'نقشه',
+    miniCat1: 'ژاپنی',
+    miniCat2: 'کافه',
+    miniCat3: 'سلامت',
+    miniCat4: 'سرگرمی',
+    // Nav
+    navHome: 'خانه',
+    navDiscover: 'کشف',
+    navMembership: 'عضویت',
+    navHistory: 'تاریخچه',
+    navProfile: 'پروفایل',
+    // Merchant
+    mercName: 'رستوران آریانا',
+    mercNameEn: 'Ariyana Restaurant · Persian & International Cuisine',
+    mercTag1: '🍽️ رستوران',
+    mercTag2: '🥙 ایرانی',
+    mercTag3: '✅ باز است',
+    mercTag4: '📍 تهران',
+    mercReview: '۲۴۸ نظر',
+    mercOfferTitle: '🎫 پیشنهادها',
+    otabActive: 'فعال',
+    otabUsed: 'استفاده شده',
+    otabExpired: 'منقضی',
+    offType1: '🔄 BOGO',
+    offStatus1: '● فعال',
+    offTitle1: 'یک پرس رایگان با خرید یک پرس',
+    offEn1: 'Buy 1 Get 1 Free – Main Course',
+    offRules1: '• حداقل خرید ۲۵۰,۰۰۰ تومان\n• برای غذای اصلی معتبر است\n• قابل ترکیب با تخفیف دیگر نیست',
+    offLimit1: 'استفاده: <strong>۲ از ۴</strong>',
+    offBtn1: 'استفاده',
+    offUsedStatus: '● استفاده شده',
+    offUsedTitle: 'یک پرس رایگان با خرید یک پرس',
+    offUsedDate: 'تاریخ استفاده: ۱۴۰۳/۰۳/۱۵',
+    offUsedBtn: 'استفاده شد',
+    emptyTitle: 'پیشنهاد منقضی‌ای وجود ندارد',
+    emptySub: 'تمام پیشنهادها فعال هستند',
+    mercLocTitle: '📍 اطلاعات مکان',
+    mercAddr: 'تهران، خیابان ولیعصر، پلاک ۱۲۳',
+    mercPhone: '۰۲۱-۱۲۳۴-۵۶۷۸',
+    mercHours: 'شنبه – پنجشنبه: ۱۲:۰۰ – ۲۳:۳۰',
+    mercPark: 'پارکینگ اختصاصی دارد',
+    // Redeem
+    redeemTitle: '💎 استفاده از کوپن',
+    redeemSub: 'کد پین از صندوق‌دار دریافت کنید',
+    redeemMerc: '🍽️ رستوران آریانا',
+    redeemOffTitle: 'یک پرس رایگان با خرید یک پرس',
+    redeemBadge: '🔄 BOGO',
+    rrule1: 'ℹ️ حداقل خرید ۲۵۰,۰۰۰ تومان',
+    rrule2: 'ℹ️ برای غذای اصلی معتبر است',
+    rrule3: 'ℹ️ قابل جمع با تخفیف دیگر نیست',
+    rrule4: 'ℹ️ استفاده: ۲ از ۴ بار',
+    verifyMethod: 'روش تأیید',
+    pinLabel: 'کد پین',
+    qrLabel: 'کد QR',
+    pinDesc: 'کد ۴ رقمی دریافتی از صندوق‌دار را وارد کنید',
+    pinConfirm: 'تأیید و استفاده',
+    qrDesc: 'کد QR خود را نشان دهید',
+    successTitle: 'تبریک! کوپن استفاده شد',
+    successSub: 'صرفه‌جویی شما از این تراکنش:',
+    successNote: 'مبلغ ذخیره شده در پروفایل شما ثبت شد',
+    successBack: 'بازگشت',
+    successShare: 'اشتراک‌گذاری',
+    // Membership
+    memHeroTitle: 'عضویت من',
+    memHeroSub: 'باشگاه ونوس',
+    mplanName: '✨ طلایی',
+    mplanBadge: 'فعال',
+    mplanExpire: '📅 انقضا: ۱۴۰۳/۰۶/۰۱',
+    mplanDaysPassed: '۲۱۵ روز گذشته',
+    mplanDaysLeft: '۴۵ روز مانده',
+    benefitsTitle: '🎁 مزایای عضویت',
+    benefit1: 'دسترسی به تمام پیشنهادهای رستوران‌ها',
+    benefit2: 'اشتراک با ۳ نفر از خانواده',
+    benefit3: 'BOGO در اکثر مکان‌ها',
+    benefit4: 'صرفه‌جویی نامحدود در تمام دوره',
+    renewBtn: 'تمدید عضویت',
+    upgradeTitle: 'ارتقاء عضویت',
+    silverName: '🥈 نقره‌ای',
+    silverEn: 'Silver',
+    silverPeriod: 'سالانه',
+    silverFeat1: 'تا ۲ عضو خانوادگی',
+    silverFeat2: '۵۰۰+ پیشنهاد فعال',
+    platName: '💎 پلاتینیوم',
+    platEn: 'Platinum',
+    platBadge: 'پیشنهادی',
+    platPeriod: 'سالانه',
+    platFeat1: 'تا ۳ عضو خانوادگی + VIP',
+    platFeat2: '۱۰۰۰+ پیشنهاد ویژه',
+    platFeat3: 'دسترسی هتل و سفر',
+    enterName: '🏢 سازمانی',
+    enterEn: 'Enterprise',
+    enterPrice: 'تماس بگیرید',
+    enterFeat1: 'برای کسب‌وکارها',
+    enterFeat2: 'اعضای نامحدود',
+    familyTitle: 'اشتراک خانوادگی',
+    familyHead: '👨‍👩‍👧 اعضای خانواده',
+    familyCount: '(۲ از ۳)',
+    famName1: 'نگار محمدی',
+    famStatus1: '● فعال',
+    famName2: 'دانیال محمدی',
+    famStatus2: '⏳ در انتظار',
+    addMember: '+ دعوت عضو جدید',
+    // Discover
+    discTitle: 'کشف پیشنهادها 🗺️',
+    searchPlaceholder: 'جستجوی رستوران، کافه...',
+    cityDisplay: 'تهران',
+    cityChange: 'تغییر',
+    pillAll: 'همه',
+    pillRest: 'رستوران 🍽️',
+    pillCafe: 'کافه ☕',
+    pillHealth: 'سلامت 💆',
+    pillFun: 'سرگرمی 🎬',
+    pillShop: 'خرید 🛍️',
+    pillBogo: 'BOGO 🔄',
+    mlName1: 'رستوران آریانا',
+    mlCat1: 'ایرانی و بین‌المللی',
+    mlReviews1: '۲۴۸ نظر',
+    mlOffer1: 'BOGO',
+    mlName2: 'کافه روشا',
+    mlCat2: 'کافه و نوشیدنی',
+    mlReviews2: '۱۸۲ نظر',
+    mlOffer2: '۳۰٪',
+    // History
+    histTitle: '📊 تاریخچه و صرفه‌جویی',
+    histSub: 'کل صرفه‌جویی شما تا امروز',
+    hTotal: 'کل صرفه‌جویی',
+    hCoupons: 'کوپن استفاده شده',
+    hVenues: 'مکان بازدیدشده',
+    hRating: 'امتیاز میانگین',
+    hRecent: 'تراکنش‌های اخیر',
+    hItem1Title: 'رستوران آریانا · BOGO',
+    hItem1Date: '۱۴۰۳/۰۳/۲۵',
+    hItem2Title: 'کافه روشا · ۳۰٪ تخفیف',
+    hItem2Date: '۱۴۰۳/۰۳/۲۰',
+    // Support
+    supportTitle: '🎧 پشتیبانی',
+    supportSub: 'چطور می‌توانیم کمک کنیم؟',
+    sChat: 'چت آنلاین',
+    sChatSub: 'پاسخ سریع',
+    sTicket: 'ثبت تیکت',
+    sTicketSub: 'ردیابی مشکل',
+    sReport: 'گزارش تخلف',
+    sReportSub: 'مشکل کوپن',
+    sFaq: 'سوالات متداول',
+    sFaqSub: 'پاسخ سریع',
+    notifTitle: 'اعلان‌ها',
+    notifMore: 'خواندن همه',
+    notif1Title: 'عضویت شما ۴۵ روز دیگر منقضی می‌شود',
+    notif1Sub: 'همین حالا تمدید کنید و ۱۰٪ تخفیف بگیرید',
+    notif1Time: '۲ ساعت پیش',
+    notif2Title: 'پیشنهاد جدید: رستوران آریانا',
+    notif2Sub: 'BOGO جدید برای غذای اصلی اضافه شد',
+    notif2Time: '۵ ساعت پیش',
+    // Profile
+    pName: 'سارا محمدی',
+    pPhone: '+98 912 345 6789',
+    pChip: '✨ عضو طلایی',
+    refTitle: '🎁 دوستانتان را دعوت کنید',
+    refSub: 'با هر دعوت، ۵۰,۰۰۰ تومان اعتبار هدیه بگیرید',
+    refCopy: 'کپی',
+    pInfo: 'اطلاعات شخصی',
+    pInfoSub: 'نام، موبایل، ایمیل',
+    pMem: 'عضویت من',
+    pMemSub: 'طلایی – ۴۵ روز مانده',
+    pHist: 'تاریخچه و صرفه‌جویی',
+    pHistSub: '۲۳ کوپن · ۸.۲M ت صرفه‌جویی',
+    pCity: 'شهر من',
+    pCitySub: 'تهران',
+    pNotif: 'اعلان‌ها',
+    pNotifSub: 'پیشنهاد، انقضا، خبر',
+    pPrivacy: 'حریم خصوصی',
+    pPrivacySub: 'داده‌ها، ترجیحات',
+    notifSettings: '🔔 تنظیمات اعلان',
+    toggleOffers: 'پیشنهادهای ویژه',
+    toggleOffersSub: 'دریافت اعلان پیشنهاد جدید',
+    toggleExpiry: 'انقضای عضویت',
+    toggleExpirySub: 'یادآوری قبل از انقضا',
+    toggleNearby: 'پیشنهادهای نزدیک',
+    toggleNearbySub: 'بر اساس موقعیت مکانی',
+    pSupport: 'پشتیبانی',
+    pSupportSub: 'تیکت، چت، گزارش',
+    pAbout: 'درباره ونوس باشگاه',
+    pAboutSub: 'نسخه ۱.۰.۰',
+    pSignout: 'خروج',
+    // City Modal
+    cityModalTitle: 'انتخاب شهر',
+    cityModalSub: 'شهر خود را برای مشاهده پیشنهادهای محلی انتخاب کنید',
+    cityTehran: 'تهران',
+    cityIsfahan: 'اصفهان',
+    cityShiraz: 'شیراز',
+    cityMashhad: 'مشهد',
+  },
+  en: {
+    splashTitle: 'Venus Club',
+    splashSub: 'باشگاه ونوس',
+    splashTag: 'Save More, Live Better',
+    splashBtn: 'Sign In',
+    splashSecondary: "Don't have an account? Sign Up",
+    authTitle: 'Welcome',
+    authSub: 'Sign in or create an account',
+    authLogin: 'Login',
+    authSignup: 'Sign Up',
+    fieldMobile: 'Mobile or Email',
+    fieldPass: 'Password',
+    fieldHint: 'Forgot your password?',
+    recover: 'Recover',
+    btnOtp: 'OTP Login',
+    btnSignin: 'Sign In',
+    or: 'or',
+    btnGoogle: '📱 Sign in with Google',
+    otpTitle: 'Verify OTP',
+    otpSub: 'Enter the code sent to 0912**6789',
+    otpResend: 'Resend code in',
+    otpVerify: 'Verify',
+    otpChange: '← Change number',
+    homeGreeting: 'Welcome back 👋',
+    homeName: 'Sara Mohammadi',
+    memName: 'Gold Membership',
+    memEn: 'Gold Membership · Venus Club',
+    memBadge: '✨ Gold',
+    memExpire: '⏳ 45 days left',
+    statUsed: 'Coupons Used',
+    statSavings: 'Savings (IRT)',
+    statFamily: 'Family',
+    savingsLabel: "This Month's Savings",
+    savingsSub: 'From 8 offers redeemed',
+    quickTitle: 'Quick Access',
+    qaSearch: 'Search',
+    qaMembership: 'Membership',
+    qaHistory: 'History',
+    qaSupport: 'Support',
+    catTitle: 'Categories',
+    catMore: 'All',
+    catFood: 'Food',
+    catCafe: 'Café',
+    catHealth: 'Health',
+    catFun: 'Fun',
+    catShop: 'Shop',
+    catHotel: 'Hotel',
+    hotTitle: 'Hot Deals 🔥',
+    hotMore: 'All',
+    dealMerchant1: '🍽️ Ariyana Restaurant',
+    dealTitle1: 'Buy One Get One Free – Main Course',
+    dealEn1: 'Buy One Get One Free – Main Course',
+    dealSave1: 'Save up to 350,000 IRT',
+    dealRem1: 'Only {0} left',
+    dealView: 'View',
+    dealBadge2: '30% Off',
+    dealMerchant2: '☕ Café Rosha',
+    dealTitle2: '30% Off All Beverages',
+    dealEn2: '30% Off All Beverages',
+    dealSave2: 'Save up to 180,000 IRT',
+    dealRem2: 'Only {0} left',
+    nearbyTitle: 'Nearby',
+    nearbyMore: 'Map',
+    miniCat1: 'Japanese',
+    miniCat2: 'Café',
+    miniCat3: 'Health',
+    miniCat4: 'Fun',
+    navHome: 'Home',
+    navDiscover: 'Discover',
+    navMembership: 'Membership',
+    navHistory: 'History',
+    navProfile: 'Profile',
+    mercName: 'Ariyana Restaurant',
+    mercNameEn: 'Ariyana Restaurant · Persian & International Cuisine',
+    mercTag1: '🍽️ Restaurant',
+    mercTag2: '🥙 Persian',
+    mercTag3: '✅ Open',
+    mercTag4: '📍 Tehran',
+    mercReview: '248 reviews',
+    mercOfferTitle: '🎫 Offers',
+    otabActive: 'Active',
+    otabUsed: 'Used',
+    otabExpired: 'Expired',
+    offType1: '🔄 BOGO',
+    offStatus1: '● Active',
+    offTitle1: 'Buy One Get One Free – Main Course',
+    offEn1: 'Buy One Get One Free – Main Course',
+    offRules1: '• Min purchase 250,000 IRT\n• Valid for main course only\n• Cannot combine with other offers',
+    offLimit1: 'Used: <strong>2 of 4</strong>',
+    offBtn1: 'Redeem',
+    offUsedStatus: '● Used',
+    offUsedTitle: 'Buy One Get One Free – Main Course',
+    offUsedDate: 'Date: Jun 4, 2024',
+    offUsedBtn: 'Used',
+    emptyTitle: 'No Expired Offers',
+    emptySub: 'All offers are active',
+    mercLocTitle: '📍 Location Info',
+    mercAddr: 'Tehran, Valiasr St., No. 123',
+    mercPhone: '021-1234-5678',
+    mercHours: 'Sat–Thu: 12:00 PM – 11:30 PM',
+    mercPark: 'Private parking available',
+    redeemTitle: '💎 Redeem Offer',
+    redeemSub: 'Get the PIN from the cashier',
+    redeemMerc: '🍽️ Ariyana Restaurant',
+    redeemOffTitle: 'Buy One Get One Free – Main Course',
+    redeemBadge: '🔄 BOGO',
+    rrule1: 'ℹ️ Min purchase 250,000 IRT',
+    rrule2: 'ℹ️ Valid for main course only',
+    rrule3: 'ℹ️ Cannot combine with other offers',
+    rrule4: 'ℹ️ 2 of 4 uses remaining',
+    verifyMethod: 'Verification Method',
+    pinLabel: 'PIN Code',
+    qrLabel: 'QR Code',
+    pinDesc: 'Enter the 4-digit PIN from cashier',
+    pinConfirm: 'Confirm & Redeem',
+    qrDesc: 'Show this QR code to the cashier',
+    successTitle: '🎉 Offer Redeemed!',
+    successSub: 'Your savings this transaction:',
+    successNote: 'Amount added to your profile',
+    successBack: 'Back to Merchant',
+    successShare: 'Share',
+    memHeroTitle: 'My Membership',
+    memHeroSub: 'Venus Club',
+    mplanName: '✨ Gold',
+    mplanBadge: 'Active',
+    mplanExpire: '📅 Expires: Aug 22, 2024',
+    mplanDaysPassed: '215 days passed',
+    mplanDaysLeft: '45 days left',
+    benefitsTitle: '🎁 Your Benefits',
+    benefit1: 'All restaurant offers',
+    benefit2: 'Share with 3 family members',
+    benefit3: 'BOGO at most venues',
+    benefit4: 'Unlimited savings during membership',
+    renewBtn: 'Renew Membership',
+    upgradeTitle: 'Upgrade',
+    silverName: '🥈 Silver',
+    silverEn: 'Silver',
+    silverPeriod: '/year',
+    silverFeat1: 'Up to 2 family members',
+    silverFeat2: '500+ active offers',
+    platName: '💎 Platinum',
+    platEn: 'Platinum',
+    platBadge: 'Recommended',
+    platPeriod: '/year',
+    platFeat1: 'Up to 3 family members + VIP',
+    platFeat2: '1000+ special offers',
+    platFeat3: 'Hotel & Travel access',
+    enterName: '🏢 Enterprise',
+    enterEn: 'Enterprise',
+    enterPrice: 'Contact Us',
+    enterFeat1: 'For businesses',
+    enterFeat2: 'Unlimited members',
+    familyTitle: 'Family Sharing',
+    familyHead: '👨‍👩‍👧 Family Members',
+    familyCount: '(2 of 3)',
+    famName1: 'Negar Mohammadi',
+    famStatus1: '● Active',
+    famName2: 'Daniyal Mohammadi',
+    famStatus2: '⏳ Pending',
+    addMember: '+ Invite Family Member',
+    discTitle: 'Discover Offers 🗺️',
+    searchPlaceholder: 'Search restaurants, cafés...',
+    cityDisplay: 'Tehran',
+    cityChange: 'Change',
+    pillAll: 'All',
+    pillRest: 'Restaurant 🍽️',
+    pillCafe: 'Café ☕',
+    pillHealth: 'Health 💆',
+    pillFun: 'Fun 🎬',
+    pillShop: 'Shop 🛍️',
+    pillBogo: 'BOGO 🔄',
+    mlName1: 'Ariyana Restaurant',
+    mlCat1: 'Persian & International',
+    mlReviews1: '248 reviews',
+    mlOffer1: 'BOGO',
+    mlName2: 'Café Rosha',
+    mlCat2: 'Café & Beverages',
+    mlReviews2: '182 reviews',
+    mlOffer2: '30%',
+    histTitle: '📊 History & Savings',
+    histSub: 'Your total savings to date',
+    hTotal: 'Total Savings',
+    hCoupons: 'Coupons Used',
+    hVenues: 'Venues Visited',
+    hRating: 'Avg. Rating Given',
+    hRecent: 'Recent Transactions',
+    hItem1Title: 'Ariyana Restaurant · BOGO',
+    hItem1Date: 'Jun 15, 2024',
+    hItem2Title: 'Café Rosha · 30% Off',
+    hItem2Date: 'Jun 10, 2024',
+    supportTitle: '🎧 Support',
+    supportSub: 'How can we help?',
+    sChat: 'Live Chat',
+    sChatSub: 'Instant reply',
+    sTicket: 'Submit Ticket',
+    sTicketSub: 'Track issue',
+    sReport: 'Report Issue',
+    sReportSub: 'Coupon issue',
+    sFaq: 'FAQ',
+    sFaqSub: 'Quick answers',
+    notifTitle: 'Notifications',
+    notifMore: 'Mark All Read',
+    notif1Title: 'Your membership expires in 45 days',
+    notif1Sub: 'Renew now and get 10% off',
+    notif1Time: '2 hours ago',
+    notif2Title: 'New offer: Ariyana Restaurant',
+    notif2Sub: 'New BOGO for main course added',
+    notif2Time: '5 hours ago',
+    pName: 'Sara Mohammadi',
+    pPhone: '+98 912 345 6789',
+    pChip: '✨ Gold Member',
+    refTitle: '🎁 Invite Friends',
+    refSub: 'Earn 50,000 IRT per invite',
+    refCopy: 'Copy',
+    pInfo: 'Personal Info',
+    pInfoSub: 'Name, Mobile, Email',
+    pMem: 'My Membership',
+    pMemSub: 'Gold – 45 days left',
+    pHist: 'History & Savings',
+    pHistSub: '23 Coupons · 8.2M IRT saved',
+    pCity: 'My City',
+    pCitySub: 'Tehran',
+    pNotif: 'Notifications',
+    pNotifSub: 'Offers, Expiry, News',
+    pPrivacy: 'Privacy',
+    pPrivacySub: 'Data, Preferences',
+    notifSettings: '🔔 Notification Settings',
+    toggleOffers: 'Special Offers',
+    toggleOffersSub: 'Get new offer alerts',
+    toggleExpiry: 'Membership Expiry',
+    toggleExpirySub: 'Reminder before expiry',
+    toggleNearby: 'Nearby Offers',
+    toggleNearbySub: 'Based on location',
+    pSupport: 'Support',
+    pSupportSub: 'Tickets, Chat, Report',
+    pAbout: 'About Venus Club',
+    pAboutSub: 'Version 1.0.0',
+    pSignout: 'Sign Out',
+    cityModalTitle: 'Select City',
+    cityModalSub: 'Choose your city to see local offers',
+    cityTehran: 'Tehran',
+    cityIsfahan: 'Isfahan',
+    cityShiraz: 'Shiraz',
+    cityMashhad: 'Mashhad',
+  }
+};
+
+function setLanguage(lang) {
+  currentLang = lang;
+  const t = LANG[lang];
+  
+  // Update splash
+  document.getElementById('splash-title').textContent = t.splashTitle;
+  document.getElementById('splash-sub').textContent = t.splashSub;
+  document.getElementById('splash-tagline').textContent = t.splashTag;
+  document.getElementById('splash-btn').textContent = t.splashBtn;
+  document.getElementById('splash-secondary').textContent = t.splashSecondary;
+  
+  // Auth
+  document.getElementById('auth-title').textContent = t.authTitle;
+  document.getElementById('auth-sub').textContent = t.authSub;
+  document.getElementById('auth-tab-login').textContent = t.authLogin;
+  document.getElementById('auth-tab-signup').textContent = t.authSignup;
+  document.getElementById('field-mobile-label').textContent = t.fieldMobile;
+  document.getElementById('field-pass-label').textContent = t.fieldPass;
+  const hint = document.getElementById('field-pass-hint');
+  const recoverSpan = hint.querySelector('span');
+  hint.innerHTML = t.fieldHint + ' · <span style="color:var(--brand);cursor:pointer" onclick="showToast(\'🔗 لینک بازیابی ارسال شد\')">' + t.recover + '</span>';
+  document.getElementById('btn-otp').textContent = t.btnOtp;
+  document.getElementById('btn-signin').textContent = t.btnSignin;
+  document.getElementById('auth-or').textContent = t.or;
+  document.getElementById('btn-google').innerHTML = t.btnGoogle;
+  
+  // OTP
+  document.getElementById('otp-title').textContent = t.otpTitle;
+  document.getElementById('otp-sub').textContent = t.otpSub;
+  document.getElementById('otp-resend').innerHTML = t.otpResend + ' <span style="color:var(--brand);font-weight:700" id="otp-timer">02:00</span>';
+  document.getElementById('otp-verify-btn').textContent = t.otpVerify;
+  document.getElementById('otp-change').textContent = t.otpChange;
+  
+  // Home
+  document.getElementById('home-greeting').textContent = t.homeGreeting;
+  document.getElementById('home-name').textContent = t.homeName;
+  document.getElementById('mem-name').textContent = t.memName;
+  document.getElementById('mem-en').textContent = t.memEn;
+  document.getElementById('mem-badge').textContent = t.memBadge;
+  document.getElementById('mem-expire-label').textContent = t.memExpire;
+  document.querySelectorAll('.mem-stat-lbl')[0].textContent = t.statUsed;
+  document.querySelectorAll('.mem-stat-lbl')[1].textContent = t.statSavings;
+  document.querySelectorAll('.mem-stat-lbl')[2].textContent = t.statFamily;
+  document.getElementById('savings-label').textContent = t.savingsLabel;
+  document.getElementById('savings-sub').textContent = t.savingsSub;
+  document.getElementById('quick-title').textContent = t.quickTitle;
+  document.getElementById('qa-search').textContent = t.qaSearch;
+  document.getElementById('qa-membership').textContent = t.qaMembership;
+  document.getElementById('qa-history').textContent = t.qaHistory;
+  document.getElementById('qa-support').textContent = t.qaSupport;
+  document.getElementById('cat-title').textContent = t.catTitle;
+  document.getElementById('cat-more').textContent = t.catMore;
+  document.getElementById('cat-food').textContent = t.catFood;
+  document.getElementById('cat-cafe').textContent = t.catCafe;
+  document.getElementById('cat-health').textContent = t.catHealth;
+  document.getElementById('cat-fun').textContent = t.catFun;
+  document.getElementById('cat-shop').textContent = t.catShop;
+  document.getElementById('cat-hotel').textContent = t.catHotel;
+  document.getElementById('hot-title').textContent = t.hotTitle;
+  document.getElementById('hot-more').textContent = t.hotMore;
+  document.getElementById('deal-merchant-1').textContent = t.dealMerchant1;
+  document.getElementById('deal-title-1').innerHTML = t.dealTitle1 + '<br><span class="deal-title-en">' + t.dealEn1 + '</span>';
+  document.getElementById('deal-save-1').textContent = t.dealSave1;
+  document.getElementById('deal-rem-1').innerHTML = t.dealRem1.replace('{0}', '۷');
+  document.getElementById('deal-view-1').textContent = t.dealView;
+  document.getElementById('deal-badge-2').textContent = t.dealBadge2;
+  document.getElementById('deal-merchant-2').textContent = t.dealMerchant2;
+  document.getElementById('deal-title-2').innerHTML = t.dealTitle2 + '<br><span class="deal-title-en">' + t.dealEn2 + '</span>';
+  document.getElementById('deal-save-2').textContent = t.dealSave2;
+  document.getElementById('deal-rem-2').innerHTML = t.dealRem2.replace('{0}', '۱۵');
+  document.getElementById('deal-view-2').textContent = t.dealView;
+  document.getElementById('nearby-title').textContent = t.nearbyTitle;
+  document.getElementById('nearby-more').textContent = t.nearbyMore;
+  document.getElementById('mini-cat-1').textContent = t.miniCat1;
+  document.getElementById('mini-cat-2').textContent = t.miniCat2;
+  document.getElementById('mini-cat-3').textContent = t.miniCat3;
+  document.getElementById('mini-cat-4').textContent = t.miniCat4;
+  
+  // Nav
+  document.querySelectorAll('.nav-label').forEach(el => {
+    const id = el.id;
+    if (id === 'nav-home') el.textContent = t.navHome;
+    else if (id === 'nav-discover') el.textContent = t.navDiscover;
+    else if (id === 'nav-membership') el.textContent = t.navMembership;
+    else if (id === 'nav-history') el.textContent = t.navHistory;
+    else if (id === 'nav-profile') el.textContent = t.navProfile;
+    else if (id === 'nav-home-2') el.textContent = t.navHome;
+    else if (id === 'nav-discover-2') el.textContent = t.navDiscover;
+    else if (id === 'nav-membership-2') el.textContent = t.navMembership;
+    else if (id === 'nav-history-2') el.textContent = t.navHistory;
+    else if (id === 'nav-profile-2') el.textContent = t.navProfile;
+    else if (id === 'nav-home-3') el.textContent = t.navHome;
+    else if (id === 'nav-discover-3') el.textContent = t.navDiscover;
+    else if (id === 'nav-membership-3') el.textContent = t.navMembership;
+    else if (id === 'nav-history-3') el.textContent = t.navHistory;
+    else if (id === 'nav-profile-3') el.textContent = t.navProfile;
+    else if (id === 'nav-home-4') el.textContent = t.navHome;
+    else if (id === 'nav-discover-4') el.textContent = t.navDiscover;
+    else if (id === 'nav-membership-4') el.textContent = t.navMembership;
+    else if (id === 'nav-history-4') el.textContent = t.navHistory;
+    else if (id === 'nav-profile-4') el.textContent = t.navProfile;
+  });
+  
+  // Merchant
+  document.getElementById('merc-name').textContent = t.mercName;
+  document.getElementById('merc-name-en').textContent = t.mercNameEn;
+  document.getElementById('merc-tag-1').textContent = t.mercTag1;
+  document.getElementById('merc-tag-2').textContent = t.mercTag2;
+  document.getElementById('merc-tag-3').textContent = t.mercTag3;
+  document.getElementById('merc-tag-4').textContent = t.mercTag4;
+  document.getElementById('merc-review-count').textContent = t.mercReview;
+  document.getElementById('merc-offer-title').textContent = t.mercOfferTitle;
+  document.getElementById('otab-active').textContent = t.otabActive;
+  document.getElementById('otab-used').textContent = t.otabUsed;
+  document.getElementById('otab-expired').textContent = t.otabExpired;
+  document.getElementById('off-type-1').textContent = t.offType1;
+  document.getElementById('off-status-1').textContent = t.offStatus1;
+  document.getElementById('off-title-1').textContent = t.offTitle1;
+  document.getElementById('off-en-1').textContent = t.offEn1;
+  document.getElementById('off-rules-1').innerHTML = t.offRules1.replace(/\n/g, '<br>');
+  document.getElementById('off-limit-1').innerHTML = t.offLimit1;
+  document.getElementById('off-btn-1').textContent = t.offBtn1;
+  document.getElementById('off-used-status').textContent = t.offUsedStatus;
+  document.getElementById('off-used-title').textContent = t.offUsedTitle;
+  document.getElementById('off-used-date').textContent = t.offUsedDate;
+  document.getElementById('off-used-btn').textContent = t.offUsedBtn;
+  document.getElementById('empty-title').textContent = t.emptyTitle;
+  document.getElementById('empty-sub').textContent = t.emptySub;
+  document.getElementById('merc-loc-title').textContent = t.mercLocTitle;
+  document.getElementById('merc-addr').textContent = t.mercAddr;
+  document.getElementById('merc-phone').textContent = t.mercPhone;
+  document.getElementById('merc-hours').textContent = t.mercHours;
+  document.getElementById('merc-park').textContent = t.mercPark;
+  
+  // Redeem
+  document.getElementById('redeem-title').textContent = t.redeemTitle;
+  document.getElementById('redeem-sub').textContent = t.redeemSub;
+  document.getElementById('redeem-merc').textContent = t.redeemMerc;
+  document.getElementById('redeem-off-title').textContent = t.redeemOffTitle;
+  document.getElementById('redeem-badge').textContent = t.redeemBadge;
+  document.getElementById('rrule-1').textContent = t.rrule1;
+  document.getElementById('rrule-2').textContent = t.rrule2;
+  document.getElementById('rrule-3').textContent = t.rrule3;
+  document.getElementById('rrule-4').textContent = t.rrule4;
+  document.getElementById('verify-method').textContent = t.verifyMethod;
+  document.getElementById('pin-label').textContent = t.pinLabel;
+  document.getElementById('qr-label').textContent = t.qrLabel;
+  document.getElementById('pin-desc').textContent = t.pinDesc;
+  document.getElementById('pin-confirm').textContent = t.pinConfirm;
+  document.getElementById('qr-desc').textContent = t.qrDesc;
+  document.getElementById('success-title').textContent = t.successTitle;
+  document.getElementById('success-sub').textContent = t.successSub;
+  document.getElementById('success-note').textContent = t.successNote;
+  document.getElementById('success-back').textContent = t.successBack;
+  document.getElementById('success-share').textContent = t.successShare;
+  
+  // Membership
+  document.getElementById('mem-hero-title').textContent = t.memHeroTitle;
+  document.getElementById('mem-hero-sub').textContent = t.memHeroSub;
+  document.getElementById('mplan-name').textContent = t.mplanName;
+  document.getElementById('mplan-badge').textContent = t.mplanBadge;
+  document.getElementById('mplan-expire').textContent = t.mplanExpire;
+  document.getElementById('mplan-days-passed').textContent = t.mplanDaysPassed;
+  document.getElementById('mplan-days-left').textContent = t.mplanDaysLeft;
+  document.getElementById('benefits-title').textContent = t.benefitsTitle;
+  document.getElementById('benefit-1').textContent = t.benefit1;
+  document.getElementById('benefit-2').textContent = t.benefit2;
+  document.getElementById('benefit-3').textContent = t.benefit3;
+  document.getElementById('benefit-4').textContent = t.benefit4;
+  document.getElementById('renew-btn').textContent = t.renewBtn;
+  document.getElementById('upgrade-title').textContent = t.upgradeTitle;
+  document.getElementById('silver-name').textContent = t.silverName;
+  document.getElementById('silver-en').textContent = t.silverEn;
+  document.getElementById('silver-period').textContent = t.silverPeriod;
+  document.getElementById('silver-feat-1').textContent = t.silverFeat1;
+  document.getElementById('silver-feat-2').textContent = t.silverFeat2;
+  document.getElementById('plat-name').textContent = t.platName;
+  document.getElementById('plat-en').textContent = t.platEn;
+  document.getElementById('plat-badge').textContent = t.platBadge;
+  document.getElementById('plat-period').textContent = t.platPeriod;
+  document.getElementById('plat-feat-1').textContent = t.platFeat1;
+  document.getElementById('plat-feat-2').textContent = t.platFeat2;
+  document.getElementById('plat-feat-3').textContent = t.platFeat3;
+  document.getElementById('enter-name').textContent = t.enterName;
+  document.getElementById('enter-en').textContent = t.enterEn;
+  document.getElementById('enter-price').textContent = t.enterPrice;
+  document.getElementById('enter-feat-1').textContent = t.enterFeat1;
+  document.getElementById('enter-feat-2').textContent = t.enterFeat2;
+  document.getElementById('family-title').textContent = t.familyTitle;
+  document.getElementById('family-head').innerHTML = t.familyHead + ' <span style="color:var(--text3);font-size:12px;font-weight:400" id="family-count">' + t.familyCount + '</span>';
+  document.getElementById('fam-name-1').textContent = t.famName1;
+  document.getElementById('fam-status-1').textContent = t.famStatus1;
+  document.getElementById('fam-name-2').textContent = t.famName2;
+  document.getElementById('fam-status-2').textContent = t.famStatus2;
+  document.getElementById('add-member-btn').textContent = t.addMember;
+  
+  // Discover
+  document.getElementById('disc-title').textContent = t.discTitle;
+  document.getElementById('search-placeholder').placeholder = t.searchPlaceholder;
+  document.getElementById('city-name-display').textContent = t.cityDisplay;
+  document.getElementById('city-change-btn').textContent = t.cityChange;
+  document.getElementById('pill-all').textContent = t.pillAll;
+  document.getElementById('pill-rest').textContent = t.pillRest;
+  document.getElementById('pill-cafe').textContent = t.pillCafe;
+  document.getElementById('pill-health').textContent = t.pillHealth;
+  document.getElementById('pill-fun').textContent = t.pillFun;
+  document.getElementById('pill-shop').textContent = t.pillShop;
+  document.getElementById('pill-bogo').textContent = t.pillBogo;
+  document.getElementById('ml-name-1').textContent = t.mlName1;
+  document.getElementById('ml-cat-1').textContent = t.mlCat1;
+  document.getElementById('ml-reviews-1').textContent = t.mlReviews1;
+  document.getElementById('ml-offer-1').textContent = t.mlOffer1;
+  document.getElementById('ml-name-2').textContent = t.mlName2;
+  document.getElementById('ml-cat-2').textContent = t.mlCat2;
+  document.getElementById('ml-reviews-2').textContent = t.mlReviews2;
+  document.getElementById('ml-offer-2').textContent = t.mlOffer2;
+  
+  // History
+  document.getElementById('hist-title').textContent = t.histTitle;
+  document.getElementById('hist-sub').textContent = t.histSub;
+  document.querySelectorAll('.summary-lbl')[0].textContent = t.hTotal;
+  document.querySelectorAll('.summary-lbl')[1].textContent = t.hCoupons;
+  document.querySelectorAll('.summary-lbl')[2].textContent = t.hVenues;
+  document.querySelectorAll('.summary-lbl')[3].textContent = t.hRating;
+  document.getElementById('h-recent').textContent = t.hRecent;
+  document.getElementById('h-item-1-title').textContent = t.hItem1Title;
+  document.getElementById('h-item-1-date').textContent = t.hItem1Date;
+  document.getElementById('h-item-2-title').textContent = t.hItem2Title;
+  document.getElementById('h-item-2-date').textContent = t.hItem2Date;
+  
+  // Support
+  document.getElementById('support-title').textContent = t.supportTitle;
+  document.getElementById('support-sub').textContent = t.supportSub;
+  document.getElementById('s-chat').textContent = t.sChat;
+  document.getElementById('s-chat-sub').textContent = t.sChatSub;
+  document.getElementById('s-ticket').textContent = t.sTicket;
+  document.getElementById('s-ticket-sub').textContent = t.sTicketSub;
+  document.getElementById('s-report').textContent = t.sReport;
+  document.getElementById('s-report-sub').textContent = t.sReportSub;
+  document.getElementById('s-faq').textContent = t.sFaq;
+  document.getElementById('s-faq-sub').textContent = t.sFaqSub;
+  document.getElementById('notif-title').textContent = t.notifTitle;
+  document.getElementById('notif-more').textContent = t.notifMore;
+  document.getElementById('notif-1-title').textContent = t.notif1Title;
+  document.getElementById('notif-1-sub').textContent = t.notif1Sub;
+  document.getElementById('notif-1-time').textContent = t.notif1Time;
+  document.getElementById('notif-2-title').textContent = t.notif2Title;
+  document.getElementById('notif-2-sub').textContent = t.notif2Sub;
+  document.getElementById('notif-2-time').textContent = t.notif2Time;
+  
+  // Profile
+  document.getElementById('p-name').textContent = t.pName;
+  document.getElementById('p-phone').textContent = t.pPhone;
+  document.getElementById('p-chip').textContent = t.pChip;
+  document.getElementById('ref-title').textContent = t.refTitle;
+  document.getElementById('ref-sub').textContent = t.refSub;
+  document.getElementById('ref-copy').textContent = t.refCopy;
+  document.getElementById('p-info').textContent = t.pInfo;
+  document.getElementById('p-info-sub').textContent = t.pInfoSub;
+  document.getElementById('p-mem').textContent = t.pMem;
+  document.getElementById('p-mem-sub').textContent = t.pMemSub;
+  document.getElementById('p-hist').textContent = t.pHist;
+  document.getElementById('p-hist-sub').textContent = t.pHistSub;
+  document.getElementById('p-city').textContent = t.pCity;
+  document.getElementById('p-city-sub').textContent = t.pCitySub;
+  document.getElementById('p-notif').textContent = t.pNotif;
+  document.getElementById('p-notif-sub').textContent = t.pNotifSub;
+  document.getElementById('p-privacy').textContent = t.pPrivacy;
+  document.getElementById('p-privacy-sub').textContent = t.pPrivacySub;
+  document.getElementById('notif-settings-title').textContent = t.notifSettings;
+  document.getElementById('toggle-offers').textContent = t.toggleOffers;
+  document.getElementById('toggle-offers-sub').textContent = t.toggleOffersSub;
+  document.getElementById('toggle-expiry').textContent = t.toggleExpiry;
+  document.getElementById('toggle-expiry-sub').textContent = t.toggleExpirySub;
+  document.getElementById('toggle-nearby').textContent = t.toggleNearby;
+  document.getElementById('toggle-nearby-sub').textContent = t.toggleNearbySub;
+  document.getElementById('p-support').textContent = t.pSupport;
+  document.getElementById('p-support-sub').textContent = t.pSupportSub;
+  document.getElementById('p-about').textContent = t.pAbout;
+  document.getElementById('p-about-sub').textContent = t.pAboutSub;
+  document.getElementById('p-signout').textContent = t.pSignout;
+  
+  // City Modal
+  document.getElementById('city-modal-title').textContent = t.cityModalTitle;
+  document.getElementById('city-modal-sub').textContent = t.cityModalSub;
+  document.getElementById('city-tehran').textContent = t.cityTehran;
+  document.getElementById('city-isfahan').textContent = t.cityIsfahan;
+  document.getElementById('city-shiraz').textContent = t.cityShiraz;
+  document.getElementById('city-mashhad').textContent = t.cityMashhad;
+  
+  // Active class on lang buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+  
+  // Update direction based on language
+  document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+  document.documentElement.lang = lang === 'fa' ? 'fa' : 'en';
+}
+
+// ============================
+// EXISTING FUNCTIONS (unchanged except language awareness)
+// ============================
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('active'); el.scrollTop = 0; }
+}
+
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function switchOfferTab(type, el) {
+  document.querySelectorAll('.offer-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('offers-active').style.display = type === 'active' ? 'block' : 'none';
+  document.getElementById('offers-used').style.display = type === 'used' ? 'block' : 'none';
+  document.getElementById('offers-expired').style.display = type === 'expired' ? 'block' : 'none';
+}
+
+function switchRedeemMethod(method) {
+  const pinTab = document.getElementById('pin-tab');
+  const qrTab = document.getElementById('qr-tab');
+  const pinBox = document.getElementById('pin-box');
+  const qrBox = document.getElementById('qr-box');
+  if (method === 'pin') {
+    pinTab.classList.add('active'); qrTab.classList.remove('active');
+    pinBox.style.display = 'block'; qrBox.style.display = 'none';
+  } else {
+    qrTab.classList.add('active'); pinTab.classList.remove('active');
+    pinBox.style.display = 'none'; qrBox.style.display = 'block';
+  }
+}
+
+function attemptRedeem() {
+  const pins = ['p1','p2','p3','p4'].map(id => document.getElementById(id).value);
+  const code = pins.join('');
+  if (code.length === 4) {
+    document.getElementById('pin-box').style.display = 'none';
+    document.getElementById('success-box').style.display = 'block';
+  } else {
+    showToast('❌ کد ناقص است');
+  }
+}
+
+let isFav = false;
+function toggleFav() {
+  isFav = !isFav;
+  document.getElementById('fav-btn').textContent = isFav ? '❤️' : '🤍';
+  showToast(isFav ? '❤️ اضافه شد' : '🤍 حذف شد');
+}
+
+function toggleSwitch(el) {
+  el.classList.toggle('on');
+}
+
+function switchPill(el) {
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function openCityModal() {
+  document.getElementById('city-modal').classList.add('active');
+}
+function closeCityModal(e) {
+  if (e.target === e.currentTarget) document.getElementById('city-modal').classList.remove('active');
+}
+function selectCity(el, name) {
+  document.querySelectorAll('.city-option').forEach(o => {
+    o.classList.remove('selected');
+    const check = o.querySelector('.city-option-check');
+    if (check) check.remove();
+  });
+  el.classList.add('selected');
+  if (!el.querySelector('.city-option-check')) {
+    const check = document.createElement('span');
+    check.className = 'city-option-check';
+    check.textContent = '✓';
+    el.appendChild(check);
+  }
+  setTimeout(() => {
+    document.getElementById('city-modal').classList.remove('active');
+    const cityName = currentLang === 'fa' ? name : (name === 'تهران' ? 'Tehran' : name === 'اصفهان' ? 'Isfahan' : name === 'شیراز' ? 'Shiraz' : name === 'مشهد' ? 'Mashhad' : name);
+    document.getElementById('city-name-display').textContent = cityName;
+    document.getElementById('p-city-sub').textContent = cityName;
+    showToast('📍 ' + cityName + (currentLang === 'fa' ? ' انتخاب شد' : ' selected'));
+  }, 300);
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('active');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('active'), 2800);
+}
+
+function pad(n) { return n < 10 ? '0' + n : n; }
+let c1 = 5*3600+42*60+18, c2 = 23*3600+15*60+4;
+function updateTimers() {
+  const el1 = document.getElementById('ct1'), el2 = document.getElementById('ct2');
+  if (el1 && c1 > 0) { c1--; el1.textContent = pad(Math.floor(c1/3600)) + ':' + pad(Math.floor((c1%3600)/60)) + ':' + pad(c1%60); }
+  if (el2 && c2 > 0) { c2--; el2.textContent = pad(Math.floor(c2/3600)) + ':' + pad(Math.floor((c2%3600)/60)) + ':' + pad(c2%60); }
+}
+setInterval(updateTimers, 1000);
+
+let otpSec = 120;
+function updateOtp() {
+  const el = document.getElementById('otp-timer');
+  if (el && otpSec > 0) { otpSec--; el.textContent = pad(Math.floor(otpSec/60)) + ':' + pad(otpSec%60); }
+}
+setInterval(updateOtp, 1000);
+
+document.querySelectorAll('.otp-box, .pin-digit').forEach((box, i, arr) => {
+  box.addEventListener('input', () => { if (box.value.length >= 1 && i < arr.length - 1) arr[i+1].focus(); });
+});
+
+document.querySelectorAll('.pin-digit').forEach((box, i, arr) => {
+  box.addEventListener('input', () => { if (box.value.length >= 1 && i < arr.length - 1) arr[i+1].focus(); });
+});
+
+// Set default language
+setLanguage('fa');
+</script>
+</body>
+</html>
+```

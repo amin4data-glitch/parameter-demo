@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Venus Club</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --ink:#0D0D1A;--ink2:#5A5A72;--ink3:#9898A8;
+  --bg:#FAFAFA;--surface:#FFFFFF;
+  --accent:#6D28D9;--accent-light:#EDE9FE;--accent-mid:#8B5CF6;
+  --green:#059669;--green-light:#D1FAE5;
+  --amber:#D97706;--amber-light:#FEF3C7;
+  --red:#DC2626;--red-light:#FEE2E2;
+  --line:#EBEBF0;
+  --r:16px;--rs:10px;
+  --shadow:0 1px 12px rgba(13,13,26,.07);
+}
+html,body{height:100%;background:#1A1025;display:flex;justify-content:center;align-items:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.phone{width:390px;height:844px;background:var(--bg);position:relative;overflow:hidden;border-radius:48px;box-shadow:0 0 0 10px #0d0d0d,0 0 0 12px #2a2a3a,0 40px 80px rgba(0,0,0,.6)}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden;background:var(--bg)}
+.screen.on{display:flex}
+.scroll{overflow-y:auto;overflow-x:hidden;flex:1;-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{display:none}
+
+/* ── LANGUAGE PICK ── */
+#lang-pick{background:#0D0D1A;align-items:center;justify-content:center;gap:0}
+.lang-logo{color:#fff;font-size:13px;font-weight:300;letter-spacing:6px;text-transform:uppercase;margin-bottom:4px;opacity:.5}
+.lang-wordmark{color:#fff;font-size:40px;font-weight:800;letter-spacing:-1.5px;margin-bottom:56px}
+.lang-prompt{color:rgba(255,255,255,.4);font-size:13px;margin-bottom:24px;letter-spacing:.5px}
+.lang-btn{width:280px;padding:18px;border-radius:14px;font-size:17px;font-weight:600;cursor:pointer;border:none;margin-bottom:12px;transition:opacity .15s}
+.lang-btn:active{opacity:.8}
+.lang-en{background:#fff;color:#0D0D1A}
+.lang-fa{background:rgba(255,255,255,.08);color:#fff;border:1.5px solid rgba(255,255,255,.15);font-size:19px;direction:rtl;font-family:'Tahoma',sans-serif}
+
+/* ── AUTH ── */
+#auth{background:var(--bg)}
+.auth-top{padding:60px 28px 32px;display:flex;flex-direction:column;gap:4px}
+.auth-logo-sm{font-size:11px;font-weight:300;letter-spacing:5px;color:var(--ink3);text-transform:uppercase}
+.auth-headline{font-size:28px;font-weight:800;color:var(--ink);letter-spacing:-.5px;margin-top:8px}
+.auth-sub{font-size:14px;color:var(--ink2);margin-top:4px}
+.auth-form{padding:0 28px 40px;display:flex;flex-direction:column;gap:16px}
+.field-lbl{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.field{width:100%;border:1.5px solid var(--line);border-radius:var(--rs);padding:14px 16px;font-size:16px;color:var(--ink);background:var(--surface);outline:none;transition:border-color .2s}
+.field:focus{border-color:var(--accent)}
+.field.fa{direction:rtl;font-family:'Tahoma',sans-serif}
+.divider{display:flex;align-items:center;gap:12px;color:var(--ink3);font-size:12px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--line)}
+.btn{width:100%;padding:16px;border-radius:14px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:opacity .15s}
+.btn:active{opacity:.75}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-ghost{background:transparent;color:var(--accent);border:1.5px solid var(--line)}
+.auth-hint{font-size:13px;color:var(--ink3);text-align:center;cursor:pointer}
+.auth-hint span{color:var(--accent);font-weight:600}
+
+/* ── OTP ── */
+.otp-wrap{display:flex;gap:10px;justify-content:center;direction:ltr}
+.otp-cell{width:56px;height:60px;border:1.5px solid var(--line);border-radius:var(--rs);text-align:center;font-size:24px;font-weight:700;color:var(--accent);outline:none;background:var(--surface)}
+.otp-cell:focus{border-color:var(--accent)}
+.resend-row{text-align:center;font-size:13px;color:var(--ink3)}
+.resend-row span{color:var(--accent);font-weight:600;cursor:pointer}
+
+/* ── NAV BAR ── */
+.nav{background:var(--surface);border-top:1px solid var(--line);display:flex;padding:10px 0 22px;flex-shrink:0}
+.nav-it{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;padding:4px 0}
+.nav-ic{font-size:20px;line-height:1}
+.nav-lb{font-size:10px;font-weight:500;color:var(--ink3)}
+.nav-it.active .nav-lb{color:var(--accent)}
+.nav-dot{width:4px;height:4px;border-radius:2px;background:var(--accent);margin:0 auto}
+
+/* ── STATUS BAR ── */
+.sbar{padding:52px 24px 16px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.sbar-title{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.3px}
+.sbar-action{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;background:var(--surface)}
+
+/* ── HOME ── */
+#home{}
+.home-header{padding:52px 24px 0;flex-shrink:0}
+.home-greet{font-size:13px;color:var(--ink3);font-weight:500}
+.home-name{font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.3px;margin-top:2px;margin-bottom:20px}
+.mem-strip{background:var(--ink);border-radius:var(--r);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.mem-strip:active{opacity:.9}
+.mem-plan-name{color:#fff;font-size:16px;font-weight:700}
+.mem-plan-sub{color:rgba(255,255,255,.45);font-size:11px;margin-top:2px}
+.mem-chip{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px}
+.mem-chip.warn{background:rgba(217,119,6,.2);color:#FCD34D}
+.home-scroll{padding:20px 24px 0}
+.savings-hero{margin-bottom:24px}
+.savings-label{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.savings-num{font-size:48px;font-weight:900;color:var(--ink);letter-spacing:-2px;line-height:1}
+.savings-unit{font-size:14px;font-weight:500;color:var(--ink3);margin-top:4px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.section-title{font-size:13px;font-weight:700;color:var(--ink);letter-spacing:.2px}
+.section-more{font-size:12px;color:var(--accent);font-weight:600;cursor:pointer}
+.quick-row{display:flex;gap:10px;margin-bottom:28px}
+.quick-it{flex:1;background:var(--surface);border-radius:var(--rs);padding:16px 12px;text-align:center;cursor:pointer;box-shadow:var(--shadow);border:1px solid var(--line)}
+.quick-it:active{background:var(--accent-light)}
+.quick-ic{font-size:22px;margin-bottom:8px}
+.quick-lb{font-size:11px;font-weight:600;color:var(--ink2)}
+.feature-card{background:var(--surface);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:28px;cursor:pointer;position:relative;overflow:hidden}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent)}
+.feature-eyebrow{font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.feature-title{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.feature-meta{font-size:13px;color:var(--ink2)}
+.feature-footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.feat-save{font-size:13px;font-weight:700;color:var(--green)}
+.feat-timer{font-size:12px;color:var(--red);font-variant-numeric:tabular-nums;direction:ltr}
+.near-scroll{display:flex;gap:12px;overflow-x:auto;margin:0 -24px;padding:0 24px 4px;margin-bottom:28px}
+.near-scroll::-webkit-scrollbar{display:none}
+.near-card{min-width:140px;background:var(--surface);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);cursor:pointer;flex-shrink:0}
+.near-card:active{opacity:.85}
+.near-img{height:80px;background:var(--ink);display:flex;align-items:center;justify-content:center;font-size:30px}
+.near-body{padding:10px 12px 12px}
+.near-name{font-size:13px;font-weight:700;color:var(--ink)}
+.near-cat{font-size:11px;color:var(--ink3);margin-top:2px}
+.near-rating{font-size:11px;color:var(--amber);margin-top:4px;font-weight:600}
+
+/* ── MEMBERSHIP ── */
+#membership{}
+.mem-hero{background:var(--ink);padding:52px 24px 32px;flex-shrink:0}
+.mem-hero-label{font-size:11px;font-weight:600;letter-spacing:.5px;color:rgba(255,255,255,.4);text-transform:uppercase}
+.mem-hero-plan{font-size:32px;font-weight:900;color:#fff;letter-spacing:-.5px;margin-top:6px}
+.mem-hero-status{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:rgba(255,255,255,.08);border-radius:20px;padding:6px 14px}
+.mem-hero-status-dot{width:6px;height:6px;border-radius:3px;background:#10B981}
+.mem-hero-status-dot.warn{background:#F59E0B}
+.mem-hero-status-dot.exp{background:#EF4444}
+.mem-hero-status-text{font-size:12px;font-weight:600;color:rgba(255,255,255,.7)}
+.mem-expire-bar{margin-top:16px}
+.mem-bar-labels{display:flex;justify-content:space-between;margin-bottom:6px}
+.mem-bar-lbl{font-size:11px;color:rgba(255,255,255,.35)}
+.mem-bar-track{background:rgba(255,255,255,.12);border-radius:4px;height:4px;overflow:hidden}
+.mem-bar-fill{height:100%;background:#8B5CF6;border-radius:4px}
+.mem-scroll{padding:20px 24px}
+.stat-row{display:flex;gap:12px;margin-bottom:20px}
+.stat-box{flex:1;background:var(--surface);border-radius:var(--rs);padding:16px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.stat-val{font-size:22px;font-weight:900;color:var(--ink)}
+.stat-lbl{font-size:11px;color:var(--ink3);margin-top:3px}
+.plan-card{background:var(--surface);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px;cursor:pointer;border:1.5px solid var(--line)}
+.plan-card.selected{border-color:var(--accent);background:var(--accent-light)}
+.plan-card-top{display:flex;justify-content:space-between;align-items:flex-start}
+.plan-name{font-size:16px;font-weight:700;color:var(--ink)}
+.plan-price{font-size:20px;font-weight:900;color:var(--accent)}
+.plan-period{font-size:11px;color:var(--ink3)}
+.plan-feats{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.plan-feat{font-size:12px;color:var(--ink2);display:flex;align-items:center;gap:8px}
+.plan-feat::before{content:'✓';color:var(--green);font-weight:700;font-size:13px}
+.family-card{background:var(--surface);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:20px}
+.family-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:16px}
+.member-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.member-row:last-child{border-bottom:none}
+.member-av{width:38px;height:38px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.member-info{flex:1}
+.member-name{font-size:14px;font-weight:600;color:var(--ink)}
+.member-phone{font-size:11px;color:var(--ink3);margin-top:2px}
+.member-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px}
+.badge-active{background:var(--green-light);color:var(--green)}
+.badge-pending{background:var(--amber-light);color:var(--amber)}
+.badge-exp{background:var(--red-light);color:var(--red)}
+.add-member{width:100%;padding:14px;border-radius:var(--rs);border:1.5px dashed var(--line);background:transparent;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;margin-top:8px}
+
+/* ── DISCOVER ── */
+#discover{}
+.disc-header{padding:52px 24px 16px;flex-shrink:0}
+.search-bar{display:flex;align-items:center;gap:10px;background:var(--surface);border:1.5px solid var(--line);border-radius:var(--rs);padding:12px 14px;margin-top:14px}
+.search-icon{font-size:16px;color:var(--ink3)}
+.search-input{flex:1;border:none;outline:none;font-size:15px;color:var(--ink);background:transparent}
+.search-input::placeholder{color:var(--ink3)}
+.city-row{display:flex;align-items:center;gap:8px;padding:10px 0 0;cursor:pointer}
+.city-name{font-size:12px;font-weight:600;color:var(--ink2)}
+.city-change{font-size:12px;color:var(--accent);font-weight:600;margin-right:auto}
+.pills{display:flex;gap:8px;overflow-x:auto;padding:14px 24px 0;margin:0 -24px;flex-shrink:0}
+.pills::-webkit-scrollbar{display:none}
+.pill{background:var(--surface);border:1.5px solid var(--line);color:var(--ink2);font-size:12px;font-weight:600;padding:7px 16px;border-radius:20px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.pill.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.disc-scroll{padding:16px 24px}
+.merchant-row{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.merchant-row:active{opacity:.75}
+.merchant-row:last-child{border-bottom:none}
+.merch-img{width:60px;height:60px;border-radius:var(--rs);background:var(--ink);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.merch-info{flex:1}
+.merch-name{font-size:15px;font-weight:700;color:var(--ink)}
+.merch-sub{font-size:12px;color:var(--ink3);margin-top:2px}
+.merch-meta{display:flex;align-items:center;gap:10px;margin-top:6px}
+.merch-rating{font-size:11px;color:var(--amber);font-weight:600}
+.merch-offer-chip{font-size:10px;font-weight:700;background:var(--accent-light);color:var(--accent);padding:3px 8px;border-radius:10px}
+.merch-arrow{color:var(--ink3);font-size:18px}
+.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);background-size:200% 100%;animation:sk 1.4s infinite;border-radius:8px}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── MERCHANT ── */
+#merchant{}
+.merch-hero{background:var(--ink);height:180px;display:flex;align-items:center;justify-content:center;font-size:60px;position:relative;flex-shrink:0}
+.back-btn{position:absolute;top:48px;right:16px;width:36px;height:36px;background:rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;cursor:pointer}
+.back-btn-ltr{position:absolute;top:48px;left:16px}
+.top-actions{position:absolute;top:48px;left:16px;display:flex;gap:8px}
+.icon-btn{width:36px;height:36px;background:rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;cursor:pointer}
+.merch-detail{padding:20px 24px;border-bottom:1px solid var(--line);flex-shrink:0}
+.merch-detail-name{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.3px}
+.merch-detail-cat{font-size:13px;color:var(--ink3);margin-top:3px}
+.merch-detail-row{display:flex;align-items:center;gap:16px;margin-top:12px}
+.merch-info-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--ink2)}
+.status-dot{width:6px;height:6px;border-radius:3px}
+.status-open{background:var(--green)}
+.status-closed{background:var(--red)}
+.merch-scroll{padding:20px 24px}
+.card{background:var(--surface);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.card-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.info-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.info-item:last-child{margin-bottom:0}
+.info-ic{font-size:15px;color:var(--ink3);min-width:20px;text-align:center}
+.info-text{font-size:13px;color:var(--ink2);line-height:1.5}
+.offer-compact{padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.offer-compact:last-child{border-bottom:none}
+.offer-compact:active{opacity:.7}
+.offer-row{display:flex;justify-content:space-between;align-items:center}
+.offer-name{font-size:14px;font-weight:600;color:var(--ink)}
+.offer-discount{font-size:14px;font-weight:800;color:var(--accent)}
+.offer-rule{font-size:11px;color:var(--ink3);margin-top:3px}
+.offer-chips{display:flex;gap:6px;margin-top:6px}
+.chip{font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px}
+.chip-bogo{background:var(--green-light);color:var(--green)}
+.chip-pct{background:var(--accent-light);color:var(--accent)}
+.chip-active{background:var(--green-light);color:var(--green)}
+.chip-used{background:var(--line);color:var(--ink3)}
+.chip-exp{background:var(--red-light);color:var(--red)}
+.menu-item-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.menu-item-row:last-child{border-bottom:none}
+.menu-item-name{font-size:13px;color:var(--ink)}
+.menu-item-price{font-size:13px;font-weight:700;color:var(--ink2)}
+.review-item{padding:14px 0;border-bottom:1px solid var(--line)}
+.review-item:last-child{border-bottom:none}
+.review-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.review-name{font-size:13px;font-weight:600;color:var(--ink)}
+.review-stars{font-size:12px;color:var(--amber)}
+.review-text{font-size:13px;color:var(--ink2);line-height:1.5}
+
+/* ── OFFER DETAIL / REDEEM ── */
+#offer-detail,#redeem{}
+.offer-header-section{padding:52px 24px 24px;border-bottom:1px solid var(--line);flex-shrink:0}
+.offer-merchant-name{font-size:13px;font-weight:500;color:var(--ink3)}
+.offer-title-big{font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.3px;margin-top:4px;margin-bottom:12px}
+.offer-chips-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.offer-saving-big{font-size:32px;font-weight:900;color:var(--accent);letter-spacing:-.5px}
+.offer-saving-lbl{font-size:12px;color:var(--ink3);margin-top:2px}
+.offer-scroll{padding:20px 24px}
+.rules-list{display:flex;flex-direction:column;gap:10px}
+.rule-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--ink2);line-height:1.4}
+.rule-dot{width:5px;height:5px;border-radius:2.5px;background:var(--accent);flex-shrink:0;margin-top:5px}
+.uses-row{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:var(--rs);padding:14px 16px;margin-top:16px;border:1px solid var(--line)}
+.uses-lbl{font-size:12px;color:var(--ink3)}
+.uses-val{font-size:15px;font-weight:800;color:var(--ink)}
+
+/* ── REDEEM ── */
+.redeem-top{padding:52px 24px 20px;border-bottom:1px solid var(--line);flex-shrink:0}
+.redeem-merchant{font-size:13px;color:var(--ink3)}
+.redeem-offer-name{font-size:20px;font-weight:800;color:var(--ink);margin-top:4px}
+.redeem-scroll{padding:20px 24px}
+.method-tabs{display:flex;gap:10px;margin-bottom:20px}
+.method-tab{flex:1;padding:14px;border-radius:var(--rs);border:1.5px solid var(--line);background:var(--surface);text-align:center;cursor:pointer;transition:all .2s}
+.method-tab.on{border-color:var(--accent);background:var(--accent-light)}
+.method-tab-ic{font-size:22px;margin-bottom:5px}
+.method-tab-lb{font-size:12px;font-weight:600;color:var(--ink2)}
+.method-tab.on .method-tab-lb{color:var(--accent)}
+.pin-section,.qr-section{display:none}
+.pin-section.on,.qr-section.on{display:block}
+.pin-row{display:flex;gap:10px;justify-content:center;direction:ltr;margin:20px 0}
+.pin-cell{width:60px;height:68px;border:1.5px solid var(--line);border-radius:var(--rs);text-align:center;font-size:26px;font-weight:800;color:var(--accent);outline:none;background:var(--surface)}
+.pin-cell:focus{border-color:var(--accent)}
+.pin-hint{text-align:center;font-size:13px;color:var(--ink3);margin-bottom:4px}
+.qr-box{background:var(--surface);border-radius:var(--r);padding:32px;text-align:center;border:1px solid var(--line)}
+.qr-code{font-size:80px;margin-bottom:12px;line-height:1}
+.qr-ref{font-size:18px;font-weight:900;color:var(--ink);letter-spacing:4px;direction:ltr;margin-bottom:8px}
+.qr-hint{font-size:12px;color:var(--ink3)}
+.result-box{border-radius:var(--r);padding:28px;text-align:center;display:none}
+.result-box.on{display:block}
+.result-box.success{background:var(--green-light)}
+.result-box.error{background:var(--red-light)}
+.result-ic{font-size:48px;margin-bottom:12px}
+.result-title{font-size:20px;font-weight:800;margin-bottom:6px}
+.result-sub{font-size:14px;color:var(--ink2);margin-bottom:16px}
+.result-saving{font-size:32px;font-weight:900;color:var(--green);margin-bottom:4px}
+.result-saving-lbl{font-size:12px;color:var(--ink3)}
+
+/* ── HISTORY ── */
+#history{}
+.hist-summary{display:flex;gap:10px;padding:0 24px 20px;flex-shrink:0;overflow-x:auto}
+.hist-summary::-webkit-scrollbar{display:none}
+.summ-box{background:var(--surface);border-radius:var(--r);padding:16px 20px;box-shadow:var(--shadow);flex-shrink:0;border:1px solid var(--line)}
+.summ-num{font-size:24px;font-weight:900;color:var(--ink)}
+.summ-lbl{font-size:11px;color:var(--ink3);margin-top:3px;white-space:nowrap}
+.hist-list{padding:0 24px}
+.hist-item{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+.hist-item:last-child{border-bottom:none}
+.hist-ic{width:44px;height:44px;border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.hist-ic.save{background:var(--green-light)}
+.hist-ic.pay{background:var(--red-light)}
+.hist-info{flex:1}
+.hist-title{font-size:14px;font-weight:600;color:var(--ink)}
+.hist-date{font-size:11px;color:var(--ink3);margin-top:2px}
+.hist-amount{font-size:14px;font-weight:800}
+.hist-amount.green{color:var(--green)}
+.hist-amount.red{color:var(--red)}
+
+/* ── FAVORITES ── */
+#favorites{}
+.fav-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:40px}
+.fav-empty-ic{font-size:52px;opacity:.25}
+.fav-empty-title{font-size:18px;font-weight:700;color:var(--ink)}
+.fav-empty-sub{font-size:14px;color:var(--ink3);text-align:center}
+.referral-card{background:var(--ink);border-radius:var(--r);padding:24px;margin:0 24px 20px;position:relative;overflow:hidden}
+.referral-card::after{content:'◉';position:absolute;right:-20px;bottom:-20px;font-size:100px;color:rgba(255,255,255,.04);line-height:1}
+.ref-label{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.ref-code{font-size:28px;font-weight:900;color:#fff;letter-spacing:4px;direction:ltr;margin-bottom:12px}
+.ref-sub{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:16px}
+.ref-copy-btn{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:var(--rs);padding:12px 20px;font-size:13px;font-weight:700;cursor:pointer}
+.fav-scroll{padding:0 24px}
+
+/* ── SUPPORT ── */
+#support-screen{}
+.support-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 24px 20px}
+.support-opt{background:var(--surface);border-radius:var(--r);padding:20px 16px;box-shadow:var(--shadow);cursor:pointer;border:1px solid var(--line);text-align:center}
+.support-opt:active{background:var(--accent-light)}
+.support-opt-ic{font-size:26px;margin-bottom:8px}
+.support-opt-lb{font-size:13px;font-weight:700;color:var(--ink)}
+.support-opt-sub{font-size:11px;color:var(--ink3);margin-top:3px}
+.notif-list{padding:0 24px}
+.notif-item{display:flex;align-items:flex-start;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}
+.notif-item:last-child{border-bottom:none}
+.notif-dot{width:8px;height:8px;border-radius:4px;background:var(--accent);flex-shrink:0;margin-top:4px}
+.notif-dot.read{background:var(--line)}
+.notif-body{flex:1}
+.notif-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.notif-sub{font-size:12px;color:var(--ink2)}
+.notif-time{font-size:11px;color:var(--ink3);margin-top:4px}
+
+/* ── SETTINGS ── */
+#settings{}
+.settings-section{margin-bottom:28px}
+.settings-label{font-size:11px;font-weight:700;color:var(--ink3);letter-spacing:.5px;text-transform:uppercase;padding:0 24px;margin-bottom:10px}
+.menu-list{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.menu-row{display:flex;align-items:center;gap:14px;padding:16px 24px;border-bottom:1px solid var(--line);cursor:pointer}
+.menu-row:last-child{border-bottom:none}
+.menu-row:active{background:var(--bg)}
+.menu-row-ic{font-size:20px;width:32px;text-align:center}
+.menu-row-body{flex:1}
+.menu-row-lb{font-size:15px;font-weight:500;color:var(--ink)}
+.menu-row-sub{font-size:12px;color:var(--ink3);margin-top:2px}
+.menu-row-right{color:var(--ink3);font-size:16px}
+.toggle{width:44px;height:26px;border-radius:13px;background:var(--line);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--accent)}
+.toggle-knob{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:10px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.15);transition:transform .2s}
+.toggle.on .toggle-knob{transform:translateX(18px)}
+.danger-btn{margin:0 24px;width:calc(100% - 48px);background:transparent;border:1.5px solid var(--red-light);color:var(--red);border-radius:var(--rs);padding:14px;font-size:14px;font-weight:600;cursor:pointer}
+
+/* ── MODAL ── */
+.modal-bg{position:absolute;inset:0;background:rgba(13,13,26,.5);z-index:100;display:none;align-items:flex-end}
+.modal-bg.on{display:flex}
+.modal-sheet{background:var(--surface);border-radius:24px 24px 0 0;width:100%;padding:20px 24px 40px;max-height:75%;overflow-y:auto}
+.modal-sheet::-webkit-scrollbar{display:none}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 20px}
+.modal-title{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--ink3);margin-bottom:20px}
+.city-opt{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.city-opt:last-child{border-bottom:none}
+.city-opt-ic{font-size:18px}
+.city-opt-name{font-size:15px;font-weight:500;color:var(--ink);flex:1}
+.city-opt-check{color:var(--accent);font-size:16px;font-weight:700}
+
+/* ── TOAST ── */
+.toast{position:absolute;bottom:110px;left:20px;right:20px;background:#0D0D1A;color:#fff;border-radius:12px;padding:14px 18px;font-size:13px;font-weight:600;z-index:200;display:none;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.toast.on{display:flex;animation:slideup .25s ease}
+@keyframes slideup{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* RTL overrides */
+.rtl{direction:rtl;text-align:right}
+.rtl .back-btn{right:auto;left:16px}
+.rtl .top-actions{left:auto;right:16px}
+.rtl .city-change{margin-right:0;margin-left:auto}
+.rtl .hist-amount,.rtl .offer-saving-big,.rtl .ref-code,.rtl .qr-ref,.rtl .redeem-offer-name{direction:ltr}
+.rtl .screen{font-family:'Tahoma','B Nazanin',sans-serif}
+
+@media(max-width:430px){.phone{width:100vw;height:100vh;border-radius:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="phone" id="app">
+
+<!-- ════════ LANGUAGE PICK ════════ -->
+<div class="screen on" id="lang-pick">
+  <div class="lang-logo">Venus</div>
+  <div class="lang-wordmark">Club</div>
+  <div class="lang-prompt">Choose your language</div>
+  <button class="lang-btn lang-en" onclick="setLang('en')">English</button>
+  <button class="lang-btn lang-fa" onclick="setLang('fa')">فارسی</button>
+</div>
+
+<!-- ════════ AUTH ════════ -->
+<div class="screen" id="auth">
+  <div class="auth-top">
+    <div class="auth-logo-sm" data-k="venus">Venus Club</div>
+    <div class="auth-headline" data-k="auth_title">Welcome back</div>
+    <div class="auth-sub" data-k="auth_sub">Sign in to your account</div>
+  </div>
+  <div class="auth-form" id="auth-login-form">
+    <div>
+      <div class="field-lbl" data-k="email_phone">Email or mobile</div>
+      <input class="field" id="auth-ident" type="text" placeholder="09123456789" dir="ltr">
+    </div>
+    <button class="btn btn-primary" onclick="go('auth-otp')" data-k="continue">Continue</button>
+    <div class="divider" data-k="or">or</div>
+    <button class="btn btn-ghost" onclick="go('home')" data-k="use_password">Sign in with password</button>
+    <div class="auth-hint" onclick="go('home')"><span data-k="create_account">Create account</span></div>
+  </div>
+</div>
+
+<!-- ════════ AUTH OTP ════════ -->
+<div class="screen" id="auth-otp">
+  <div class="auth-top">
+    <div class="auth-logo-sm" data-k="venus">Venus Club</div>
+    <div class="auth-headline" data-k="enter_code">Enter the code</div>
+    <div class="auth-sub" data-k="code_sent_to">Code sent to <strong id="auth-target">09123456789</strong></div>
+  </div>
+  <div class="auth-form">
+    <div class="otp-wrap">
+      <input class="otp-cell" maxlength="1" type="number">
+      <input class="otp-cell" maxlength="1" type="number">
+      <input class="otp-cell" maxlength="1" type="number">
+      <input class="otp-cell" maxlength="1" type="number">
+      <input class="otp-cell" maxlength="1" type="number">
+    </div>
+    <div class="resend-row" data-k="resend_in">Resend in <span id="otp-timer">02:00</span></div>
+    <button class="btn btn-primary" onclick="go('home')" data-k="verify">Verify</button>
+    <div class="auth-hint" onclick="go('auth')" data-k="change_number">← Change number</div>
+  </div>
+</div>
+
+<!-- ════════ HOME ════════ -->
+<div class="screen" id="home">
+  <div class="home-header" style="flex-shrink:0">
+    <div class="home-greet" data-k="good_morning">Good morning</div>
+    <div class="home-name">Sara</div>
+    <div class="mem-strip" onclick="go('membership')">
+      <div>
+        <div class="mem-plan-name" data-k="gold_membership">Gold Membership</div>
+        <div class="mem-plan-sub" data-k="expires_in">Expires in 45 days</div>
+      </div>
+      <div class="mem-chip warn" data-k="renew">Renew</div>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="home-scroll">
+      <div class="savings-hero">
+        <div class="savings-label" data-k="total_saved">Total saved</div>
+        <div class="savings-num">8,200,000</div>
+        <div class="savings-unit" data-k="toman">Toman · this year</div>
+      </div>
+      <div class="section-head">
+        <div class="section-title" data-k="quick_actions">Quick actions</div>
+      </div>
+      <div class="quick-row" style="margin-bottom:28px">
+        <div class="quick-it" onclick="go('discover')"><div class="quick-ic">🔍</div><div class="quick-lb" data-k="browse">Browse</div></div>
+        <div class="quick-it" onclick="go('membership')"><div class="quick-ic">💳</div><div class="quick-lb" data-k="membership">Membership</div></div>
+        <div class="quick-it" onclick="go('history')"><div class="quick-ic">📄</div><div class="quick-lb" data-k="history">History</div></div>
+        <div class="quick-it" onclick="go('favorites')"><div class="quick-ic">♡</div><div class="quick-lb" data-k="saved">Saved</div></div>
+      </div>
+      <div class="section-head">
+        <div class="section-title" data-k="featured_offer">Featured offer</div>
+      </div>
+      <div class="feature-card" onclick="go('merchant')">
+        <div class="feature-eyebrow" data-k="bogo_offer">Buy 1 Get 1 Free</div>
+        <div class="feature-title">Ariyana Restaurant</div>
+        <div class="feature-meta" data-k="main_course">Main course · Persian & International</div>
+        <div class="feature-footer">
+          <div class="feat-save" data-k="save_up">Save up to 350,000 T</div>
+          <div class="feat-timer" id="home-timer">05:42:18</div>
+        </div>
+      </div>
+      <div class="section-head">
+        <div class="section-title" data-k="nearby">Nearby</div>
+        <div class="section-more" onclick="go('discover')" data-k="see_all">See all</div>
+      </div>
+      <div class="near-scroll">
+        <div class="near-card" onclick="go('merchant')">
+          <div class="near-img" style="background:#1a1a2e">🍽️</div>
+          <div class="near-body"><div class="near-name">Ariyana</div><div class="near-cat" data-k="persian">Persian</div><div class="near-rating">★ 4.6</div></div>
+        </div>
+        <div class="near-card" onclick="go('merchant')">
+          <div class="near-img" style="background:#1a1a0a">☕</div>
+          <div class="near-body"><div class="near-name">Café Rosha</div><div class="near-cat" data-k="cafe">Café</div><div class="near-rating">★ 4.8</div></div>
+        </div>
+        <div class="near-card" onclick="go('merchant')">
+          <div class="near-img" style="background:#0a1a12">💆</div>
+          <div class="near-body"><div class="near-name">Aramesh Spa</div><div class="near-cat" data-k="health">Health</div><div class="near-rating">★ 4.5</div></div>
+        </div>
+        <div class="near-card" onclick="go('merchant')">
+          <div class="near-img" style="background:#0a0a1a">🎬</div>
+          <div class="near-body"><div class="near-name">Parsian Cinema</div><div class="near-cat" data-k="cinema">Cinema</div><div class="near-rating">★ 4.1</div></div>
+        </div>
+      </div>
+      <div style="height:8px"></div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="nav-it active" onclick="navTo('home')"><div class="nav-ic">⌂</div><div class="nav-lb" data-k="home">Home</div><div class="nav-dot"></div></div>
+    <div class="nav-it" onclick="navTo('discover')"><div class="nav-ic">○</div><div class="nav-lb" data-k="explore">Explore</div></div>
+    <div class="nav-it" onclick="navTo('favorites')"><div class="nav-ic">♡</div><div class="nav-lb" data-k="saved">Saved</div></div>
+    <div class="nav-it" onclick="navTo('support-screen')"><div class="nav-ic">◎</div><div class="nav-lb" data-k="support">Support</div></div>
+    <div class="nav-it" onclick="navTo('settings')"><div class="nav-ic">≡</div><div class="nav-lb" data-k="settings">Settings</div></div>
+  </div>
+</div>
+
+<!-- ════════ MEMBERSHIP ════════ -->
+<div class="screen" id="membership">
+  <div class="mem-hero">
+    <div class="back-btn" onclick="goBack()">←</div>
+    <div class="mem-hero-label" data-k="your_membership">Your membership</div>
+    <div class="mem-hero-plan" data-k="gold">Gold</div>
+    <div class="mem-hero-status">
+      <div class="mem-hero-status-dot warn"></div>
+      <div class="mem-hero-status-text" data-k="expires_45">Expires in 45 days</div>
+    </div>
+    <div class="mem-expire-bar">
+      <div class="mem-bar-labels">
+        <span class="mem-bar-lbl" data-k="215_days_used">215 days used</span>
+        <span class="mem-bar-lbl" data-k="45_remain">45 remaining</span>
+      </div>
+      <div class="mem-bar-track"><div class="mem-bar-fill" style="width:82%"></div></div>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="mem-scroll">
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-val">23</div><div class="stat-lbl" data-k="coupons_used">Coupons used</div></div>
+        <div class="stat-box"><div class="stat-val">8.2M</div><div class="stat-lbl" data-k="toman_saved">Toman saved</div></div>
+        <div class="stat-box"><div class="stat-val">2/3</div><div class="stat-lbl" data-k="family_slots">Family slots</div></div>
+      </div>
+      <div class="section-head"><div class="section-title" data-k="family_sharing">Family sharing</div></div>
+      <div class="family-card">
+        <div class="member-row">
+          <div class="member-av">👩</div>
+          <div class="member-info"><div class="member-name">Negar M.</div><div class="member-phone">0912 *** 6789</div></div>
+          <div class="member-badge badge-active" data-k="active">Active</div>
+        </div>
+        <div class="member-row">
+          <div class="member-av">👦</div>
+          <div class="member-info"><div class="member-name">Danial M.</div><div class="member-phone">0910 *** 1314</div></div>
+          <div class="member-badge badge-pending" data-k="pending">Pending</div>
+        </div>
+        <button class="add-member" onclick="toast('invite_sent')" data-k="invite_member">+ Invite member</button>
+      </div>
+      <div class="section-head"><div class="section-title" data-k="upgrade_plan">Upgrade plan</div></div>
+      <div class="plan-card" onclick="toast('plan_selected')">
+        <div class="plan-card-top">
+          <div><div class="plan-name" data-k="silver">Silver</div><div class="plan-period" data-k="per_year">per year</div></div>
+          <div class="plan-price">499,000 T</div>
+        </div>
+        <div class="plan-feats">
+          <div class="plan-feat" data-k="feat_500">500+ active offers</div>
+          <div class="plan-feat" data-k="feat_2fam">Up to 2 family members</div>
+        </div>
+      </div>
+      <div class="plan-card selected" onclick="toast('plan_selected')">
+        <div class="plan-card-top">
+          <div><div class="plan-name" data-k="gold">Gold ✦</div><div class="plan-period" data-k="current_plan">Current plan</div></div>
+          <div class="plan-price">899,000 T</div>
+        </div>
+        <div class="plan-feats">
+          <div class="plan-feat" data-k="feat_800">800+ active offers</div>
+          <div class="plan-feat" data-k="feat_3fam">Up to 3 family members</div>
+          <div class="plan-feat" data-k="feat_bogo">BOGO at most venues</div>
+        </div>
+      </div>
+      <div class="plan-card" onclick="toast('plan_selected')">
+        <div class="plan-card-top">
+          <div><div class="plan-name" data-k="platinum">Platinum</div><div class="plan-period" data-k="per_year">per year</div></div>
+          <div class="plan-price">1,299,000 T</div>
+        </div>
+        <div class="plan-feats">
+          <div class="plan-feat" data-k="feat_1200">1,200+ offers incl. hotels</div>
+          <div class="plan-feat" data-k="feat_3fam">Up to 3 family members</div>
+          <div class="plan-feat" data-k="feat_vip">VIP support</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:4px;margin-bottom:24px" onclick="toast('renewed')" data-k="renew_membership">Renew membership</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ DISCOVER ════════ -->
+<div class="screen" id="discover">
+  <div class="disc-header">
+    <div class="sbar-title" data-k="explore">Explore</div>
+    <div class="search-bar">
+      <div class="search-icon">⌕</div>
+      <input class="search-input" id="disc-search" type="text" data-placeholder-k="search_placeholder" placeholder="Restaurants, cafés…">
+    </div>
+    <div class="city-row">
+      <span style="font-size:13px">📍</span>
+      <span class="city-name" id="city-display">Tehran</span>
+      <span class="city-change" onclick="openModal('city-modal')" data-k="change">Change</span>
+    </div>
+  </div>
+  <div class="pills">
+    <div class="pill on" onclick="pill(this)" data-k="all">All</div>
+    <div class="pill" onclick="pill(this)" data-k="restaurants">Restaurants</div>
+    <div class="pill" onclick="pill(this)" data-k="cafes">Cafés</div>
+    <div class="pill" onclick="pill(this)" data-k="health">Health</div>
+    <div class="pill" onclick="pill(this)" data-k="entertainment">Entertainment</div>
+    <div class="pill" onclick="pill(this)" data-k="shopping">Shopping</div>
+  </div>
+  <div class="scroll">
+    <div class="disc-scroll">
+      <div class="merchant-row" onclick="go('merchant')">
+        <div class="merch-img" style="background:#1a1a2e">🍽️</div>
+        <div class="merch-info">
+          <div class="merch-name">Ariyana Restaurant</div>
+          <div class="merch-sub" data-k="persian_intl">Persian & International</div>
+          <div class="merch-meta"><span class="merch-rating">★ 4.6</span><span class="merch-offer-chip">BOGO</span></div>
+        </div>
+        <div class="merch-arrow">›</div>
+      </div>
+      <div class="merchant-row" onclick="go('merchant')">
+        <div class="merch-img" style="background:#1a1a0a">☕</div>
+        <div class="merch-info">
+          <div class="merch-name">Café Rosha</div>
+          <div class="merch-sub" data-k="cafe_beverages">Café & Beverages</div>
+          <div class="merch-meta"><span class="merch-rating">★ 4.8</span><span class="merch-offer-chip">30% off</span></div>
+        </div>
+        <div class="merch-arrow">›</div>
+      </div>
+      <div class="merchant-row" onclick="go('merchant')">
+        <div class="merch-img" style="background:#0a1a12">💆</div>
+        <div class="merch-info">
+          <div class="merch-name">Aramesh Spa</div>
+          <div class="merch-sub" data-k="health_beauty">Health & Beauty</div>
+          <div class="merch-meta"><span class="merch-rating">★ 4.5</span><span class="merch-offer-chip">25% off</span></div>
+        </div>
+        <div class="merch-arrow">›</div>
+      </div>
+      <div class="merchant-row" onclick="go('merchant')">
+        <div class="merch-img" style="background:#0a0a1a">🎬</div>
+        <div class="merch-info">
+          <div class="merch-name">Parsian Cinema</div>
+          <div class="merch-sub" data-k="entertainment">Entertainment</div>
+          <div class="merch-meta"><span class="merch-rating">★ 4.1</span><span class="merch-offer-chip">BOGO</span></div>
+        </div>
+        <div class="merch-arrow">›</div>
+      </div>
+      <div class="merchant-row" onclick="go('merchant')">
+        <div class="merch-img" style="background:#1a0a12">🍣</div>
+        <div class="merch-info">
+          <div class="merch-name">Sushi Q</div>
+          <div class="merch-sub" data-k="japanese">Japanese</div>
+          <div class="merch-meta"><span class="merch-rating">★ 4.3</span><span class="merch-offer-chip">20% off</span></div>
+        </div>
+        <div class="merch-arrow">›</div>
+      </div>
+      <div class="merchant-row" onclick="go('merchant')">
+        <div class="merch-img" style="background:#0a1a1a">🛍️</div>
+        <div class="merch-info">
+          <div class="merch-name">Nova Boutique</div>
+          <div class="merch-sub" data-k="shopping">Shopping</div>
+          <div class="merch-meta"><span class="merch-rating">★ 4.4</span><span class="merch-offer-chip">15% off</span></div>
+        </div>
+        <div class="merch-arrow">›</div>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="nav-it" onclick="navTo('home')"><div class="nav-ic">⌂</div><div class="nav-lb" data-k="home">Home</div></div>
+    <div class="nav-it active" onclick="navTo('discover')"><div class="nav-ic">○</div><div class="nav-lb" data-k="explore">Explore</div><div class="nav-dot"></div></div>
+    <div class="nav-it" onclick="navTo('favorites')"><div class="nav-ic">♡</div><div class="nav-lb" data-k="saved">Saved</div></div>
+    <div class="nav-it" onclick="navTo('support-screen')"><div class="nav-ic">◎</div><div class="nav-lb" data-k="support">Support</div></div>
+    <div class="nav-it" onclick="navTo('settings')"><div class="nav-ic">≡</div><div class="nav-lb" data-k="settings">Settings</div></div>
+  </div>
+</div>
+
+<!-- ════════ MERCHANT ════════ -->
+<div class="screen" id="merchant">
+  <div class="merch-hero">
+    🍽️
+    <div class="back-btn" onclick="goBack()">←</div>
+    <div class="top-actions">
+      <div class="icon-btn" id="fav-btn" onclick="toggleFav()">♡</div>
+      <div class="icon-btn" onclick="toast('link_copied')">↗</div>
+    </div>
+  </div>
+  <div class="merch-detail">
+    <div class="merch-detail-name">Ariyana Restaurant</div>
+    <div class="merch-detail-cat" data-k="persian_intl">Persian & International</div>
+    <div class="merch-detail-row">
+      <div class="merch-info-item"><div class="status-dot status-open"></div><span data-k="open_now">Open now</span></div>
+      <div class="merch-info-item">★ <strong>4.6</strong> <span style="color:var(--ink3)">(248)</span></div>
+      <div class="merch-info-item">📍 <span>1.2 km</span></div>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="merch-scroll">
+      <div class="card">
+        <div class="card-title" data-k="offers">Offers <span style="font-weight:500;color:var(--ink3);font-size:12px" data-k="2_active">2 active</span></div>
+        <div class="offer-compact" onclick="go('offer-detail')">
+          <div class="offer-row">
+            <div class="offer-name" data-k="bogo_main">Buy 1 Get 1 Free – Main course</div>
+            <div class="offer-discount">FREE</div>
+          </div>
+          <div class="offer-rule" data-k="min_250">Min. 250,000 T · Weekdays only</div>
+          <div class="offer-chips"><span class="chip chip-bogo">BOGO</span><span class="chip chip-active" data-k="active">Active</span></div>
+        </div>
+        <div class="offer-compact" onclick="go('offer-detail')">
+          <div class="offer-row">
+            <div class="offer-name" data-k="pct30_starters">30% off starters & desserts</div>
+            <div class="offer-discount">30%</div>
+          </div>
+          <div class="offer-rule" data-k="max2_items">Max 2 items · All week</div>
+          <div class="offer-chips"><span class="chip chip-pct" data-k="discount">Discount</span><span class="chip chip-active" data-k="active">Active</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" data-k="location_hours">Location & Hours</div>
+        <div class="info-item"><div class="info-ic">📍</div><div class="info-text">Valiasr St., No. 123, Tehran</div></div>
+        <div class="info-item"><div class="info-ic">📞</div><div class="info-text">021-1234-5678</div></div>
+        <div class="info-item"><div class="info-ic">🕐</div><div class="info-text" data-k="hours_detail">Sat–Thu 12:00–23:30 · Fri 14:00–00:00</div></div>
+        <div class="info-item"><div class="info-ic">🅿</div><div class="info-text" data-k="parking">Private parking · Wheelchair accessible</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title" data-k="menu">Menu</div>
+        <div class="menu-item-row"><span class="menu-item-name" data-k="grilled_lamb">Grilled Lamb</span><span class="menu-item-price">320,000 T</span></div>
+        <div class="menu-item-row"><span class="menu-item-name" data-k="chicken_kebab">Chicken Kebab</span><span class="menu-item-price">280,000 T</span></div>
+        <div class="menu-item-row"><span class="menu-item-name" data-k="ghormeh">Ghormeh Sabzi</span><span class="menu-item-price">245,000 T</span></div>
+        <div class="menu-item-row"><span class="menu-item-name" data-k="saffron_rice">Saffron Rice</span><span class="menu-item-price">80,000 T</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title" data-k="reviews">Reviews</div>
+        <div class="review-item">
+          <div class="review-head"><span class="review-name">Maryam K.</span><span class="review-stars">★★★★★</span></div>
+          <div class="review-text" data-k="review1">Food was excellent, service was flawless. The BOGO coupon made it even better.</div>
+        </div>
+        <div class="review-item">
+          <div class="review-head"><span class="review-name">Ali R.</span><span class="review-stars">★★★★☆</span></div>
+          <div class="review-text" data-k="review2">Great atmosphere and food. The Venus offer proved its value.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ OFFER DETAIL ════════ -->
+<div class="screen" id="offer-detail">
+  <div class="offer-header-section">
+    <div class="back-btn" onclick="goBack()" style="position:static;width:auto;height:auto;background:none;color:var(--ink);font-size:14px;margin-bottom:16px;cursor:pointer;display:inline-flex;align-items:center;gap:4px">← <span data-k="back">Back</span></div>
+    <div class="offer-merchant-name">Ariyana Restaurant</div>
+    <div class="offer-title-big" data-k="bogo_main">Buy 1 Get 1 Free – Main Course</div>
+    <div class="offer-chips-row">
+      <span class="chip chip-bogo">BOGO</span>
+      <span class="chip chip-active" data-k="active">Active</span>
+    </div>
+    <div class="offer-saving-big">350,000 T</div>
+    <div class="offer-saving-lbl" data-k="max_saving">Maximum saving per visit</div>
+  </div>
+  <div class="scroll">
+    <div class="offer-scroll">
+      <div class="section-title" style="margin-bottom:14px" data-k="how_it_works">How it works</div>
+      <div class="rules-list">
+        <div class="rule-item"><div class="rule-dot"></div><span data-k="rule1">Order one main course and get a second of equal or lower value free.</span></div>
+        <div class="rule-item"><div class="rule-dot"></div><span data-k="rule2">Minimum spend: 250,000 Toman</span></div>
+        <div class="rule-item"><div class="rule-dot"></div><span data-k="rule3">Valid Saturday to Thursday only</span></div>
+        <div class="rule-item"><div class="rule-dot"></div><span data-k="rule4">Cannot be combined with other offers</span></div>
+        <div class="rule-item"><div class="rule-dot"></div><span data-k="rule5">Merchant must verify before discount is applied</span></div>
+      </div>
+      <div class="uses-row">
+        <div><div class="uses-lbl" data-k="uses_remaining">Uses remaining</div></div>
+        <div class="uses-val">2 of 4</div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:20px" onclick="go('redeem')" data-k="redeem_now">Redeem now</button>
+      <div style="height:24px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ REDEEM ════════ -->
+<div class="screen" id="redeem">
+  <div class="redeem-top">
+    <div class="back-btn" onclick="goBack()" style="position:static;width:auto;height:auto;background:none;color:var(--ink);font-size:14px;margin-bottom:16px;cursor:pointer;display:inline-flex;align-items:center;gap:4px">← <span data-k="back">Back</span></div>
+    <div class="redeem-merchant">Ariyana Restaurant</div>
+    <div class="redeem-offer-name" data-k="bogo_main">Buy 1 Get 1 Free – Main Course</div>
+  </div>
+  <div class="scroll">
+    <div class="redeem-scroll">
+      <div class="method-tabs">
+        <div class="method-tab on" id="tab-pin" onclick="redeemTab('pin')">
+          <div class="method-tab-ic">🔢</div>
+          <div class="method-tab-lb" data-k="pin_code">PIN Code</div>
+        </div>
+        <div class="method-tab" id="tab-qr" onclick="redeemTab('qr')">
+          <div class="method-tab-ic">▦</div>
+          <div class="method-tab-lb" data-k="qr_code">QR Code</div>
+        </div>
+      </div>
+
+      <!-- PIN -->
+      <div class="pin-section on" id="pin-section">
+        <div class="pin-hint" data-k="ask_cashier">Ask the cashier for a 4-digit PIN</div>
+        <div class="pin-row">
+          <input class="pin-cell" maxlength="1" type="number" id="pc1">
+          <input class="pin-cell" maxlength="1" type="number" id="pc2">
+          <input class="pin-cell" maxlength="1" type="number" id="pc3">
+          <input class="pin-cell" maxlength="1" type="number" id="pc4">
+        </div>
+        <button class="btn btn-primary" onclick="attemptRedeem()" data-k="confirm_redeem">Confirm & redeem</button>
+        <div class="result-box success" id="success-box">
+          <div class="result-ic">✓</div>
+          <div class="result-title" data-k="offer_redeemed">Offer redeemed!</div>
+          <div class="result-saving" id="saving-num">350,000 T</div>
+          <div class="result-saving-lbl" data-k="saved_today">saved today</div>
+          <div class="result-sub" style="margin-top:8px" data-k="added_to_savings">Added to your savings. Enjoy your meal.</div>
+          <button class="btn btn-ghost" style="margin-top:12px" onclick="go('merchant')" data-k="done">Done</button>
+        </div>
+        <div class="result-box error" id="error-box">
+          <div class="result-ic">✕</div>
+          <div class="result-title" data-k="invalid_pin">Invalid PIN</div>
+          <div class="result-sub" data-k="ask_cashier_again">Ask the cashier to check the code and try again.</div>
+          <button class="btn btn-primary" style="margin-top:12px" onclick="resetRedeem()" data-k="try_again">Try again</button>
+        </div>
+      </div>
+
+      <!-- QR -->
+      <div class="qr-section" id="qr-section">
+        <div class="qr-box">
+          <div class="qr-code">▦</div>
+          <div class="qr-ref">VC-842931</div>
+          <div class="qr-hint" data-k="show_cashier">Show this to the cashier to apply your offer</div>
+        </div>
+        <button class="btn btn-ghost" style="margin-top:16px" onclick="toast('scanning')" data-k="scan_cashier_code">Scan cashier's code instead</button>
+      </div>
+      <div style="height:24px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ HISTORY ════════ -->
+<div class="screen" id="history">
+  <div class="sbar" style="border-bottom:1px solid var(--line)">
+    <div class="sbar-title" data-k="history">History</div>
+    <div class="sbar-action" onclick="goBack()">✕</div>
+  </div>
+  <div class="hist-summary" style="padding:16px 24px 16px">
+    <div class="summ-box"><div class="summ-num">8.2M</div><div class="summ-lbl" data-k="total_saved">Total saved (T)</div></div>
+    <div class="summ-box"><div class="summ-num">23</div><div class="summ-lbl" data-k="coupons_used">Coupons used</div></div>
+    <div class="summ-box"><div class="summ-num">11</div><div class="summ-lbl" data-k="venues">Venues visited</div></div>
+  </div>
+  <div class="scroll">
+    <div class="hist-list">
+      <div class="hist-item">
+        <div class="hist-ic save">✓</div>
+        <div class="hist-info"><div class="hist-title">Ariyana Restaurant · BOGO</div><div class="hist-date">Jun 15, 2024</div></div>
+        <div class="hist-amount green">+350,000</div>
+      </div>
+      <div class="hist-item">
+        <div class="hist-ic save">✓</div>
+        <div class="hist-info"><div class="hist-title">Café Rosha · 30% off</div><div class="hist-date">Jun 10, 2024</div></div>
+        <div class="hist-amount green">+180,000</div>
+      </div>
+      <div class="hist-item">
+        <div class="hist-ic save">✓</div>
+        <div class="hist-info"><div class="hist-title">Aramesh Spa · 25% off</div><div class="hist-date">Jun 5, 2024</div></div>
+        <div class="hist-amount green">+250,000</div>
+      </div>
+      <div class="hist-item">
+        <div class="hist-ic save">✓</div>
+        <div class="hist-info"><div class="hist-title">Parsian Cinema · BOGO</div><div class="hist-date">Jun 1, 2024</div></div>
+        <div class="hist-amount green">+120,000</div>
+      </div>
+      <div class="hist-item">
+        <div class="hist-ic pay" style="background:var(--red-light)">↓</div>
+        <div class="hist-info"><div class="hist-title" data-k="gold_membership_renewal">Gold membership renewal</div><div class="hist-date">Aug 22, 2023</div></div>
+        <div class="hist-amount red">-899,000</div>
+      </div>
+      <div style="height:24px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ FAVORITES ════════ -->
+<div class="screen" id="favorites">
+  <div class="sbar" style="border-bottom:1px solid var(--line)">
+    <div class="sbar-title" data-k="saved">Saved</div>
+  </div>
+  <div class="scroll">
+    <div class="referral-card" style="margin-top:20px">
+      <div class="ref-label" data-k="referral_code">Referral code</div>
+      <div class="ref-code">VENUS-S21K</div>
+      <div class="ref-sub" data-k="earn_per_invite">Earn 50,000 T for each friend who joins</div>
+      <button class="ref-copy-btn" onclick="toast('code_copied')" data-k="copy_code">Copy code</button>
+    </div>
+    <div class="fav-scroll" style="padding:0 24px">
+      <div class="section-head" style="margin-top:20px">
+        <div class="section-title" data-k="saved_merchants">Saved merchants</div>
+      </div>
+      <div class="merchant-row" onclick="go('merchant')">
+        <div class="merch-img" style="background:#1a1a2e;width:60px;height:60px;border-radius:10px;flex-shrink:0">🍽️</div>
+        <div class="merch-info"><div class="merch-name">Ariyana Restaurant</div><div class="merch-sub" data-k="persian_intl">Persian & International</div><div class="merch-meta"><span class="merch-rating">★ 4.6</span><span class="merch-offer-chip">BOGO</span></div></div>
+        <div class="merch-arrow">›</div>
+      </div>
+      <div class="merchant-row" onclick="go('merchant')">
+        <div class="merch-img" style="background:#0a1a12;width:60px;height:60px;border-radius:10px;flex-shrink:0">💆</div>
+        <div class="merch-info"><div class="merch-name">Aramesh Spa</div><div class="merch-sub" data-k="health_beauty">Health & Beauty</div><div class="merch-meta"><span class="merch-rating">★ 4.5</span><span class="merch-offer-chip">25% off</span></div></div>
+        <div class="merch-arrow">›</div>
+      </div>
+      <div style="height:24px"></div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="nav-it" onclick="navTo('home')"><div class="nav-ic">⌂</div><div class="nav-lb" data-k="home">Home</div></div>
+    <div class="nav-it" onclick="navTo('discover')"><div class="nav-ic">○</div><div class="nav-lb" data-k="explore">Explore</div></div>
+    <div class="nav-it active" onclick="navTo('favorites')"><div class="nav-ic">♡</div><div class="nav-lb" data-k="saved">Saved</div><div class="nav-dot"></div></div>
+    <div class="nav-it" onclick="navTo('support-screen')"><div class="nav-ic">◎</div><div class="nav-lb" data-k="support">Support</div></div>
+    <div class="nav-it" onclick="navTo('settings')"><div class="nav-ic">≡</div><div class="nav-lb" data-k="settings">Settings</div></div>
+  </div>
+</div>
+
+<!-- ════════ SUPPORT ════════ -->
+<div class="screen" id="support-screen">
+  <div class="sbar"><div class="sbar-title" data-k="support">Support</div></div>
+  <div class="scroll">
+    <div class="support-options">
+      <div class="support-opt" onclick="toast('chat_opening')"><div class="support-opt-ic">💬</div><div class="support-opt-lb" data-k="live_chat">Live chat</div><div class="support-opt-sub" data-k="instant_reply">Instant reply</div></div>
+      <div class="support-opt" onclick="toast('ticket_submitted')"><div class="support-opt-ic">📋</div><div class="support-opt-lb" data-k="submit_ticket">Submit ticket</div><div class="support-opt-sub" data-k="track_issue">Track an issue</div></div>
+      <div class="support-opt" onclick="toast('reported')"><div class="support-opt-ic">⚑</div><div class="support-opt-lb" data-k="report">Report</div><div class="support-opt-sub" data-k="coupon_issue">Coupon issue</div></div>
+      <div class="support-opt" onclick="toast('faq_opening')"><div class="support-opt-ic">?</div><div class="support-opt-lb">FAQ</div><div class="support-opt-sub" data-k="common_questions">Common questions</div></div>
+    </div>
+    <div style="padding:0 24px">
+      <div class="section-head"><div class="section-title" data-k="notifications">Notifications</div><div class="section-more" onclick="toast('all_read')" data-k="mark_all_read">Mark all read</div></div>
+      <div class="notif-list" style="padding:0;background:var(--surface);border-radius:var(--r);border:1px solid var(--line)">
+        <div class="notif-item" style="padding:16px">
+          <div class="notif-dot"></div>
+          <div class="notif-body">
+            <div class="notif-title" data-k="notif1_title">Membership expires in 45 days</div>
+            <div class="notif-sub" data-k="notif1_sub">Renew now and get 10% off your next plan.</div>
+            <div class="notif-time">2h ago</div>
+          </div>
+        </div>
+        <div class="notif-item" style="padding:16px;border-top:1px solid var(--line)">
+          <div class="notif-dot"></div>
+          <div class="notif-body">
+            <div class="notif-title" data-k="notif2_title">New offer at Ariyana Restaurant</div>
+            <div class="notif-sub" data-k="notif2_sub">A new BOGO offer is now available.</div>
+            <div class="notif-time">5h ago</div>
+          </div>
+        </div>
+        <div class="notif-item" style="padding:16px;border-top:1px solid var(--line)">
+          <div class="notif-dot read"></div>
+          <div class="notif-body">
+            <div class="notif-title" data-k="notif3_title">Negar accepted your invite</div>
+            <div class="notif-sub" data-k="notif3_sub">She joined as a family member.</div>
+            <div class="notif-time" data-k="yesterday">Yesterday</div>
+          </div>
+        </div>
+      </div>
+      <div style="height:24px"></div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="nav-it" onclick="navTo('home')"><div class="nav-ic">⌂</div><div class="nav-lb" data-k="home">Home</div></div>
+    <div class="nav-it" onclick="navTo('discover')"><div class="nav-ic">○</div><div class="nav-lb" data-k="explore">Explore</div></div>
+    <div class="nav-it" onclick="navTo('favorites')"><div class="nav-ic">♡</div><div class="nav-lb" data-k="saved">Saved</div></div>
+    <div class="nav-it active" onclick="navTo('support-screen')"><div class="nav-ic">◎</div><div class="nav-lb" data-k="support">Support</div><div class="nav-dot"></div></div>
+    <div class="nav-it" onclick="navTo('settings')"><div class="nav-ic">≡</div><div class="nav-lb" data-k="settings">Settings</div></div>
+  </div>
+</div>
+
+<!-- ════════ SETTINGS ════════ -->
+<div class="screen" id="settings">
+  <div class="sbar"><div class="sbar-title" data-k="settings">Settings</div></div>
+  <div class="scroll">
+    <div style="padding:0 24px 16px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);margin-bottom:20px">
+      <div style="width:56px;height:56px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff">S</div>
+      <div><div style="font-size:18px;font-weight:700;color:var(--ink)">Sara Mohammadi</div><div style="font-size:13px;color:var(--ink3);margin-top:2px">sara@email.com</div></div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-label" data-k="account">Account</div>
+      <div class="menu-list">
+        <div class="menu-row" onclick="go('membership')"><div class="menu-row-ic">💳</div><div class="menu-row-body"><div class="menu-row-lb" data-k="membership">Membership</div><div class="menu-row-sub" data-k="gold_45days">Gold · 45 days left</div></div><div class="menu-row-right">›</div></div>
+        <div class="menu-row" onclick="go('history')"><div class="menu-row-ic">📄</div><div class="menu-row-body"><div class="menu-row-lb" data-k="history">History</div><div class="menu-row-sub" data-k="23_coupons">23 coupons · 8.2M T saved</div></div><div class="menu-row-right">›</div></div>
+        <div class="menu-row" onclick="toast('profile_edit')"><div class="menu-row-ic">👤</div><div class="menu-row-body"><div class="menu-row-lb" data-k="profile">Profile</div><div class="menu-row-sub" data-k="name_phone_email">Name, phone, email</div></div><div class="menu-row-right">›</div></div>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-label" data-k="preferences">Preferences</div>
+      <div class="menu-list">
+        <div class="menu-row" onclick="openModal('city-modal')"><div class="menu-row-ic">📍</div><div class="menu-row-body"><div class="menu-row-lb" data-k="city">City</div><div class="menu-row-sub" id="settings-city">Tehran</div></div><div class="menu-row-right">›</div></div>
+        <div class="menu-row" onclick="openModal('lang-modal')"><div class="menu-row-ic">🌐</div><div class="menu-row-body"><div class="menu-row-lb" data-k="language">Language</div><div class="menu-row-sub" id="lang-display">English</div></div><div class="menu-row-right">›</div></div>
+        <div class="menu-row"><div class="menu-row-ic">🔔</div><div class="menu-row-body"><div class="menu-row-lb" data-k="offers_notifs">Offer alerts</div></div><div class="toggle on" id="tog1" onclick="toggleEl('tog1')"><div class="toggle-knob"></div></div></div>
+        <div class="menu-row"><div class="menu-row-ic">📅</div><div class="menu-row-body"><div class="menu-row-lb" data-k="expiry_notifs">Expiry reminders</div></div><div class="toggle on" id="tog2" onclick="toggleEl('tog2')"><div class="toggle-knob"></div></div></div>
+        <div class="menu-row"><div class="menu-row-ic">📡</div><div class="menu-row-body"><div class="menu-row-lb" data-k="nearby_notifs">Nearby offers</div></div><div class="toggle" id="tog3" onclick="toggleEl('tog3')"><div class="toggle-knob"></div></div></div>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-label" data-k="about">About</div>
+      <div class="menu-list">
+        <div class="menu-row" onclick="toast('terms_opening')"><div class="menu-row-ic">📃</div><div class="menu-row-body"><div class="menu-row-lb" data-k="terms">Terms & Privacy</div></div><div class="menu-row-right">›</div></div>
+        <div class="menu-row"><div class="menu-row-ic">ℹ</div><div class="menu-row-body"><div class="menu-row-lb" data-k="version">Version</div><div class="menu-row-sub">1.0.0</div></div></div>
+      </div>
+    </div>
+    <button class="danger-btn" onclick="go('lang-pick')" data-k="sign_out">Sign out</button>
+    <div style="height:32px"></div>
+  </div>
+  <div class="nav">
+    <div class="nav-it" onclick="navTo('home')"><div class="nav-ic">⌂</div><div class="nav-lb" data-k="home">Home</div></div>
+    <div class="nav-it" onclick="navTo('discover')"><div class="nav-ic">○</div><div class="nav-lb" data-k="explore">Explore</div></div>
+    <div class="nav-it" onclick="navTo('favorites')"><div class="nav-ic">♡</div><div class="nav-lb" data-k="saved">Saved</div></div>
+    <div class="nav-it" onclick="navTo('support-screen')"><div class="nav-ic">◎</div><div class="nav-lb" data-k="support">Support</div></div>
+    <div class="nav-it active" onclick="navTo('settings')"><div class="nav-ic">≡</div><div class="nav-lb" data-k="settings">Settings</div><div class="nav-dot"></div></div>
+  </div>
+</div>
+
+<!-- ════════ MODALS ════════ -->
+<!-- City modal -->
+<div class="modal-bg" id="city-modal" onclick="closeModal(event,'city-modal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" data-k="select_city">Select city</div>
+    <div class="modal-sub" data-k="city_sub">Offers update based on your city</div>
+    <div class="city-opt" onclick="setCity(this,'Tehran','تهران')"><span class="city-opt-ic">📍</span><span class="city-opt-name" data-k="tehran">Tehran</span><span class="city-opt-check" id="city-check-Tehran">✓</span></div>
+    <div class="city-opt" onclick="setCity(this,'Isfahan','اصفهان')"><span class="city-opt-ic">🏛</span><span class="city-opt-name" data-k="isfahan">Isfahan</span></div>
+    <div class="city-opt" onclick="setCity(this,'Shiraz','شیراز')"><span class="city-opt-ic">🌹</span><span class="city-opt-name" data-k="shiraz">Shiraz</span></div>
+    <div class="city-opt" onclick="setCity(this,'Mashhad','مشهد')"><span class="city-opt-ic">☪</span><span class="city-opt-name" data-k="mashhad">Mashhad</span></div>
+    <div class="city-opt" onclick="setCity(this,'Tabriz','تبریز')"><span class="city-opt-ic">🏔</span><span class="city-opt-name" data-k="tabriz">Tabriz</span></div>
+  </div>
+</div>
+
+<!-- Language modal (settings) -->
+<div class="modal-bg" id="lang-modal" onclick="closeModal(event,'lang-modal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" data-k="language">Language</div>
+    <div class="modal-sub" data-k="lang_sub">All text will switch immediately</div>
+    <div class="city-opt" onclick="setLang('en');closeModal({target:document.getElementById('lang-modal')},'lang-modal')">
+      <span class="city-opt-ic">🇬🇧</span><span class="city-opt-name">English</span><span class="city-opt-check" id="lang-check-en">✓</span>
+    </div>
+    <div class="city-opt" onclick="setLang('fa');closeModal({target:document.getElementById('lang-modal')},'lang-modal')">
+      <span class="city-opt-ic">🇮🇷</span><span class="city-opt-name" style="font-family:Tahoma">فارسی</span><span class="city-opt-check" id="lang-check-fa"></span>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+</div><!-- end phone -->
+
+<script>
+// ── STRINGS ──────────────────────────────────────────────────
+const S = {
+  en: {
+    venus:'Venus Club',auth_title:'Welcome back',auth_sub:'Sign in to your account',
+    email_phone:'Email or mobile',continue:'Continue',or:'or',use_password:'Sign in with password',
+    create_account:'Create account',enter_code:'Enter the code',code_sent_to:'Code sent to',
+    resend_in:'Resend in',verify:'Verify',change_number:'← Change number',
+    good_morning:'Good morning',gold_membership:'Gold Membership',expires_in:'Expires in 45 days',
+    renew:'Renew',total_saved:'Total saved',toman:'Toman · this year',quick_actions:'Quick actions',
+    browse:'Browse',membership:'Membership',history:'History',saved:'Saved',
+    featured_offer:'Featured offer',bogo_offer:'Buy 1 Get 1 Free',main_course:'Main course · Persian & International',
+    save_up:'Save up to 350,000 T',nearby:'Nearby',see_all:'See all',
+    persian:'Persian',cafe:'Café',health:'Health',cinema:'Cinema',
+    home:'Home',explore:'Explore',support:'Support',settings:'Settings',
+    your_membership:'Your membership',gold:'Gold',expires_45:'Expires in 45 days',
+    '215_days_used':'215 days used','45_remain':'45 remaining',
+    coupons_used:'Coupons used',toman_saved:'Toman saved',family_slots:'Family slots',
+    family_sharing:'Family sharing',active:'Active',pending:'Pending',invite_member:'+ Invite member',
+    upgrade_plan:'Upgrade plan',silver:'Silver',per_year:'per year',current_plan:'Current plan',
+    platinum:'Platinum',renew_membership:'Renew membership',
+    feat_500:'500+ active offers',feat_2fam:'Up to 2 family members',
+    feat_800:'800+ active offers',feat_3fam:'Up to 3 family members',feat_bogo:'BOGO at most venues',
+    feat_1200:'1,200+ offers incl. hotels',feat_vip:'VIP support',
+    all:'All',restaurants:'Restaurants',cafes:'Cafés',entertainment:'Entertainment',shopping:'Shopping',
+    change:'Change',search_placeholder:'Restaurants, cafés…',
+    persian_intl:'Persian & International',cafe_beverages:'Café & Beverages',health_beauty:'Health & Beauty',japanese:'Japanese',
+    open_now:'Open now',offers:'Offers','2_active':'2 active',
+    bogo_main:'Buy 1 Get 1 Free – Main course',min_250:'Min. 250,000 T · Weekdays only',
+    pct30_starters:'30% off starters & desserts',max2_items:'Max 2 items · All week',
+    discount:'Discount',location_hours:'Location & Hours',
+    hours_detail:'Sat–Thu 12:00–23:30 · Fri 14:00–00:00',
+    parking:'Private parking · Wheelchair accessible',menu:'Menu',reviews:'Reviews',
+    grilled_lamb:'Grilled Lamb',chicken_kebab:'Chicken Kebab',ghormeh:'Ghormeh Sabzi',saffron_rice:'Saffron Rice',
+    review1:'Food was excellent, service was flawless. The BOGO coupon made it even better.',
+    review2:'Great atmosphere and food. The Venus offer proved its value.',
+    back:'Back',how_it_works:'How it works',
+    rule1:'Order one main course and get a second of equal or lower value free.',
+    rule2:'Minimum spend: 250,000 Toman',rule3:'Valid Saturday to Thursday only',
+    rule4:'Cannot be combined with other offers',rule5:'Merchant must verify before discount is applied',
+    uses_remaining:'Uses remaining',redeem_now:'Redeem now',
+    pin_code:'PIN Code',qr_code:'QR Code',ask_cashier:'Ask the cashier for a 4-digit PIN',
+    confirm_redeem:'Confirm & redeem',offer_redeemed:'Offer redeemed!',saved_today:'saved today',
+    added_to_savings:'Added to your savings. Enjoy your meal.',done:'Done',
+    invalid_pin:'Invalid PIN',ask_cashier_again:'Ask the cashier to check the code and try again.',try_again:'Try again',
+    show_cashier:'Show this to the cashier to apply your offer',scan_cashier_code:'Scan cashier\'s code instead',
+    coupons_used:'Coupons used',venues:'Venues visited',gold_membership_renewal:'Gold membership renewal',
+    referral_code:'Referral code',earn_per_invite:'Earn 50,000 T for each friend who joins',copy_code:'Copy code',
+    saved_merchants:'Saved merchants',
+    live_chat:'Live chat',instant_reply:'Instant reply',submit_ticket:'Submit ticket',track_issue:'Track an issue',
+    report:'Report',coupon_issue:'Coupon issue',common_questions:'Common questions',notifications:'Notifications',
+    mark_all_read:'Mark all read',
+    notif1_title:'Membership expires in 45 days',notif1_sub:'Renew now and get 10% off your next plan.',
+    notif2_title:'New offer at Ariyana Restaurant',notif2_sub:'A new BOGO offer is now available.',
+    notif3_title:'Negar accepted your invite',notif3_sub:'She joined as a family member.',yesterday:'Yesterday',
+    account:'Account',gold_45days:'Gold · 45 days left','23_coupons':'23 coupons · 8.2M T saved',
+    profile:'Profile',name_phone_email:'Name, phone, email',preferences:'Preferences',city:'City',
+    language:'Language',lang_sub:'All text will switch immediately',offers_notifs:'Offer alerts',
+    expiry_notifs:'Expiry reminders',nearby_notifs:'Nearby offers',about:'About',terms:'Terms & Privacy',
+    version:'Version',sign_out:'Sign out',
+    select_city:'Select city',city_sub:'Offers update based on your city',
+    tehran:'Tehran',isfahan:'Isfahan',shiraz:'Shiraz',mashhad:'Mashhad',tabriz:'Tabriz',
+    // toasts
+    invite_sent:'Invite sent',plan_selected:'Plan selected',renewed:'Membership renewed ✓',
+    link_copied:'Link copied',code_copied:'Code copied',reported:'Report submitted',
+    ticket_submitted:'Ticket submitted',chat_opening:'Opening chat…',faq_opening:'Opening FAQ…',
+    all_read:'All notifications read',scanning:'Opening scanner…',profile_edit:'Edit profile',
+    terms_opening:'Opening terms…'
+  },
+  fa: {
+    venus:'باشگاه ونوس',auth_title:'خوش آمدید',auth_sub:'وارد حساب خود شوید',
+    email_phone:'ایمیل یا موبایل',continue:'ادامه',or:'یا',use_password:'ورود با رمز عبور',
+    create_account:'ایجاد حساب',enter_code:'کد تأیید را وارد کنید',code_sent_to:'کد ارسال شده به',
+    resend_in:'ارسال مجدد در',verify:'تأیید',change_number:'→ تغییر شماره',
+    good_morning:'صبح بخیر',gold_membership:'عضویت طلایی',expires_in:'۴۵ روز تا انقضا',
+    renew:'تمدید',total_saved:'کل صرفه‌جویی',toman:'تومان · امسال',quick_actions:'دسترسی سریع',
+    browse:'جستجو',membership:'عضویت',history:'تاریخچه',saved:'ذخیره‌ها',
+    featured_offer:'پیشنهاد ویژه',bogo_offer:'یک بگیر یکی رایگان',main_course:'غذای اصلی · ایرانی و بین‌المللی',
+    save_up:'تا ۳۵۰٬۰۰۰ تومان صرفه‌جویی',nearby:'نزدیک شما',see_all:'همه',
+    persian:'ایرانی',cafe:'کافه',health:'سلامت',cinema:'سینما',
+    home:'خانه',explore:'کشف',support:'پشتیبانی',settings:'تنظیمات',
+    your_membership:'عضویت شما',gold:'طلایی',expires_45:'۴۵ روز تا انقضا',
+    '215_days_used':'۲۱۵ روز استفاده شده','45_remain':'۴۵ روز باقی مانده',
+    coupons_used:'کوپن استفاده شده',toman_saved:'تومان صرفه‌جویی',family_slots:'جای خانواده',
+    family_sharing:'اشتراک خانوادگی',active:'فعال',pending:'در انتظار',invite_member:'+ دعوت عضو',
+    upgrade_plan:'ارتقاء پلن',silver:'نقره‌ای',per_year:'سالانه',current_plan:'پلن فعلی',
+    platinum:'پلاتینیوم',renew_membership:'تمدید عضویت',
+    feat_500:'بیش از ۵۰۰ پیشنهاد فعال',feat_2fam:'تا ۲ عضو خانوادگی',
+    feat_800:'بیش از ۸۰۰ پیشنهاد فعال',feat_3fam:'تا ۳ عضو خانوادگی',feat_bogo:'BOGO در اکثر مکان‌ها',
+    feat_1200:'بیش از ۱۲۰۰ پیشنهاد شامل هتل',feat_vip:'پشتیبانی VIP',
+    all:'همه',restaurants:'رستوران',cafes:'کافه',entertainment:'سرگرمی',shopping:'خرید',
+    change:'تغییر',search_placeholder:'رستوران، کافه...',
+    persian_intl:'ایرانی و بین‌المللی',cafe_beverages:'کافه و نوشیدنی',health_beauty:'سلامت و زیبایی',japanese:'ژاپنی',
+    open_now:'باز است',offers:'پیشنهادها','2_active':'۲ فعال',
+    bogo_main:'یک بخر یکی رایگان – غذای اصلی',min_250:'حداقل خرید ۲۵۰٬۰۰۰ ت · روزهای هفته',
+    pct30_starters:'۳۰٪ تخفیف پیش‌غذا و دسر',max2_items:'حداکثر ۲ آیتم · تمام روزها',
+    discount:'تخفیف',location_hours:'آدرس و ساعات',
+    hours_detail:'شنبه تا چهارشنبه ۱۲:۰۰–۲۳:۳۰ · پنجشنبه ۱۴:۰۰–۰۰:۰۰',
+    parking:'پارکینگ اختصاصی · دسترسی معلولان',menu:'منو',reviews:'نظرات',
+    grilled_lamb:'بره گریل شده',chicken_kebab:'کباب مرغ',ghormeh:'قورمه سبزی',saffron_rice:'برنج زعفرانی',
+    review1:'غذا عالی بود و خدمات بی‌نقص. کوپن BOGO ارزشمند بود.',
+    review2:'محیط دلنشین و غذا خوشمزه. پیشنهاد ونوس ارزشش را ثابت کرد.',
+    back:'بازگشت',how_it_works:'نحوه استفاده',
+    rule1:'یک غذای اصلی سفارش دهید و غذای دوم با ارزش مساوی یا کمتر رایگان است.',
+    rule2:'حداقل خرید: ۲۵۰٬۰۰۰ تومان',rule3:'فقط شنبه تا چهارشنبه معتبر است',
+    rule4:'قابل ترکیب با سایر تخفیف‌ها نیست',rule5:'قبل از اعمال تخفیف، صندوق‌دار باید تأیید کند',
+    uses_remaining:'استفاده باقی مانده',redeem_now:'استفاده کن',
+    pin_code:'کد پین',qr_code:'کد QR',ask_cashier:'کد ۴ رقمی را از صندوق‌دار بخواهید',
+    confirm_redeem:'تأیید و استفاده',offer_redeemed:'کوپن استفاده شد!',saved_today:'صرفه‌جویی امروز',
+    added_to_savings:'به گزارش صرفه‌جویی شما اضافه شد. نوش جان!',done:'تمام',
+    invalid_pin:'کد نامعتبر است',ask_cashier_again:'از صندوق‌دار بخواهید کد را بررسی کند.',try_again:'دوباره امتحان کن',
+    show_cashier:'این را به صندوق‌دار نشان دهید تا تخفیف اعمال شود',scan_cashier_code:'اسکن کد صندوق‌دار',
+    venues:'مکان بازدیدشده',gold_membership_renewal:'تمدید عضویت طلایی',
+    referral_code:'کد معرفی',earn_per_invite:'به ازای هر دوست ۵۰٬۰۰۰ تومان هدیه بگیرید',copy_code:'کپی کد',
+    saved_merchants:'مکان‌های ذخیره شده',
+    live_chat:'چت آنلاین',instant_reply:'پاسخ فوری',submit_ticket:'ثبت تیکت',track_issue:'پیگیری مشکل',
+    report:'گزارش تخلف',coupon_issue:'مشکل کوپن',common_questions:'سوالات متداول',notifications:'اعلان‌ها',
+    mark_all_read:'خواندن همه',
+    notif1_title:'عضویت شما ۴۵ روز دیگر منقضی می‌شود',notif1_sub:'همین الان تمدید کنید و ۱۰٪ تخفیف بگیرید.',
+    notif2_title:'پیشنهاد جدید در رستوران آریانا',notif2_sub:'یک پیشنهاد BOGO جدید اضافه شده است.',
+    notif3_title:'نگار دعوت شما را پذیرفت',notif3_sub:'او به عنوان عضو خانوادگی پیوست.',yesterday:'دیروز',
+    account:'حساب کاربری',gold_45days:'طلایی · ۴۵ روز باقی‌مانده','23_coupons':'۲۳ کوپن · ۸.۲ میلیون تومان صرفه‌جویی',
+    profile:'پروفایل',name_phone_email:'نام، موبایل، ایمیل',preferences:'ترجیحات',city:'شهر',
+    language:'زبان',lang_sub:'تمام متون فوراً تغییر می‌کنند',offers_notifs:'اعلان پیشنهادها',
+    expiry_notifs:'یادآوری انقضا',nearby_notifs:'پیشنهادهای نزدیک',about:'درباره',terms:'قوانین و حریم خصوصی',
+    version:'نسخه',sign_out:'خروج',
+    select_city:'انتخاب شهر',city_sub:'پیشنهادها بر اساس شهر شما به‌روز می‌شوند',
+    tehran:'تهران',isfahan:'اصفهان',shiraz:'شیراز',mashhad:'مشهد',tabriz:'تبریز',
+    invite_sent:'دعوت‌نامه ارسال شد',plan_selected:'پلن انتخاب شد',renewed:'عضویت تمدید شد ✓',
+    link_copied:'لینک کپی شد',code_copied:'کد کپی شد',reported:'گزارش ثبت شد',
+    ticket_submitted:'تیکت ثبت شد',chat_opening:'در حال باز شدن چت…',faq_opening:'در حال باز شدن FAQ…',
+    all_read:'همه اعلان‌ها خوانده شدند',scanning:'در حال باز شدن اسکنر…',
+    profile_edit:'ویرایش پروفایل',terms_opening:'در حال باز شدن قوانین…'
+  }
+};
+
+// ── STATE ─────────────────────────────────────────────────────
+let lang = 'en';
+let currentCity = 'Tehran';
+let screenHistory = [];
+let isFaved = false;
+let otpSec = 120;
+let timerSec = 5*3600+42*60+18;
+
+// ── LANG ──────────────────────────────────────────────────────
+function setLang(l) {
+  lang = l;
+  const isRTL = l === 'fa';
+  document.documentElement.lang = l;
+  document.querySelectorAll('.screen,.modal-sheet').forEach(el => {
+    if (isRTL) el.classList.add('rtl'); else el.classList.remove('rtl');
+  });
+  // Translate all data-k elements
+  document.querySelectorAll('[data-k]').forEach(el => {
+    const k = el.getAttribute('data-k');
+    if (S[l][k] !== undefined) el.textContent = S[l][k];
+  });
+  // Placeholders
+  document.querySelectorAll('[data-placeholder-k]').forEach(el => {
+    const k = el.getAttribute('data-placeholder-k');
+    if (S[l][k]) el.placeholder = S[l][k];
+  });
+  // Update city display
+  updateCityDisplay();
+  // Update lang selector
+  document.getElementById('lang-display').textContent = l === 'en' ? 'English' : 'فارسی';
+  document.getElementById('lang-check-en').textContent = l === 'en' ? '✓' : '';
+  document.getElementById('lang-check-fa').textContent = l === 'fa' ? '✓' : '';
+  // Navigate
+  screenHistory = [];
+  go('auth');
+}
+
+// ── NAV ───────────────────────────────────────────────────────
+function go(id) {
+  const cur = document.querySelector('.screen.on');
+  if (cur && cur.id !== id) screenHistory.push(cur.id);
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('on'); el.querySelector('.scroll')?.scrollTo(0,0); }
+}
+
+function goBack() {
+  const prev = screenHistory.pop();
+  if (prev) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+    document.getElementById(prev)?.classList.add('on');
+  } else go('home');
+}
+
+function navTo(id) {
+  screenHistory = [];
+  go(id);
+}
+
+// ── CITY ──────────────────────────────────────────────────────
+const cityNames = {
+  Tehran:{en:'Tehran',fa:'تهران'},Isfahan:{en:'Isfahan',fa:'اصفهان'},
+  Shiraz:{en:'Shiraz',fa:'شیراز'},Mashhad:{en:'Mashhad',fa:'مشهد'},Tabriz:{en:'Tabriz',fa:'تبریز'}
+};
+function updateCityDisplay() {
+  const c = cityNames[currentCity] || cityNames.Tehran;
+  const d = c[lang] || c.en;
+  const el = document.getElementById('city-display');
+  const el2 = document.getElementById('settings-city');
+  if (el) el.textContent = d;
+  if (el2) el2.textContent = d;
+}
+function setCity(el, key, faName) {
+  currentCity = key;
+  document.querySelectorAll('[id^="city-check-"]').forEach(e => e.textContent = '');
+  const chk = document.getElementById('city-check-'+key);
+  if (chk) chk.textContent = '✓';
+  updateCityDisplay();
+  setTimeout(() => {
+    closeModal({target:document.getElementById('city-modal')},'city-modal');
+    toast('city_changed_'+key);
+  }, 250);
+}
+
+// ── MODAL ─────────────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('on'); }
+function closeModal(e, id) { if (e.target === document.getElementById(id)) document.getElementById(id).classList.remove('on'); }
+
+// ── PILL ──────────────────────────────────────────────────────
+function pill(el) {
+  document.querySelectorAll('#discover .pill').forEach(p => p.classList.remove('on'));
+  el.classList.add('on');
+}
+
+// ── FAV ───────────────────────────────────────────────────────
+function toggleFav() {
+  isFaved = !isFaved;
+  document.getElementById('fav-btn').textContent = isFaved ? '♥' : '♡';
+  toast(isFaved ? 'saved_merchant' : 'removed_merchant');
+}
+
+// ── TOGGLE ────────────────────────────────────────────────────
+function toggleEl(id) { document.getElementById(id).classList.toggle('on'); }
+
+// ── REDEEM ────────────────────────────────────────────────────
+function redeemTab(t) {
+  document.getElementById('tab-pin').classList.toggle('on', t==='pin');
+  document.getElementById('tab-qr').classList.toggle('on', t==='qr');
+  document.getElementById('pin-section').classList.toggle('on', t==='pin');
+  document.getElementById('qr-section').classList.toggle('on', t==='qr');
+}
+
+function attemptRedeem() {
+  const pins = ['pc1','pc2','pc3','pc4'].map(i => document.getElementById(i).value);
+  const full = pins.join('');
+  document.getElementById('success-box').classList.remove('on');
+  document.getElementById('error-box').classList.remove('on');
+  if (full.length === 4 && full !== '0000') {
+    document.getElementById('success-box').classList.add('on');
+  } else {
+    document.getElementById('error-box').classList.add('on');
+  }
+}
+
+function resetRedeem() {
+  ['pc1','pc2','pc3','pc4'].forEach(i => document.getElementById(i).value = '');
+  document.getElementById('error-box').classList.remove('on');
+  document.getElementById('pc1').focus();
+}
+
+// ── TOAST ─────────────────────────────────────────────────────
+let toastT;
+function toast(key) {
+  const t = document.getElementById('toast');
+  const msg = S[lang][key] || key;
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove('on'), 2600);
+}
+
+// ── OTP TIMER ─────────────────────────────────────────────────
+function pad(n){ return n<10?'0'+n:n; }
+setInterval(()=>{
+  if(otpSec>0) otpSec--;
+  const el=document.getElementById('otp-timer');
+  if(el) el.textContent=pad(Math.floor(otpSec/60))+':'+pad(otpSec%60);
+},1000);
+
+// ── DEAL TIMER ────────────────────────────────────────────────
+setInterval(()=>{
+  if(timerSec>0) timerSec--;
+  const el=document.getElementById('home-timer');
+  if(el) el.textContent=pad(Math.floor(timerSec/3600))+':'+pad(Math.floor((timerSec%3600)/60))+':'+pad(timerSec%60);
+},1000);
+
+// ── OTP AUTO ADVANCE ──────────────────────────────────────────
+document.querySelectorAll('.otp-cell').forEach((c,i,a)=>{
+  c.addEventListener('input',()=>{ if(c.value&&i<a.length-1) a[i+1].focus(); });
+});
+document.querySelectorAll('.pin-cell').forEach((c,i,a)=>{
+  c.addEventListener('input',()=>{ if(c.value&&i<a.length-1) a[i+1].focus(); });
+});
+</script>
+</body>
+</html>
