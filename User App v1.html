@@ -1,6 +1,3 @@
-bash
-
-cat > /mnt/user-data/outputs/venus-club-v3.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -63,9 +60,32 @@ body{
 }
 
 /* ── SCREEN SYSTEM ── */
-.screen{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg);overflow:hidden}
-.screen.on{display:flex}
-.scroll{overflow-y:auto;overflow-x:hidden;flex:1;-webkit-overflow-scrolling:touch;padding-bottom:16px}
+.screen{
+  position:absolute;
+  inset:0;
+  display:none;
+  flex-direction:column;
+  background:var(--bg);
+  overflow:hidden;
+  height:100%;
+  width:100%;
+  will-change:transform, opacity;
+}
+.screen.on{
+  display:flex;
+  animation:fadeIn .2s ease;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(4px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.scroll{
+  overflow-y:auto;
+  overflow-x:hidden;
+  flex:1;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:16px;
+}
 .scroll::-webkit-scrollbar{display:none}
 
 /* ═══════════════════════════════════════════════
@@ -73,7 +93,8 @@ body{
 ═══════════════════════════════════════════════ */
 #lang-pick{
   background:var(--surface);
-  align-items:center;justify-content:center;
+  align-items:center;
+  justify-content:center;
   gap:0;
 }
 .lang-bg{
@@ -1058,7 +1079,7 @@ body{
           <div class="mem-badge mem-badge-warn"><i class="fa-solid fa-clock-rotate-left" style="font-size:9px"></i> <span data-k="expires_45">45 days</span></div>
         </div>
         <div class="mem-stats">
-          <div class="mem-stat"><div class="mem-stat-val">23</div><div class="mem-stat-lbl" data-k="coupons">Coupons</div></div>
+          <div class="mem-stat"><div class="mem-stat-val">23</div><div class="mem-stat-lbl" data-k="Tokens">Tokens</div></div>
           <div class="mem-stat"><div class="mem-stat-val">8.2M</div><div class="mem-stat-lbl" data-k="saved_t">Saved (T)</div></div>
           <div class="mem-stat"><div class="mem-stat-val">2/3</div><div class="mem-stat-lbl" data-k="family">Family</div></div>
         </div>
@@ -1099,7 +1120,7 @@ body{
       </div>
       <div class="near-card" onclick="go('merchant')">
         <div class="near-img" style="background:linear-gradient(135deg,#3d1a00,#6b2e00)">☕</div>
-        <div class="near-body"><div class="near-name">Café Rosha</div><div class="near-cat" data-k="cafe">Café</div><div class="near-row"><span class="near-rating">★ 4.8</span><span class="near-chip">30%</span></div></div>
+        <div class="near-body"><div class="near-name">Café Rosha</div><div class="near-cat" data-k="cafe">Café</div><div class="near-row"><span class="near-rating">★ 4.8</span><span class="near-chip">25%</span></div></div>
       </div>
       <div class="near-card" onclick="go('merchant')">
         <div class="near-img" style="background:linear-gradient(135deg,#003d22,#006b3c)">💆</div>
@@ -1144,7 +1165,7 @@ body{
   <div class="scroll">
     <div class="mem-scroll">
       <div class="stat-row">
-        <div class="stat-box"><div class="summ-ic">🎫</div><div class="stat-val">23</div><div class="stat-lbl" data-k="coupons_used">Coupons used</div></div>
+        <div class="stat-box"><div class="summ-ic">🎫</div><div class="stat-val">23</div><div class="stat-lbl" data-k="Tokens_used">Tokens used</div></div>
         <div class="stat-box"><div class="summ-ic">💰</div><div class="stat-val">8.2M</div><div class="stat-lbl" data-k="t_saved">T saved</div></div>
         <div class="stat-box"><div class="summ-ic">👨‍👩‍👧</div><div class="stat-val">2/3</div><div class="stat-lbl" data-k="family_slots">Family</div></div>
       </div>
@@ -1174,7 +1195,7 @@ body{
           <div class="plan-opt" onclick="toast('plan_silver')">
             <div class="plan-opt-top">
               <div><div class="plan-name">🥈 <span data-k="silver">Silver</span></div><div class="plan-name-sub" data-k="per_year">per year</div></div>
-              <div><div class="plan-price">499,000</div><div class="plan-period" data-k="toman">Toman</div></div>
+              <div><div class="plan-price"></div><div class="plan-period" data-k="toman"></div></div>
             </div>
             <div class="plan-feats">
               <div class="plan-feat"><i class="fa-solid fa-check plan-feat-ic"></i> <span data-k="feat_500">500+ active offers</span></div>
@@ -1185,7 +1206,7 @@ body{
             <div class="plan-opt-badge" data-k="current">Current Plan</div>
             <div class="plan-opt-top">
               <div><div class="plan-name">✦ <span data-k="gold">Gold</span></div><div class="plan-name-sub" data-k="per_year">per year</div></div>
-              <div><div class="plan-price">899,000</div><div class="plan-period" data-k="toman">Toman</div></div>
+              <div><div class="plan-price"></div><div class="plan-period" data-k="toman"></div></div>
             </div>
             <div class="plan-feats">
               <div class="plan-feat"><i class="fa-solid fa-check plan-feat-ic"></i> <span data-k="feat_800">800+ active offers</span></div>
@@ -1195,13 +1216,9 @@ body{
           </div>
           <div class="plan-opt" onclick="toast('plan_plat')">
             <div class="plan-opt-top">
-              <div><div class="plan-name">💎 <span data-k="platinum">Platinum</span></div><div class="plan-name-sub" data-k="per_year">per year</div></div>
-              <div><div class="plan-price">1,299,000</div><div class="plan-period" data-k="toman">Toman</div></div>
-            </div>
+               </div>
             <div class="plan-feats">
-              <div class="plan-feat"><i class="fa-solid fa-check plan-feat-ic"></i> <span data-k="feat_1200">1,200+ offers incl. hotels</span></div>
-              <div class="plan-feat"><i class="fa-solid fa-check plan-feat-ic"></i> <span data-k="feat_3fam">Up to 3 family members</span></div>
-              <div class="plan-feat"><i class="fa-solid fa-check plan-feat-ic"></i> <span data-k="feat_vip">VIP support</span></div>
+              
             </div>
           </div>
           <button class="btn btn-primary" style="margin-top:4px" onclick="toast('renewed')" data-k="renew_now">Renew now →</button>
@@ -1247,7 +1264,7 @@ body{
       </div>
       <div class="merch-row" onclick="go('merchant')">
         <div class="merch-img" style="background:linear-gradient(135deg,#3d1a00,#6b2e00)">☕</div>
-        <div class="merch-info"><div class="merch-name">Café Rosha</div><div class="merch-sub" data-k="cafe_bev">Café & Beverages</div><div class="merch-meta"><span class="merch-rating">★ 4.8</span><span class="merch-offer-chip">30% off</span></div></div>
+        <div class="merch-info"><div class="merch-name">Café Rosha</div><div class="merch-sub" data-k="cafe_bev">Café & Beverages</div><div class="merch-meta"><span class="merch-rating">★ 4.8</span><span class="merch-offer-chip">25% off</span></div></div>
         <div class="merch-arrow"><i class="fa-solid fa-chevron-left"></i></div>
       </div>
       <div class="merch-row" onclick="go('merchant')">
@@ -1309,7 +1326,7 @@ body{
             <div class="offer-item-chips"><span class="chip chip-bogo">BOGO</span><span class="chip chip-ok" data-k="active">Active</span></div>
           </div>
           <div class="offer-row-item" onclick="go('offer-detail')">
-            <div class="offer-item-top"><div class="offer-item-name" data-k="pct30_starters">30% off starters & desserts</div><div class="offer-item-discount">30%</div></div>
+            <div class="offer-item-top"><div class="offer-item-name" data-k="pct30_starters">25% off starters & desserts</div><div class="offer-item-discount">25%</div></div>
             <div class="offer-item-rule" data-k="max_2_items">Max 2 items · All week</div>
             <div class="offer-item-chips"><span class="chip chip-pct" data-k="discount">Discount</span><span class="chip chip-ok" data-k="active">Active</span></div>
           </div>
@@ -1372,8 +1389,7 @@ body{
         <div class="rule-item"><div class="rule-dot"></div><span data-k="rule1">Order one main course and get a second of equal or lower value free.</span></div>
         <div class="rule-item"><div class="rule-dot"></div><span data-k="rule2">Minimum spend: 250,000 Toman</span></div>
         <div class="rule-item"><div class="rule-dot"></div><span data-k="rule3">Valid Saturday to Thursday only</span></div>
-        <div class="rule-item"><div class="rule-dot"></div><span data-k="rule4">Cannot be combined with other offers</span></div>
-        <div class="rule-item"><div class="rule-dot"></div><span data-k="rule5">Merchant must verify before discount is applied</span></div>
+                <div class="rule-item"><div class="rule-dot"></div><span data-k="rule5">Merchant must verify before discount is applied</span></div>
         <div class="uses-box">
           <div class="uses-lbl" data-k="uses_remaining">Uses remaining</div>
           <div class="uses-val">2 of 4</div>
@@ -1461,13 +1477,13 @@ body{
   </div>
   <div class="summ-cards">
     <div class="summ-card"><div class="summ-ic">💰</div><div class="summ-val">8.2M</div><div class="summ-lbl" data-k="total_saved_t">Total saved (T)</div></div>
-    <div class="summ-card"><div class="summ-ic">🎫</div><div class="summ-val">23</div><div class="summ-lbl" data-k="coupons_used">Coupons used</div></div>
+    <div class="summ-card"><div class="summ-ic">🎫</div><div class="summ-val">23</div><div class="summ-lbl" data-k="Tokens_used">Tokens used</div></div>
     <div class="summ-card"><div class="summ-ic">🏪</div><div class="summ-val">11</div><div class="summ-lbl" data-k="venues_visited">Venues visited</div></div>
   </div>
   <div class="scroll">
     <div class="hist-list">
       <div class="hist-item"><div class="hist-ic hi-save"><i class="fa-solid fa-check"></i></div><div class="hist-info"><div class="hist-title-txt">Ariyana · BOGO</div><div class="hist-date">Jun 15, 2024</div></div><div class="hist-amt ha-green">+350,000</div></div>
-      <div class="hist-item"><div class="hist-ic hi-save"><i class="fa-solid fa-check"></i></div><div class="hist-info"><div class="hist-title-txt">Café Rosha · 30%</div><div class="hist-date">Jun 10, 2024</div></div><div class="hist-amt ha-green">+180,000</div></div>
+      <div class="hist-item"><div class="hist-ic hi-save"><i class="fa-solid fa-check"></i></div><div class="hist-info"><div class="hist-title-txt">Café Rosha · 25%</div><div class="hist-date">Jun 10, 2024</div></div><div class="hist-amt ha-green">+180,000</div></div>
       <div class="hist-item"><div class="hist-ic hi-save"><i class="fa-solid fa-check"></i></div><div class="hist-info"><div class="hist-title-txt">Aramesh Spa · 25%</div><div class="hist-date">Jun 5, 2024</div></div><div class="hist-amt ha-green">+250,000</div></div>
       <div class="hist-item"><div class="hist-ic hi-save"><i class="fa-solid fa-check"></i></div><div class="hist-info"><div class="hist-title-txt">Parsian Cinema · BOGO</div><div class="hist-date">Jun 1, 2024</div></div><div class="hist-amt ha-green">+120,000</div></div>
       <div class="hist-item"><div class="hist-ic hi-pay"><i class="fa-solid fa-arrow-down"></i></div><div class="hist-info"><div class="hist-title-txt" data-k="gold_renewal">Gold membership renewal</div><div class="hist-date">Aug 22, 2023</div></div><div class="hist-amt ha-red">-899,000</div></div>
@@ -1583,7 +1599,7 @@ body{
       <div class="settings-sec-label" data-k="account">Account</div>
       <div class="menu-list">
         <div class="menu-row" onclick="go('membership')"><div class="menu-row-ic mri-orange"><i class="fa-solid fa-id-card"></i></div><div class="menu-row-body"><div class="menu-row-lb" data-k="membership">Membership</div><div class="menu-row-sub" data-k="gold_45">Gold · 45 days left</div></div><div class="menu-row-right"><i class="fa-solid fa-chevron-left"></i></div></div>
-        <div class="menu-row" onclick="go('history')"><div class="menu-row-ic mri-green"><i class="fa-solid fa-receipt"></i></div><div class="menu-row-body"><div class="menu-row-lb" data-k="history">History</div><div class="menu-row-sub" data-k="coupon_count">23 coupons · 8.2M T saved</div></div><div class="menu-row-right"><i class="fa-solid fa-chevron-left"></i></div></div>
+        <div class="menu-row" onclick="go('history')"><div class="menu-row-ic mri-green"><i class="fa-solid fa-receipt"></i></div><div class="menu-row-body"><div class="menu-row-lb" data-k="history">History</div><div class="menu-row-sub" data-k="coupon_count">23 Tokens · 8.2M T saved</div></div><div class="menu-row-right"><i class="fa-solid fa-chevron-left"></i></div></div>
         <div class="menu-row" onclick="toast('profile_edit')"><div class="menu-row-ic mri-sky"><i class="fa-solid fa-user-pen"></i></div><div class="menu-row-body"><div class="menu-row-lb" data-k="profile">Profile</div><div class="menu-row-sub" data-k="edit_details">Name, phone, email</div></div><div class="menu-row-right"><i class="fa-solid fa-chevron-left"></i></div></div>
       </div>
     </div>
@@ -1660,7 +1676,7 @@ en:{
   verification:'Verification',enter_code:'Enter the code',
   code_sent:'Code sent to',resend_in:'Resend in',verify:'Verify',change_number:'← Change number',
   good_morning:'Good morning',gold_membership:'Gold Membership',
-  expires_45:'45 days',saved_t:'Saved (T)',coupons:'Coupons',family:'Family',
+  expires_45:'45 days',saved_t:'Saved (T)',Tokens:'Tokens',family:'Family',
   total_saved:'Total saved',t_unit:'T ',this_year:'+2.1M this year',
   quick_actions:'Quick actions',browse:'Browse',membership:'Membership',history:'History',saved:'Saved',
   featured_offer:'Featured offer',bogo:'Buy 1 Get 1 Free',
@@ -1670,7 +1686,7 @@ en:{
   home:'Home',explore:'Explore',support:'Support',settings:'Settings',
   your_membership:'Your membership',gold:'Gold',expires_in_45:'Expires in 45 days',
   '215_used':'215 days used','45_left':'45 left',
-  coupons_used:'Coupons used',t_saved:'T saved',family_slots:'Family',
+  Tokens_used:'Tokens used',t_saved:'T saved',family_slots:'Family',
   family_sharing:'Family Sharing',active:'Active',pending:'Pending',
   invite_member:'Invite member',upgrade:'Upgrade Plan',
   silver:'Silver',per_year:'per year',current:'Current Plan',
@@ -1683,7 +1699,7 @@ en:{
   persian_intl:'Persian & International',cafe_bev:'Café & Beverages',health_beauty:'Health & Beauty',japanese:'Japanese',
   open_now:'Open now',offers:'Offers',
   bogo_main_course:'Buy 1 Get 1 Free – Main Course',
-  min_250k:'Min. 250,000 T · Weekdays',pct30_starters:'30% off starters & desserts',
+  min_250k:'Min. 250,000 T · Weekdays',pct30_starters:'25% off starters & desserts',
   max_2_items:'Max 2 items · All week',discount:'Discount',
   location_hours:'Location & Hours',hours_detail:'Sat–Thu 12:00–23:30',
   parking:'Private parking available',menu:'Menu',reviews:'Reviews',
@@ -1711,7 +1727,7 @@ en:{
   notif2:'New offer at Ariyana Restaurant',notif2_sub:'A new BOGO is now available for main course.',
   notif3:'Negar accepted your invite',notif3_sub:'She joined as a family member.',yesterday:'Yesterday',
   settings:'Settings',account:'Account',gold_45:'Gold · 45 days left',
-  coupon_count:'23 coupons · 8.2M T saved',profile:'Profile',edit_details:'Name, phone, email',
+  coupon_count:'23 Tokens · 8.2M T saved',profile:'Profile',edit_details:'Name, phone, email',
   preferences:'Preferences',city:'City',language:'Language',lang_modal_sub:'All text switches immediately',
   offer_alerts:'Offer alerts',expiry_reminders:'Expiry reminders',nearby_offers:'Nearby offers',
   about:'About',terms:'Terms & Privacy',version:'Version',sign_out:'Sign out',
@@ -1732,7 +1748,7 @@ fa:{
   verification:'تأیید هویت',enter_code:'کد تأیید را وارد کنید',
   code_sent:'کد ارسال شده به',resend_in:'ارسال مجدد در',verify:'تأیید',change_number:'→ تغییر شماره',
   good_morning:'صبح بخیر',gold_membership:'عضویت طلایی',
-  expires_45:'۴۵ روز',saved_t:'صرفه‌جویی (ت)',coupons:'کوپن',family:'خانواده',
+  expires_45:'۴۵ روز',saved_t:'صرفه‌جویی (ت)',Tokens:'بُن',family:'خانواده',
   total_saved:'کل صرفه‌جویی',t_unit:'ت ',this_year:'+۲.۱ میلیون امسال',
   quick_actions:'دسترسی سریع',browse:'جستجو',membership:'عضویت',history:'تاریخچه',saved:'ذخیره‌ها',
   featured_offer:'پیشنهاد ویژه',bogo:'یک بخر یکی رایگان',
@@ -1742,7 +1758,7 @@ fa:{
   home:'خانه',explore:'کشف',support:'پشتیبانی',settings:'تنظیمات',
   your_membership:'عضویت شما',gold:'طلایی',expires_in_45:'۴۵ روز تا انقضا',
   '215_used':'۲۱۵ روز استفاده شده','45_left':'۴۵ روز باقی مانده',
-  coupons_used:'کوپن استفاده شده',t_saved:'تومان صرفه‌جویی',family_slots:'خانواده',
+  Tokens_used:'بُن استفاده شده',t_saved:'تومان صرفه‌جویی',family_slots:'خانواده',
   family_sharing:'اشتراک خانوادگی',active:'فعال',pending:'در انتظار',
   invite_member:'دعوت عضو',upgrade:'ارتقاء پلن',
   silver:'نقره‌ای',per_year:'سالانه',current:'پلن فعلی',
@@ -1760,15 +1776,15 @@ fa:{
   location_hours:'آدرس و ساعات',hours_detail:'شنبه تا چهارشنبه ۱۲:۰۰–۲۳:۳۰',
   parking:'پارکینگ اختصاصی',menu:'منو',reviews:'نظرات',
   grilled_lamb:'بره گریل شده',chicken_kebab:'کباب مرغ',ghormeh:'قورمه سبزی',saffron_rice:'برنج زعفرانی',
-  review1:'غذا عالی بود و خدمات بی‌نقص. کوپن BOGO واقعاً ارزشش را داشت.',
+  review1:'غذا عالی بود و خدمات بی‌نقص. بُن BOGO واقعاً ارزشش را داشت.',
   review2:'محیط دلنشین و غذا خوشمزه. پیشنهاد ونوس هر بار ارزشش را ثابت می‌کند.',
   how_it_works:'نحوه استفاده',
   rule1:'یک غذای اصلی سفارش دهید و غذای دوم با ارزش مساوی یا کمتر رایگان است.',
   rule2:'حداقل خرید: ۲۵۰٬۰۰۰ تومان',rule3:'فقط شنبه تا چهارشنبه معتبر است',
   rule4:'قابل ترکیب با سایر تخفیف‌ها نیست',rule5:'قبل از اعمال تخفیف تأیید صندوق‌دار الزامی است',
-  uses_remaining:'استفاده باقی مانده',redeem_now:'استفاده از کوپن',
+  uses_remaining:'استفاده باقی مانده',redeem_now:'استفاده از بُن',
   pin_code:'کد پین',qr_code:'کد QR',ask_cashier_pin:'کد ۴ رقمی را از صندوق‌دار بخواهید',
-  confirm_redeem:'تأیید و استفاده',offer_redeemed:'کوپن استفاده شد!',
+  confirm_redeem:'تأیید و استفاده',offer_redeemed:'بُن استفاده شد!',
   saved_today:'صرفه‌جویی امروز',enjoy_meal:'به پروفایل اضافه شد. نوش جان!',done:'تمام',
   invalid_pin:'کد نامعتبر است',check_with_cashier:'از صندوق‌دار بخواهید کد را بررسی کند.',try_again:'دوباره امتحان کن',
   show_to_cashier:'این را به صندوق‌دار نشان دهید',use_pin_instead:'استفاده از پین',
@@ -1777,13 +1793,13 @@ fa:{
   saved:'ذخیره‌ها',your_code:'کد معرفی شما',earn_per_friend:'به ازای هر دوست ۵۰٬۰۰۰ تومان هدیه',
   copy_code:'کپی کد',saved_merchants:'مکان‌های ذخیره شده',
   live_chat:'چت آنلاین',instant:'پاسخ فوری',submit_ticket:'ثبت تیکت',track_issue:'پیگیری مشکل',
-  report:'گزارش تخلف',coupon_issue:'مشکل کوپن',quick_answers:'سوالات متداول',
+  report:'گزارش تخلف',coupon_issue:'مشکل بُن',quick_answers:'سوالات متداول',
   notifications:'اعلان‌ها',mark_read:'خواندن همه',
   notif1:'عضویت شما ۴۵ روز دیگر منقضی می‌شود',notif1_sub:'همین الان تمدید کنید و ۱۰٪ تخفیف بگیرید.',
   notif2:'پیشنهاد جدید در رستوران آریانا',notif2_sub:'یک پیشنهاد BOGO جدید برای غذای اصلی اضافه شده.',
   notif3:'نگار دعوت شما را پذیرفت',notif3_sub:'او به عنوان عضو خانوادگی پیوست.',yesterday:'دیروز',
   settings:'تنظیمات',account:'حساب کاربری',gold_45:'طلایی · ۴۵ روز باقی‌مانده',
-  coupon_count:'۲۳ کوپن · ۸.۲ میلیون تومان صرفه‌جویی',profile:'پروفایل',edit_details:'نام، موبایل، ایمیل',
+  coupon_count:'۲۳ بُن · ۸.۲ میلیون تومان صرفه‌جویی',profile:'پروفایل',edit_details:'نام، موبایل، ایمیل',
   preferences:'ترجیحات',city:'شهر',language:'زبان',lang_modal_sub:'تمام متون فوراً تغییر می‌کنند',
   offer_alerts:'اعلان پیشنهادها',expiry_reminders:'یادآوری انقضا',nearby_offers:'پیشنهادهای نزدیک',
   about:'درباره',terms:'قوانین و حریم خصوصی',version:'نسخه',sign_out:'خروج',
@@ -1849,21 +1865,49 @@ function changeLang(l){
 }
 
 /* ────────────────────────────────
-   NAVIGATION
+   NAVIGATION - FIXED
 ──────────────────────────────── */
 function go(id){
   const cur=document.querySelector('.screen.on');
-  if(cur&&cur.id!==id) history.push(cur.id);
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  if(cur && cur.id !== id) {
+    history.push(cur.id);
+  }
+  
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  
   const el=document.getElementById(id);
-  if(el){el.classList.add('on');el.querySelector?.('.scroll')?.scrollTo(0,0);}
+  if(el){
+    el.classList.add('on');
+    // Reset scroll positions
+    const scrollEl = el.querySelector('.scroll');
+    if(scrollEl) scrollEl.scrollTop = 0;
+    // Reset any other scrollable containers
+    el.scrollTop = 0;
+    // Ensure the phone container stays in place
+    document.getElementById('app').scrollTop = 0;
+  }
 }
+
 function goBack(){
   const prev=history.pop();
-  if(prev){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(prev)?.classList.add('on');}
-  else go('home');
+  if(prev){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+    const el=document.getElementById(prev);
+    if(el){
+      el.classList.add('on');
+      const scrollEl = el.querySelector('.scroll');
+      if(scrollEl) scrollEl.scrollTop = 0;
+      el.scrollTop = 0;
+    }
+  } else {
+    go('home');
+  }
 }
-function navTo(id){history=[];go(id);}
+
+function navTo(id){
+  history=[];
+  go(id);
+}
 
 /* ────────────────────────────────
    CITY
@@ -1881,7 +1925,10 @@ function setCity(key){
   document.querySelectorAll('[id^="cc-"]').forEach(e=>e.textContent='');
   const el=document.getElementById('cc-'+key);if(el)el.textContent='✓';
   updateCity();
-  setTimeout(()=>{document.getElementById('city-modal').classList.remove('on');toast(CITIES[key]?.[lang]||key);},250);
+  setTimeout(()=>{
+    document.getElementById('city-modal').classList.remove('on');
+    toast(CITIES[key]?.[lang]||key);
+  },250);
 }
 
 /* ────────────────────────────────
@@ -1969,9 +2016,20 @@ document.querySelectorAll('.otp-cell').forEach((c,i,a)=>{
   if(!el)return;
   el.addEventListener('input',()=>{if(el.value&&i<arr.length-1)document.getElementById(arr[i+1]).focus();});
 });
+
+/* ────────────────────────────────
+   SET INITIAL STATE
+──────────────────────────────── */
+// Make sure home is not shown initially
+document.addEventListener('DOMContentLoaded', function() {
+  // Show language picker by default
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  document.getElementById('lang-pick').classList.add('on');
+  // Reset any scroll positions
+  document.querySelectorAll('.scroll').forEach(s => s.scrollTop = 0);
+  // Set initial language
+  applyLang();
+});
 </script>
 </body>
 </html>
-
-
-
