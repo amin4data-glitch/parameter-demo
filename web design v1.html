@@ -1,0 +1,2102 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تخفیف‌کار | پلتفرم هوشمند تخفیف و کوپن</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════════════════════════ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --orange: #FF6B35;
+      --orange-dark: #E8561F;
+      --orange-light: #FFF0EB;
+      --navy: #2B2D42;
+      --navy-mid: #3D4056;
+      --sky: #4CC9F0;
+      --sky-light: #EAF8FD;
+      --green: #06D6A0;
+      --green-light: #E6FAF5;
+      --red: #EF476F;
+      --bg: #F7F7FF;
+      --surface: #FFFFFF;
+      --line: #EAEAF5;
+      --ink: #1A1B2E;
+      --ink2: #5A5B75;
+      --ink3: #9899B0;
+      --shadow-sm: 0 2px 12px rgba(43, 45, 66, 0.07);
+      --shadow: 0 4px 24px rgba(43, 45, 66, 0.10);
+      --shadow-lg: 0 8px 40px rgba(43, 45, 66, 0.14);
+      --glass: rgba(255, 255, 255, 0.72);
+      --glass-border: rgba(255, 255, 255, 0.55);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --amber: #FFD166;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', 'Tahoma', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .app {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SCREEN SYSTEM
+    ═══════════════════════════════════════════════════════════════ */
+    .screen {
+      display: none;
+      animation: fadeUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       BUTTONS
+    ═══════════════════════════════════════════════════════════════ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+      text-decoration: none;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      color: #fff;
+      box-shadow: 0 6px 24px rgba(255, 107, 53, 0.35);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 10px 32px rgba(255, 107, 53, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--navy);
+      border: 2px solid var(--line);
+    }
+
+    .btn-outline:hover {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+    }
+
+    .btn-sky {
+      background: linear-gradient(135deg, var(--sky), #38B6D8);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(76, 201, 240, 0.3);
+    }
+
+    .btn-ghost {
+      background: var(--surface);
+      color: var(--orange);
+      border: 2px solid var(--line);
+    }
+
+    .btn-navy {
+      background: var(--navy);
+      color: #fff;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SECTION HEADERS
+    ═══════════════════════════════════════════════════════════════ */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .section-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--orange);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .section-link:hover {
+      opacity: 0.7;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       HEADER / NAV (GUEST MODE) - Entertrainer Style
+    ═══════════════════════════════════════════════════════════════ */
+    .guest-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--orange), #FF8C5A);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .logo span {
+      font-weight: 300;
+      color: var(--navy);
+      -webkit-text-fill-color: var(--navy);
+    }
+
+    .guest-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .guest-nav a {
+      text-decoration: none;
+      color: var(--ink2);
+      font-weight: 500;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+
+    .guest-nav a:hover {
+      color: var(--orange);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       HERO (GUEST MODE) - Entertrainer Vibe
+    ═══════════════════════════════════════════════════════════════ */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      padding: 40px 0 60px;
+      min-height: 70vh;
+    }
+
+    .hero-content h1 {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      margin-bottom: 16px;
+    }
+
+    .hero-content h1 .highlight {
+      background: linear-gradient(135deg, var(--orange), #FF8C5A);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-content p {
+      font-size: clamp(1rem, 1.3vw, 1.2rem);
+      color: var(--ink2);
+      max-width: 480px;
+      margin-bottom: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .hero-image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-image img {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 32px;
+      object-fit: cover;
+      aspect-ratio: 1/1;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-image .floating-badge {
+      position: absolute;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .floating-badge:nth-child(2) {
+      top: 10%;
+      right: -5%;
+      animation-delay: 0.5s;
+    }
+
+    .floating-badge:nth-child(3) {
+      bottom: 15%;
+      left: -5%;
+      animation-delay: 1s;
+    }
+
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       CARDS (Glassmorphism)
+    ═══════════════════════════════════════════════════════════════ */
+    .card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SECTIONS (GUEST)
+    ═══════════════════════════════════════════════════════════════ */
+    .section-padding {
+      padding: 60px 0;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+    }
+
+    /* Offer Card (Entertrainer style) */
+    .offer-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+      cursor: pointer;
+      border: 1.5px solid var(--line);
+    }
+
+    .offer-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .offer-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .offer-card-body {
+      padding: 18px 20px 20px;
+    }
+
+    .offer-card-body h4 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .offer-card-body .meta {
+      font-size: 13px;
+      color: var(--ink2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .offer-card-body .discount-badge {
+      background: var(--orange-light);
+      color: var(--orange);
+      padding: 2px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .offer-card-body .location {
+      font-size: 12px;
+      color: var(--ink3);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       TESTIMONIALS
+    ═══════════════════════════════════════════════════════════════ */
+    .testimonial-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 24px;
+      border: 1.5px solid var(--line);
+    }
+
+    .testimonial-card .stars {
+      color: var(--amber);
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .testimonial-card p {
+      font-size: 15px;
+      color: var(--ink2);
+      margin-bottom: 12px;
+    }
+
+    .testimonial-card .author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testimonial-card .author img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .testimonial-card .author strong {
+      font-size: 14px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════════════ */
+    .footer {
+      padding: 40px 0 24px;
+      border-top: 1px solid var(--line);
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 32px;
+    }
+
+    .footer h6 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .footer ul {
+      list-style: none;
+    }
+
+    .footer ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer ul li a {
+      text-decoration: none;
+      color: var(--ink2);
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer ul li a:hover {
+      color: var(--orange);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      margin-top: 20px;
+      color: var(--ink3);
+      font-size: 14px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       LOGIN MODAL
+    ═══════════════════════════════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 27, 46, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--surface);
+      border-radius: 32px;
+      max-width: 440px;
+      width: 100%;
+      padding: 40px 32px;
+      animation: slideUp 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(40px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal .close {
+      float: right;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--ink3);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .modal .close:hover {
+      color: var(--ink);
+    }
+
+    .modal h2 {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .modal p {
+      color: var(--ink2);
+      margin-bottom: 24px;
+    }
+
+    .modal .field {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--line);
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 16px;
+      background: var(--bg);
+    }
+
+    .modal .field:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+    }
+
+    .modal .btn {
+      width: 100%;
+    }
+
+    .modal .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+      color: var(--ink3);
+      font-size: 13px;
+    }
+
+    .modal .divider::before,
+    .modal .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .modal .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      border: 2px solid var(--line);
+      background: var(--surface);
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .modal .social-btn:hover {
+      background: var(--bg);
+    }
+
+    .modal .switch-mode {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--ink2);
+    }
+
+    .modal .switch-mode span {
+      color: var(--orange);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       DASHBOARD (LOGGED-IN) — like attached app
+    ═══════════════════════════════════════════════════════════════ */
+    .dash-header {
+      background: linear-gradient(150deg, var(--navy), var(--navy-mid));
+      padding: 32px 24px 48px;
+      border-radius: 0 0 32px 32px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .dash-header::after {
+      content: '';
+      position: absolute;
+      bottom: -28px;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: var(--bg);
+      border-radius: 32px 32px 0 0;
+    }
+
+    .dash-header .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+    }
+
+    .dash-header .orb1 {
+      width: 180px;
+      height: 180px;
+      background: var(--orange);
+      opacity: 0.15;
+      top: -60px;
+      right: -40px;
+    }
+
+    .dash-header .orb2 {
+      width: 140px;
+      height: 140px;
+      background: var(--sky);
+      opacity: 0.15;
+      bottom: -20px;
+      left: -40px;
+    }
+
+    .dash-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+
+    .dash-greeting {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 14px;
+    }
+
+    .dash-name {
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .dash-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .dash-actions .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+      position: relative;
+    }
+
+    .dash-actions .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .dash-actions .icon-btn .pip {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 10px;
+      height: 10px;
+      background: var(--orange);
+      border-radius: 50%;
+      border: 2px solid var(--navy);
+    }
+
+    /* Membership Card */
+    .mem-card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+      margin-top: 12px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .mem-card:hover {
+      transform: scale(1.01);
+    }
+
+    .mem-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--orange), var(--sky));
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .mem-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .mem-plan {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .mem-plan-sub {
+      font-size: 12px;
+      color: var(--ink2);
+    }
+
+    .mem-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      background: var(--orange-light);
+      color: var(--orange);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .mem-stats {
+      display: flex;
+      gap: 0;
+      border-top: 1px solid rgba(43, 45, 66, 0.08);
+      padding-top: 12px;
+    }
+
+    .mem-stat {
+      flex: 1;
+      text-align: center;
+    }
+
+    .mem-stat+.mem-stat {
+      border-right: 1px solid rgba(43, 45, 66, 0.08);
+    }
+
+    .mem-stat-val {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .mem-stat-lbl {
+      font-size: 10px;
+      color: var(--ink3);
+    }
+
+    /* Quick Actions */
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 16px 0 24px;
+    }
+
+    .quick-item {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 16px 10px;
+      text-align: center;
+      border: 1.5px solid var(--line);
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quick-item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+
+    .quick-item .qi-ic {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px;
+      font-size: 18px;
+    }
+
+    .qi-orange {
+      background: var(--orange-light);
+      color: var(--orange);
+    }
+    .qi-sky {
+      background: var(--sky-light);
+      color: var(--sky);
+    }
+    .qi-green {
+      background: var(--green-light);
+      color: var(--green);
+    }
+    .qi-navy {
+      background: rgba(43, 45, 66, 0.08);
+      color: var(--navy);
+    }
+
+    .quick-item .qlb {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink2);
+    }
+
+    /* Savings */
+    .savings-block {
+      padding: 0 0 16px;
+    }
+
+    .savings-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .savings-amount {
+      font-size: 38px;
+      font-weight: 900;
+      color: var(--navy);
+      letter-spacing: -2px;
+    }
+
+    .savings-amount span {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink3);
+      margin-right: 4px;
+    }
+
+    .savings-sub {
+      color: var(--green);
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    /* Featured Offer */
+    .featured-card {
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      border-radius: var(--radius);
+      padding: 24px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 32px rgba(255, 107, 53, 0.3);
+    }
+
+    .featured-card .deco {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .featured-card .deco1 {
+      width: 140px;
+      height: 140px;
+      top: -40px;
+      left: -30px;
+    }
+    .featured-card .deco2 {
+      width: 90px;
+      height: 90px;
+      bottom: -20px;
+      right: 20px;
+    }
+
+    .featured-card .inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .featured-card .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .featured-card h3 {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 4px 0 2px;
+    }
+
+    .featured-card p {
+      opacity: 0.85;
+      font-size: 14px;
+    }
+
+    .featured-card .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      border: none;
+      padding: 0;
+    }
+
+    .featured-card .saving {
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .featured-card .timer {
+      background: rgba(255, 255, 255, 0.18);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      direction: ltr;
+    }
+
+    /* Nearby Scroll */
+    .near-scroll {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+
+    .near-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .near-card {
+      min-width: 150px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1.5px solid var(--line);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+
+    .near-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .near-card .img {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+    }
+
+    .near-card .body {
+      padding: 12px 14px 14px;
+    }
+
+    .near-card .body h5 {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .near-card .body .cat {
+      font-size: 11px;
+      color: var(--ink3);
+    }
+
+    .near-card .body .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .near-card .body .rating {
+      color: var(--amber);
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .near-card .body .chip {
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: var(--orange-light);
+      color: var(--orange);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       BOTTOM NAV (Logged-in)
+    ═══════════════════════════════════════════════════════════════ */
+    .bottom-nav {
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      display: flex;
+      padding: 8px 0 16px;
+      position: sticky;
+      bottom: 0;
+      box-shadow: 0 -4px 20px rgba(43, 45, 66, 0.06);
+      margin-top: 20px;
+      border-radius: 24px 24px 0 0;
+    }
+
+    .bottom-nav .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      cursor: pointer;
+      padding: 4px 0;
+      color: var(--ink3);
+      transition: color 0.2s;
+      border: none;
+      background: none;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .bottom-nav .nav-item.active {
+      color: var(--orange);
+    }
+
+    .bottom-nav .nav-item .ic {
+      font-size: 20px;
+    }
+
+    .bottom-nav .nav-item .lb {
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .bottom-nav .nav-item .pip {
+      width: 4px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--orange);
+      margin-top: 2px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       VENUE DETAIL (Mandy.com style)
+    ═══════════════════════════════════════════════════════════════ */
+    .venue-hero {
+      height: 240px;
+      background: linear-gradient(150deg, var(--navy), #1E2035);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 72px;
+      position: relative;
+      border-radius: 0 0 32px 32px;
+      overflow: hidden;
+    }
+
+    .venue-hero .back {
+      position: absolute;
+      top: 24px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .venue-hero .actions {
+      position: absolute;
+      top: 24px;
+      left: 20px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .venue-hero .actions .act {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .venue-info {
+      padding: 20px 0 0;
+    }
+
+    .venue-info h2 {
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .venue-info .cat {
+      color: var(--ink2);
+      font-size: 15px;
+    }
+
+    .venue-info .meta-row {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .venue-info .meta-row .item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      color: var(--ink2);
+    }
+
+    .venue-info .meta-row .item .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot-open {
+      background: var(--green);
+    }
+    .dot-closed {
+      background: var(--red);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid var(--line);
+      margin: 20px 0 16px;
+      overflow-x: auto;
+    }
+
+    .tabs .tab {
+      padding: 10px 16px;
+      font-weight: 600;
+      color: var(--ink2);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .tabs .tab.active {
+      color: var(--orange);
+      border-bottom-color: var(--orange);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .offer-item {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .offer-item:hover {
+      opacity: 0.7;
+    }
+
+    .offer-item .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .offer-item .top h5 {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .offer-item .top .disc {
+      font-weight: 900;
+      color: var(--orange);
+      font-size: 16px;
+    }
+
+    .offer-item .rule {
+      font-size: 12px;
+      color: var(--ink3);
+      margin-top: 4px;
+    }
+
+    .offer-item .chips {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 10px;
+    }
+
+    .chip-bogo {
+      background: var(--green-light);
+      color: var(--green);
+    }
+    .chip-pct {
+      background: var(--orange-light);
+      color: var(--orange);
+    }
+    .chip-active {
+      background: var(--sky-light);
+      color: var(--sky);
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .menu-item .name {
+      font-weight: 500;
+    }
+    .menu-item .price {
+      font-weight: 700;
+      color: var(--orange);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════════════════ */
+    @media (max-width: 992px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 32px;
+      }
+
+      .hero-content p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .hero-image img {
+        max-width: 400px;
+      }
+
+      .floating-badge {
+        display: none !important;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .guest-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .guest-nav {
+        justify-content: center;
+      }
+
+      .hero {
+        padding: 20px 0 40px;
+      }
+
+      .grid-3,
+      .grid-4 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .quick-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .dash-header {
+        padding: 24px 16px 40px;
+      }
+
+      .modal {
+        padding: 28px 20px;
+      }
+
+      .near-card {
+        min-width: 130px;
+      }
+
+      .venue-hero {
+        height: 180px;
+        font-size: 48px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .grid-3,
+      .grid-4 {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       UTILITY
+    ═══════════════════════════════════════════════════════════════ */
+    .text-center {
+      text-align: center;
+    }
+    .mt-16 {
+      margin-top: 16px;
+    }
+    .mb-16 {
+      margin-bottom: 16px;
+    }
+    .gap-8 {
+      gap: 8px;
+    }
+    .flex-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .flex-wrap {
+      flex-wrap: wrap;
+    }
+    .w-full {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app" id="app">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SCREEN: GUEST MODE (Entertrainer style — تخفیف‌ها و کوپن‌ها)
+    ═══════════════════════════════════════════════════════════════ -->
+    <div class="screen active" id="screen-guest">
+      <!-- Header -->
+      <header class="guest-header">
+        <div class="logo">تخفیف‌<span>کار</span></div>
+        <nav class="guest-nav">
+          <a href="#" onclick="scrollToSection('offers')">تخفیف‌ها</a>
+          <a href="#" onclick="scrollToSection('testimonials')">نظرات</a>
+          <a href="#" onclick="scrollToSection('brands')">برندها</a>
+          <button class="btn btn-outline" onclick="openLogin()">ورود</button>
+          <button class="btn btn-primary" onclick="openLogin()">ثبت‌نام</button>
+        </nav>
+      </header>
+
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-content">
+          <h1>
+            <span class="highlight">بهترین تخفیف‌ها</span><br>
+            در بهترین مکان‌ها
+          </h1>
+          <p>
+            بیش از ۵۰۰ کوپن تخفیف در رستوران‌ها، کافه‌ها، هتل‌ها و مراکز تفریحی.
+            هر روز یک پیشنهاد جدید، هر هفته یک تجربه خاص.
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="openLogin()">
+              <i class="fa-regular fa-ticket"></i> مشاهده کوپن‌ها
+            </button>
+            <button class="btn btn-outline" onclick="scrollToSection('offers')">
+              <i class="fa-regular fa-eye"></i> تخفیف‌های لحظه‌ای
+            </button>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&h=600&fit=crop&crop=center" alt="تخفیف">
+          <div class="floating-badge">
+            <i class="fa-solid fa-ticket" style="color:var(--orange)"></i>
+            <span><strong>۵۰۰+</strong> کوپن فعال</span>
+          </div>
+          <div class="floating-badge">
+            <i class="fa-solid fa-star" style="color:var(--amber)"></i>
+            <span><strong>۴.۸</strong> از ۵</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Offers (Entertrainer style) -->
+      <section id="offers" class="section-padding">
+        <div class="section-header">
+          <h2 class="section-title">🔥 تخفیف‌های ویژه امروز</h2>
+          <span class="section-link">مشاهده همه ←</span>
+        </div>
+        <div class="grid-3">
+          <div class="offer-card" onclick="openLogin()">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=200&fit=crop&crop=center" alt="رستوران">
+            <div class="offer-card-body">
+              <h4>یک بخر یکی رایگان</h4>
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-weight:600;">رستوران آریانا</span>
+                <span class="discount-badge">BOGO</span>
+              </div>
+              <div class="meta">
+                <span>🕐 تا ۲۴ ساعت</span>
+                <span>💰 تا ۳۵۰,۰۰۰ ت</span>
+              </div>
+              <div class="location"><i class="fa-regular fa-location-dot"></i> تهران، ولیعصر</div>
+            </div>
+          </div>
+          <div class="offer-card" onclick="openLogin()">
+            <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=200&fit=crop&crop=center" alt="کافه">
+            <div class="offer-card-body">
+              <h4>۳۰٪ تخفیف ویژه</h4>
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-weight:600;">کافه روشا</span>
+                <span class="discount-badge">۳۰٪</span>
+              </div>
+              <div class="meta">
+                <span>🕐 تا ۱۲ ساعت</span>
+                <span>💰 تا ۱۸۰,۰۰۰ ت</span>
+              </div>
+              <div class="location"><i class="fa-regular fa-location-dot"></i> تهران، جردن</div>
+            </div>
+          </div>
+          <div class="offer-card" onclick="openLogin()">
+            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&h=200&fit=crop&crop=center" alt="اسپا">
+            <div class="offer-card-body">
+              <h4>۲۵٪ تخفیف خدمات</h4>
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-weight:600;">آرامش اسپا</span>
+                <span class="discount-badge">۲۵٪</span>
+              </div>
+              <div class="meta">
+                <span>🕐 تا ۴۸ ساعت</span>
+                <span>💰 تا ۲۵۰,۰۰۰ ت</span>
+              </div>
+              <div class="location"><i class="fa-regular fa-location-dot"></i> تهران، تجریش</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Brands -->
+      <section id="brands" class="section-padding" style="padding-top:0">
+        <div class="section-header">
+          <h2 class="section-title">🏆 برندهای همکار</h2>
+          <span class="section-link">همه برندها ←</span>
+        </div>
+        <div class="grid-4" style="text-align:center;">
+          <div class="card" style="padding:20px;background:var(--surface);">
+            <div style="font-size:32px;">🍽️</div>
+            <div style="font-weight:700;margin-top:6px;">رستوران‌ها</div>
+            <small style="color:var(--ink3)">۱۲۴ برند</small>
+          </div>
+          <div class="card" style="padding:20px;background:var(--surface);">
+            <div style="font-size:32px;">☕</div>
+            <div style="font-weight:700;margin-top:6px;">کافه‌ها</div>
+            <small style="color:var(--ink3)">۸۶ برند</small>
+          </div>
+          <div class="card" style="padding:20px;background:var(--surface);">
+            <div style="font-size:32px;">🏨</div>
+            <div style="font-weight:700;margin-top:6px;">هتل‌ها</div>
+            <small style="color:var(--ink3)">۴۲ برند</small>
+          </div>
+          <div class="card" style="padding:20px;background:var(--surface);">
+            <div style="font-size:32px;">🎬</div>
+            <div style="font-weight:700;margin-top:6px;">تفریحی</div>
+            <small style="color:var(--ink3)">۶۳ برند</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section id="testimonials" class="section-padding" style="padding-top:0">
+        <div class="section-header">
+          <h2 class="section-title">💬 نظرات کاربران</h2>
+        </div>
+        <div class="grid-3">
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p>"با تخفیف‌کار هر هفته یک رستوران جدید امتحان می‌کنم. تا حالا بیش از ۲ میلیون تومان صرفه‌جویی کردم!"</p>
+            <div class="author">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=center" alt="کاربر">
+              <div><strong>مریم احمدی</strong><br><small style="color:var(--ink3)">عضو طلایی</small></div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p>"کوپن‌های تخفیف‌کار فوق‌العاده‌اند. مخصوصاً برای خانواده که هر هفته بیرون می‌رویم، عالی است."</p>
+            <div class="author">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=center" alt="کاربر">
+              <div><strong>علی کریمی</strong><br><small style="color:var(--ink3)">عضو پلاتینیوم</small></div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">★★★★☆</div>
+            <p>"بهترین اپلیکیشن تخفیف در ایران. تنوع برندها و سهولت استفاده بی‌نظیر است."</p>
+            <div class="author">
+              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=center" alt="کاربر">
+              <div><strong>سحر مهدوی</strong><br><small style="color:var(--ink3)">عضو نقره‌ای</small></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section style="padding: 40px 0; text-align:center; background:linear-gradient(150deg,var(--navy),var(--navy-mid)); border-radius:32px; color:#fff;">
+        <h2 style="font-size:clamp(1.8rem,3vw,2.6rem); font-weight:800;">اولین کوپن تخفیف را بگیر</h2>
+        <p style="opacity:0.8; max-width:500px; margin:8px auto 24px;">همین حالا ثبت‌نام کن و از تخفیف‌های ویژه رستوران‌ها، کافه‌ها و هتل‌ها لذت ببر.</p>
+        <button class="btn btn-primary" onclick="openLogin()" style="background:#fff; color:var(--orange); box-shadow:0 8px 32px rgba(255,255,255,0.2);">
+          <i class="fa-regular fa-ticket"></i> دریافت کوپن رایگان
+        </button>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div>
+          <h6>تخفیف‌کار</h6>
+          <ul>
+            <li><a href="#">درباره ما</a></li>
+            <li><a href="#">تماس با ما</a></li>
+            <li><a href="#">فرصت‌های شغلی</a></li>
+          </ul>
+        </div>
+        <div>
+          <h6>خدمات</h6>
+          <ul>
+            <li><a href="#">تخفیف‌ها</a></li>
+            <li><a href="#">برندها</a></li>
+            <li><a href="#">کوپن‌های ویژه</a></li>
+          </ul>
+        </div>
+        <div>
+          <h6>پشتیبانی</h6>
+          <ul>
+            <li><a href="#">سوالات متداول</a></li>
+            <li><a href="#">راهنما</a></li>
+            <li><a href="#">گزارش مشکل</a></li>
+          </ul>
+        </div>
+        <div>
+          <h6>شبکه‌های اجتماعی</h6>
+          <div style="display:flex;gap:12px;font-size:20px;">
+            <a href="#" style="color:var(--ink2)"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" style="color:var(--ink2)"><i class="fa-brands fa-telegram"></i></a>
+            <a href="#" style="color:var(--ink2)"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+      </footer>
+      <div class="footer-bottom">
+        © ۱۴۰۴ تخفیف‌کار. تمامی حقوق محفوظ است.
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SCREEN: DASHBOARD (Logged-in) — like attached app
+    ═══════════════════════════════════════════════════════════════ -->
+    <div class="screen" id="screen-dashboard">
+      <!-- Dash Header -->
+      <div class="dash-header">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="dash-top">
+          <div>
+            <div class="dash-greeting">سلام 👋</div>
+            <div class="dash-name">سارا محمدی</div>
+          </div>
+          <div class="dash-actions">
+            <div class="icon-btn" onclick="toast('اعلان‌ها')">
+              <i class="fa-regular fa-bell"></i>
+              <div class="pip"></div>
+            </div>
+            <div class="icon-btn" onclick="toast('پروفایل')">
+              <i class="fa-regular fa-user"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Membership Card -->
+        <div class="mem-card" onclick="toast('عضویت طلایی')">
+          <div class="mem-card-top">
+            <div>
+              <div class="mem-plan">عضویت طلایی ✦</div>
+              <div class="mem-plan-sub">تخفیف‌کار</div>
+            </div>
+            <div class="mem-badge"><i class="fa-regular fa-clock"></i> ۴۵ روز</div>
+          </div>
+          <div class="mem-stats">
+            <div class="mem-stat"><div class="mem-stat-val">۲۳</div><div class="mem-stat-lbl">کوپن استفاده</div></div>
+            <div class="mem-stat"><div class="mem-stat-val">۸.۲M</div><div class="mem-stat-lbl">تومان صرفه‌جویی</div></div>
+            <div class="mem-stat"><div class="mem-stat-val">۲/۳</div><div class="mem-stat-lbl">خانواده</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Content -->
+      <div class="savings-block">
+        <div class="savings-label">کل صرفه‌جویی</div>
+        <div class="savings-amount"><span>ت</span>۸,۲۰۰,۰۰۰</div>
+        <div class="savings-sub"><i class="fa-solid fa-arrow-trend-up"></i> +۲.۱ میلیون امسال</div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-grid">
+        <div class="quick-item" onclick="toast('کشف تخفیف‌ها')">
+          <div class="qi-ic qi-orange"><i class="fa-solid fa-compass"></i></div>
+          <div class="qlb">کشف</div>
+        </div>
+        <div class="quick-item" onclick="toast('عضویت')">
+          <div class="qi-ic qi-sky"><i class="fa-solid fa-id-card"></i></div>
+          <div class="qlb">عضویت</div>
+        </div>
+        <div class="quick-item" onclick="toast('تاریخچه کوپن‌ها')">
+          <div class="qi-ic qi-green"><i class="fa-solid fa-receipt"></i></div>
+          <div class="qlb">تاریخچه</div>
+        </div>
+        <div class="quick-item" onclick="toast('ذخیره‌ها')">
+          <div class="qi-ic qi-navy"><i class="fa-regular fa-heart"></i></div>
+          <div class="qlb">ذخیره‌ها</div>
+        </div>
+      </div>
+
+      <!-- Featured Offer -->
+      <div class="featured-card" onclick="openVenue()">
+        <div class="deco deco1"></div>
+        <div class="deco deco2"></div>
+        <div class="inner">
+          <div class="eyebrow"><i class="fa-regular fa-star"></i> پیشنهاد ویژه</div>
+          <h3>رستوران آریانا</h3>
+          <p>یک بخر یکی رایگان • غذای اصلی</p>
+          <div class="footer">
+            <span class="saving">تا ۳۵۰,۰۰۰ ت تخفیف</span>
+            <span class="timer"><i class="fa-regular fa-clock"></i> ۰۵:۴۲:۱۸</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nearby -->
+      <div class="section-header">
+        <h3 class="section-title">📍 تخفیف‌های نزدیک شما</h3>
+        <span class="section-link" onclick="toast('همه تخفیف‌ها')">مشاهده همه ←</span>
+      </div>
+      <div class="near-scroll">
+        <div class="near-card" onclick="openVenue()">
+          <div class="img" style="background:linear-gradient(135deg,#1a1b2e,#2b2d42)">🍽️</div>
+          <div class="body">
+            <h5>آریانا</h5>
+            <div class="cat">ایرانی</div>
+            <div class="row"><span class="rating">★ ۴.۶</span><span class="chip">BOGO</span></div>
+          </div>
+        </div>
+        <div class="near-card" onclick="openVenue()">
+          <div class="img" style="background:linear-gradient(135deg,#3d1a00,#6b2e00)">☕</div>
+          <div class="body">
+            <h5>کافه روشا</h5>
+            <div class="cat">کافه</div>
+            <div class="row"><span class="rating">★ ۴.۸</span><span class="chip">۲۵٪</span></div>
+          </div>
+        </div>
+        <div class="near-card" onclick="openVenue()">
+          <div class="img" style="background:linear-gradient(135deg,#003d22,#006b3c)">💆</div>
+          <div class="body">
+            <h5>آرامش اسپا</h5>
+            <div class="cat">سلامت</div>
+            <div class="row"><span class="rating">★ ۴.۵</span><span class="chip">۲۵٪</span></div>
+          </div>
+        </div>
+        <div class="near-card" onclick="openVenue()">
+          <div class="img" style="background:linear-gradient(135deg,#001a3d,#002b6b)">🎬</div>
+          <div class="body">
+            <h5>سینما پارسیان</h5>
+            <div class="cat">سرگرمی</div>
+            <div class="row"><span class="rating">★ ۴.۱</span><span class="chip">BOGO</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Nav -->
+      <div class="bottom-nav">
+        <button class="nav-item active" onclick="toast('خانه')">
+          <span class="ic"><i class="fa-solid fa-house"></i></span>
+          <span class="lb">خانه</span>
+          <span class="pip"></span>
+        </button>
+        <button class="nav-item" onclick="toast('کشف تخفیف‌ها')">
+          <span class="ic"><i class="fa-solid fa-compass"></i></span>
+          <span class="lb">کشف</span>
+        </button>
+        <button class="nav-item" onclick="toast('ذخیره‌ها')">
+          <span class="ic"><i class="fa-regular fa-heart"></i></span>
+          <span class="lb">ذخیره</span>
+        </button>
+        <button class="nav-item" onclick="toast('پشتیبانی')">
+          <span class="ic"><i class="fa-regular fa-headset"></i></span>
+          <span class="lb">پشتیبانی</span>
+        </button>
+        <button class="nav-item" onclick="toast('تنظیمات')">
+          <span class="ic"><i class="fa-regular fa-gear"></i></span>
+          <span class="lb">تنظیمات</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SCREEN: VENUE DETAIL (Mandy.com style)
+    ═══════════════════════════════════════════════════════════════ -->
+    <div class="screen" id="screen-venue">
+      <div class="venue-hero">
+        🍽️
+        <div class="back" onclick="goBack()"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="actions">
+          <div class="act" id="fav-venue" onclick="toggleVenueFav()"><i class="fa-regular fa-heart"></i></div>
+          <div class="act" onclick="toast('لینک کپی شد!')"><i class="fa-regular fa-share-nodes"></i></div>
+        </div>
+      </div>
+
+      <div class="venue-info">
+        <h2>رستوران آریانا</h2>
+        <div class="cat">ایرانی و بین‌المللی</div>
+        <div class="meta-row">
+          <span class="item"><span class="dot dot-open"></span> باز است</span>
+          <span class="item"><i class="fa-regular fa-star" style="color:var(--amber)"></i> ۴.۶ (۲۴۸)</span>
+          <span class="item"><i class="fa-regular fa-location-dot"></i> ۱.۲ کیلومتر</span>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <span class="tab active" data-tab="offers" onclick="switchTab('offers')">کوپن‌ها</span>
+        <span class="tab" data-tab="menu" onclick="switchTab('menu')">منو</span>
+        <span class="tab" data-tab="reviews" onclick="switchTab('reviews')">نظرات</span>
+        <span class="tab" data-tab="info" onclick="switchTab('info')">اطلاعات</span>
+      </div>
+
+      <!-- Tab: Offers -->
+      <div class="tab-content active" id="tab-offers">
+        <div class="offer-item" onclick="toast('کوپن انتخاب شد')">
+          <div class="top">
+            <h5>یک بخر یکی رایگان – غذای اصلی</h5>
+            <span class="disc">رایگان</span>
+          </div>
+          <div class="rule">حداقل ۲۵۰,۰۰۰ ت • روزهای هفته</div>
+          <div class="chips"><span class="chip chip-bogo">BOGO</span><span class="chip chip-active">فعال</span></div>
+        </div>
+        <div class="offer-item" onclick="toast('کوپن انتخاب شد')">
+          <div class="top">
+            <h5>۳۰٪ تخفیف پیش‌غذا و دسر</h5>
+            <span class="disc">۳۰٪</span>
+          </div>
+          <div class="rule">حداکثر ۲ آیتم • تمام روزها</div>
+          <div class="chips"><span class="chip chip-pct">تخفیف</span><span class="chip chip-active">فعال</span></div>
+        </div>
+        <button class="btn btn-primary w-full mt-16" onclick="toast('در حال انتقال به دریافت کوپن...')">
+          <i class="fa-regular fa-ticket"></i> دریافت کوپن
+        </button>
+      </div>
+
+      <!-- Tab: Menu -->
+      <div class="tab-content" id="tab-menu">
+        <div class="menu-item"><span class="name">بره گریل شده</span><span class="price">۳۲۰,۰۰۰ ت</span></div>
+        <div class="menu-item"><span class="name">کباب مرغ</span><span class="price">۲۸۰,۰۰۰ ت</span></div>
+        <div class="menu-item"><span class="name">قورمه سبزی</span><span class="price">۲۴۵,۰۰۰ ت</span></div>
+        <div class="menu-item"><span class="name">برنج زعفرانی</span><span class="price">۸۰,۰۰۰ ت</span></div>
+      </div>
+
+      <!-- Tab: Reviews -->
+      <div class="tab-content" id="tab-reviews">
+        <div style="padding:8px 0;border-bottom:1px solid var(--line)">
+          <div style="display:flex;justify-content:space-between"><strong>مریم ک.</strong> <span style="color:var(--amber)">★★★★★</span></div>
+          <p style="font-size:14px;color:var(--ink2)">غذا عالی و خدمات بی‌نقص. کوپن BOGO واقعاً ارزش داشت.</p>
+        </div>
+        <div style="padding:8px 0;border-bottom:1px solid var(--line)">
+          <div style="display:flex;justify-content:space-between"><strong>علی ر.</strong> <span style="color:var(--amber)">★★★★☆</span></div>
+          <p style="font-size:14px;color:var(--ink2)">فضای عالی و غذاهای خوشمزه. همیشه از کوپن‌های تخفیف‌کار استفاده می‌کنم.</p>
+        </div>
+      </div>
+
+      <!-- Tab: Info -->
+      <div class="tab-content" id="tab-info">
+        <p><i class="fa-regular fa-location-dot" style="color:var(--orange)"></i> ولیعصر، پلاک ۱۲۳، تهران</p>
+        <p><i class="fa-regular fa-phone" style="color:var(--sky)"></i> ۰۲۱-۱۲۳۴-۵۶۷۸</p>
+        <p><i class="fa-regular fa-clock" style="color:var(--green)"></i> شنبه تا چهارشنبه ۱۲:۰۰–۲۳:۳۰</p>
+        <p><i class="fa-regular fa-square-parking" style="color:var(--navy)"></i> پارکینگ اختصاصی</p>
+      </div>
+
+      <div style="height:24px"></div>
+      <!-- Bottom Nav (reuse) -->
+      <div class="bottom-nav">
+        <button class="nav-item" onclick="toast('خانه')">
+          <span class="ic"><i class="fa-solid fa-house"></i></span>
+          <span class="lb">خانه</span>
+        </button>
+        <button class="nav-item" onclick="toast('کشف تخفیف‌ها')">
+          <span class="ic"><i class="fa-solid fa-compass"></i></span>
+          <span class="lb">کشف</span>
+        </button>
+        <button class="nav-item" onclick="toast('ذخیره‌ها')">
+          <span class="ic"><i class="fa-regular fa-heart"></i></span>
+          <span class="lb">ذخیره</span>
+        </button>
+        <button class="nav-item" onclick="toast('پشتیبانی')">
+          <span class="ic"><i class="fa-regular fa-headset"></i></span>
+          <span class="lb">پشتیبانی</span>
+        </button>
+        <button class="nav-item" onclick="toast('تنظیمات')">
+          <span class="ic"><i class="fa-regular fa-gear"></i></span>
+          <span class="lb">تنظیمات</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         LOGIN MODAL
+    ═══════════════════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="loginModal">
+      <div class="modal">
+        <button class="close" onclick="closeLogin()"><i class="fa-regular fa-xmark"></i></button>
+        <h2>خوش آمدید</h2>
+        <p>وارد حساب خود شوید یا ثبت‌نام کنید</p>
+
+        <input class="field" type="text" placeholder="ایمیل یا شماره موبایل" dir="ltr">
+        <input class="field" type="password" placeholder="رمز عبور" dir="ltr">
+
+        <button class="btn btn-primary" onclick="login()">ورود</button>
+
+        <div class="divider">یا</div>
+
+        <button class="social-btn"><i class="fa-brands fa-google" style="color:#EA4335"></i> ورود با گوگل</button>
+
+        <div class="switch-mode">
+          حساب ندارید؟ <span onclick="toast('به زودی ثبت‌نام کامل می‌شود')">ثبت‌نام کنید</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         TOAST
+    ═══════════════════════════════════════════════════════════════ -->
+    <div id="toast" style="
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+      background: var(--navy); color: #fff; padding: 12px 28px;
+      border-radius: 60px; font-weight: 600; font-size: 14px;
+      box-shadow: var(--shadow-lg); z-index: 2000;
+      display: none; align-items: center; gap: 10px;
+      transition: opacity 0.3s; opacity: 0;
+    "></div>
+
+  </div>
+
+  <script>
+    /* ═══════════════════════════════════════════════════════════════
+       STATE & NAVIGATION
+    ═══════════════════════════════════════════════════════════════ */
+    let currentScreen = 'guest';
+    let historyStack = ['guest'];
+    let isLoggedIn = false;
+    let isVenueFav = false;
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      currentScreen = id;
+      document.getElementById('app').scrollTop = 0;
+      window.scrollTo(0, 0);
+    }
+
+    function goBack() {
+      if (historyStack.length > 1) {
+        historyStack.pop();
+        showScreen(historyStack[historyStack.length - 1]);
+      } else {
+        showScreen('screen-guest');
+      }
+    }
+
+    function navigateTo(id) {
+      historyStack.push(id);
+      showScreen(id);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       LOGIN
+    ═══════════════════════════════════════════════════════════════ */
+    function openLogin() {
+      document.getElementById('loginModal').classList.add('active');
+    }
+
+    function closeLogin() {
+      document.getElementById('loginModal').classList.remove('active');
+    }
+
+    function login() {
+      closeLogin();
+      isLoggedIn = true;
+      historyStack = ['screen-dashboard'];
+      showScreen('screen-dashboard');
+      toast('خوش آمدی سارا!');
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       VENUE
+    ═══════════════════════════════════════════════════════════════ */
+    function openVenue() {
+      historyStack.push('screen-venue');
+      showScreen('screen-venue');
+      // reset tab
+      document.querySelectorAll('#screen-venue .tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('#screen-venue .tab').forEach(t => t.classList.remove('active'));
+      document.querySelector('#screen-venue .tab[data-tab="offers"]').classList.add('active');
+      document.getElementById('tab-offers').classList.add('active');
+    }
+
+    function toggleVenueFav() {
+      isVenueFav = !isVenueFav;
+      const btn = document.getElementById('fav-venue');
+      btn.innerHTML = isVenueFav ?
+        '<i class="fa-solid fa-heart" style="color:var(--orange)"></i>' :
+        '<i class="fa-regular fa-heart"></i>';
+      toast(isVenueFav ? 'به ذخیره‌ها اضافه شد ♥' : 'از ذخیره‌ها حذف شد');
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       TABS (venue)
+    ═══════════════════════════════════════════════════════════════ */
+    function switchTab(tabId) {
+      document.querySelectorAll('#screen-venue .tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('#screen-venue .tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelector(`#screen-venue .tab[data-tab="${tabId}"]`).classList.add('active');
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOAST
+    ═══════════════════════════════════════════════════════════════ */
+    let toastTimer;
+
+    function toast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.style.display = 'flex';
+      el.style.opacity = '1';
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        el.style.opacity = '0';
+        setTimeout(() => el.style.display = 'none', 300);
+      }, 2500);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       UTILITY
+    ═══════════════════════════════════════════════════════════════ */
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Close modal on overlay click
+    document.getElementById('loginModal').addEventListener('click', function(e) {
+      if (e.target === this) closeLogin();
+    });
+
+    // Enter key on login fields
+    document.querySelectorAll('#loginModal .field').forEach(f => {
+      f.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') login();
+      });
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // INIT
+    // ═══════════════════════════════════════════════════════════════
+    console.log('🚀 تخفیف‌کار — پلتفرم هوشمند تخفیف و کوپن');
+    console.log('✨ Inspired by Entertrainer, Mandy.com, and client app');
+    console.log('👤 Click "ورود" to simulate login → dashboard');
+  </script>
+
+</body>
+</html>

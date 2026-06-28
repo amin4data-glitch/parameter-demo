@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" id="html-root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>انتخاب عضویت - ونوس کلاب</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root {
+    --orange: #FF6B35;
+    --orange-light: #FF8C5A;
+    --orange-dark: #E05520;
+    --sky: #4CC9F0;
+    --navy: #2B2D42;
+    --navy-light: #3D3F58;
+    --bg: #F7F7FF;
+    --white: #FFFFFF;
+    --gray-100: #F0F0F8;
+    --gray-200: #E2E2F0;
+    --gray-400: #9999BB;
+    --gray-600: #6666AA;
+    --gold: #F7B731;
+    --gold-light: #FFF3C4;
+    --green: #2ECC71;
+    --green-light: #EAFBF3;
+    --red-light: #FFF0EE;
+    --radius-card: 16px;
+    --radius-sm: 12px;
+    --radius-xs: 8px;
+    --shadow-card: 0 2px 12px rgba(43,45,66,.07);
+    --shadow-gold: 0 8px 32px rgba(255,107,53,.22);
+    --transition: 0.2s ease;
+    --font-en: 'Poppins', sans-serif;
+    --font-fa: Tahoma, 'Segoe UI', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #E8E8F0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: var(--font-fa);
+  }
+
+  /* ──────────────── PHONE SHELL ──────────────── */
+  .phone {
+    width: 390px;
+    min-height: 844px;
+    background: var(--bg);
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,.18);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ──────────────── LANGUAGE OVERLAY ──────────────── */
+  #lang-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(145deg, #2B2D42 0%, #1a1c30 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .lang-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 24px;
+    background: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    box-shadow: 0 12px 40px rgba(255,107,53,.4);
+  }
+
+  .lang-logo svg {
+    width: 48px;
+    height: 48px;
+    fill: white;
+  }
+
+  .lang-brand {
+    font-family: var(--font-en);
+    font-weight: 800;
+    font-size: 26px;
+    color: white;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+
+  .lang-tagline {
+    color: rgba(255,255,255,.5);
+    font-size: 13px;
+    margin-bottom: 48px;
+    text-align: center;
+  }
+
+  .lang-prompt {
+    color: rgba(255,255,255,.7);
+    font-size: 14px;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+
+  .lang-buttons {
+    display: flex;
+    gap: 16px;
+  }
+
+  .lang-btn {
+    padding: 14px 36px;
+    border-radius: var(--radius-sm);
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 140px;
+    justify-content: center;
+  }
+
+  .lang-btn.primary {
+    background: var(--orange);
+    color: white;
+    font-family: var(--font-fa);
+  }
+
+  .lang-btn.secondary {
+    background: transparent;
+    border-color: rgba(255,255,255,.25);
+    color: white;
+    font-family: var(--font-en);
+  }
+
+  .lang-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.3);
+  }
+
+  .lang-btn.primary:hover { background: var(--orange-light); }
+  .lang-btn.secondary:hover { border-color: white; }
+
+  /* ──────────────── SCREEN ──────────────── */
+  .screen {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    background: var(--bg);
+    padding-bottom: 100px;
+  }
+
+  .screen::-webkit-scrollbar { display: none; }
+
+  /* ──────────────── HEADER ──────────────── */
+  .page-header {
+    background: var(--white);
+    padding: 16px 20px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(43,45,66,.06);
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .back-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--gray-100);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--navy);
+    font-size: 14px;
+    transition: background var(--transition);
+    flex-shrink: 0;
+  }
+
+  .back-btn:hover { background: var(--gray-200); }
+
+  .header-text { flex: 1; }
+
+  .header-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+
+  .header-subtitle {
+    font-size: 12px;
+    color: var(--gray-400);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  .header-lang-switch {
+    padding: 6px 12px;
+    border-radius: var(--radius-xs);
+    border: 1.5px solid var(--gray-200);
+    background: transparent;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--gray-600);
+    font-weight: 500;
+    transition: all var(--transition);
+    flex-shrink: 0;
+  }
+
+  .header-lang-switch:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+
+  /* ──────────────── PROMO BANNER ──────────────── */
+  .promo-banner {
+    margin: 0 16px 0;
+    padding: 10px 16px;
+    background: linear-gradient(90deg, #FFF3C4 0%, #FFF8E1 100%);
+    border-radius: var(--radius-xs);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #8B6914;
+    font-weight: 600;
+    border: 1px solid #F7E090;
+    margin-top: 12px;
+  }
+
+  .promo-banner i { color: var(--gold); }
+  .promo-countdown { color: var(--orange); font-weight: 700; }
+
+  /* ──────────────── SECTION WRAPPER ──────────────── */
+  .section { padding: 0 16px; margin-top: 16px; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--gray-400);
+    margin-bottom: 10px;
+  }
+
+  /* ──────────────── TYPE TABS ──────────────── */
+  .type-tabs {
+    display: flex;
+    background: var(--gray-100);
+    border-radius: var(--radius-sm);
+    padding: 4px;
+    gap: 4px;
+  }
+
+  .type-tab {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all var(--transition);
+    background: transparent;
+    color: var(--gray-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .type-tab.active {
+    background: var(--white);
+    color: var(--orange);
+    box-shadow: 0 2px 8px rgba(43,45,66,.1);
+  }
+
+  .type-tab i { font-size: 12px; }
+
+  /* ──────────────── PERIOD SELECTOR ──────────────── */
+  .period-selector {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .period-selector::-webkit-scrollbar { display: none; }
+
+  .period-btn {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--gray-200);
+    background: var(--white);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-600);
+    transition: all var(--transition);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 72px;
+  }
+
+  .period-btn.active {
+    border-color: var(--orange);
+    background: #FFF3EE;
+    color: var(--orange);
+  }
+
+  .period-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 8px;
+    background: var(--orange);
+    color: white;
+    position: absolute;
+    top: -8px;
+    right: 50%;
+    transform: translateX(50%);
+    white-space: nowrap;
+  }
+
+  .period-label { font-size: 12px; font-weight: 600; }
+  .period-sub { font-size: 10px; opacity: 0.75; }
+
+  /* ──────────────── PLAN CARDS ──────────────── */
+  .plans-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 8px 16px 16px;
+    scrollbar-width: none;
+    margin: 0 -16px;
+  }
+
+  .plans-scroll::-webkit-scrollbar { display: none; }
+
+  .plan-card {
+    flex-shrink: 0;
+    width: 220px;
+    background: var(--white);
+    border-radius: var(--radius-card);
+    border: 2px solid var(--gray-200);
+    padding: 0;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .plan-card:first-child { margin-right: 0; }
+
+  .plan-card.selected {
+    border-color: var(--orange);
+    box-shadow: var(--shadow-gold);
+    transform: translateY(-4px);
+  }
+
+  .plan-card.gold {
+    border-color: var(--gold);
+    box-shadow: 0 6px 24px rgba(247,183,49,.2);
+    width: 240px;
+  }
+
+  .plan-card.gold.selected {
+    border-color: var(--gold);
+    box-shadow: 0 12px 40px rgba(247,183,49,.35);
+  }
+
+  /* Trial ribbon */
+  .trial-ribbon {
+    background: linear-gradient(90deg, var(--green) 0%, #27AE60 100%);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    padding: 6px 12px;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .plan-card-inner { padding: 16px; }
+
+  /* Popular badge */
+  .popular-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(90deg, var(--gold) 0%, #F5A623 100%);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 0.2px;
+  }
+
+  .plan-icon-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .plan-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .plan-icon.silver { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); color: white; }
+  .plan-icon.gold { background: linear-gradient(135deg, var(--gold), #F5A623); color: white; }
+  .plan-icon.corporate { background: linear-gradient(135deg, var(--sky), #2AB5E0); color: white; }
+
+  .plan-discount-badge {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: -0.2px;
+  }
+
+  .plan-discount-badge.silver { background: #F0F0F0; color: #808080; }
+  .plan-discount-badge.gold { background: var(--gold-light); color: #8B6914; }
+  .plan-discount-badge.corporate { background: #E8F8FD; color: #0A8FB5; }
+
+  .plan-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 2px;
+  }
+
+  .plan-tagline {
+    font-size: 11px;
+    color: var(--gray-400);
+    margin-bottom: 12px;
+  }
+
+  .plan-features { list-style: none; margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
+
+  .plan-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--navy-light);
+    line-height: 1.4;
+  }
+
+  .plan-features li i.fa-check {
+    color: var(--green);
+    font-size: 11px;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  .plan-features li i.fa-xmark {
+    color: var(--gray-400);
+    font-size: 11px;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  .plan-features li.faded { opacity: 0.45; }
+
+  .plan-divider { border: none; border-top: 1px dashed var(--gray-200); margin: 12px 0; }
+
+  .plan-price-row { display: flex; flex-direction: column; gap: 2px; margin-bottom: 12px; }
+
+  .plan-price-main {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--navy);
+    font-family: var(--font-en);
+    line-height: 1;
+  }
+
+  .plan-price-unit { font-size: 11px; color: var(--gray-400); font-weight: 400; font-family: var(--font-fa); }
+
+  .plan-price-per { font-size: 11px; color: var(--gray-600); }
+
+  .plan-price-savings {
+    font-size: 11px;
+    color: var(--green);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .plan-price-original {
+    font-size: 11px;
+    color: var(--gray-400);
+    text-decoration: line-through;
+  }
+
+  .plan-select-btn {
+    width: 100%;
+    padding: 11px;
+    border-radius: var(--radius-xs);
+    border: 2px solid var(--gray-200);
+    background: transparent;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gray-600);
+    transition: all var(--transition);
+  }
+
+  .plan-card.gold .plan-select-btn {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 4px 16px rgba(255,107,53,.3);
+  }
+
+  .plan-card.selected:not(.gold) .plan-select-btn {
+    background: var(--navy);
+    border-color: transparent;
+    color: white;
+  }
+
+  /* People selector inside card */
+  .people-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--gray-100);
+    border-radius: var(--radius-xs);
+    padding: 8px 10px;
+    margin-bottom: 10px;
+  }
+
+  .people-label { font-size: 11px; color: var(--gray-600); font-weight: 600; }
+
+  .people-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .people-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    border: none;
+    background: var(--white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--navy);
+    font-weight: 700;
+    box-shadow: 0 1px 4px rgba(43,45,66,.1);
+    transition: all var(--transition);
+  }
+
+  .people-btn:hover { background: var(--orange); color: white; }
+  .people-count { font-size: 14px; font-weight: 700; color: var(--navy); min-width: 18px; text-align: center; }
+
+  /* ──────────────── MULTI-USE PACKS ──────────────── */
+  .multiuse-section { display: none; }
+  .multiuse-section.active { display: block; }
+
+  .pack-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+  .pack-card {
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--gray-200);
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition);
+    position: relative;
+  }
+
+  .pack-card.selected {
+    border-color: var(--orange);
+    background: #FFF3EE;
+  }
+
+  .pack-card.featured {
+    border-color: var(--gold);
+  }
+
+  .pack-card-badge {
+    position: absolute;
+    top: -8px;
+    right: 50%;
+    transform: translateX(50%);
+    background: var(--gold);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+
+  .pack-uses { font-size: 22px; font-weight: 800; color: var(--navy); font-family: var(--font-en); }
+  .pack-uses-label { font-size: 10px; color: var(--gray-400); margin-bottom: 6px; }
+  .pack-price { font-size: 12px; font-weight: 700; color: var(--orange); font-family: var(--font-en); }
+
+  .pack-type-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .pack-type-btn {
+    flex: 1;
+    padding: 8px;
+    border-radius: var(--radius-xs);
+    border: 1.5px solid var(--gray-200);
+    background: var(--white);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gray-600);
+    transition: all var(--transition);
+    text-align: center;
+  }
+
+  .pack-type-btn.active {
+    border-color: var(--orange);
+    background: #FFF3EE;
+    color: var(--orange);
+  }
+
+  /* ──────────────── TRUST SIGNALS ──────────────── */
+  .trust-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .trust-card {
+    flex: 1;
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 12px 10px;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+  }
+
+  .trust-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 6px;
+    font-size: 16px;
+  }
+
+  .trust-icon.orange { background: #FFF0EA; color: var(--orange); }
+  .trust-icon.sky { background: #E6F8FE; color: var(--sky); }
+  .trust-icon.green { background: var(--green-light); color: var(--green); }
+
+  .trust-number { font-size: 15px; font-weight: 800; color: var(--navy); font-family: var(--font-en); }
+  .trust-label { font-size: 10px; color: var(--gray-400); line-height: 1.4; margin-top: 2px; }
+
+  /* ──────────────── GUARANTEE ──────────────── */
+  .guarantee-card {
+    background: var(--white);
+    border-radius: var(--radius-card);
+    padding: 14px;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .guarantee-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: var(--green-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--green);
+    flex-shrink: 0;
+  }
+
+  .guarantee-text h4 { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+  .guarantee-text p { font-size: 11px; color: var(--gray-400); line-height: 1.5; }
+
+  /* ──────────────── PARTNERS ──────────────── */
+  .partners-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .partners-row::-webkit-scrollbar { display: none; }
+
+  .partner-chip {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    background: var(--white);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--navy);
+    box-shadow: var(--shadow-card);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .partner-chip i { color: var(--orange); font-size: 10px; }
+
+  /* ──────────────── FAQ ──────────────── */
+  .faq-item {
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+
+  .faq-question {
+    width: 100%;
+    padding: 14px 16px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    text-align: right;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    font-family: var(--font-fa);
+    transition: color var(--transition);
+    gap: 8px;
+  }
+
+  .faq-question:hover { color: var(--orange); }
+
+  .faq-question .faq-icon {
+    color: var(--gray-400);
+    font-size: 11px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .faq-item.open .faq-question .faq-icon { transform: rotate(180deg); color: var(--orange); }
+  .faq-item.open .faq-question { color: var(--orange); }
+
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .faq-item.open .faq-answer { max-height: 200px; }
+
+  .faq-answer-inner {
+    padding: 0 16px 14px;
+    font-size: 12px;
+    color: var(--gray-600);
+    line-height: 1.7;
+    border-top: 1px dashed var(--gray-200);
+    padding-top: 10px;
+  }
+
+  /* ──────────────── COMPARISON LINK ──────────────── */
+  .compare-link {
+    text-align: center;
+    padding: 10px;
+  }
+
+  .compare-link a {
+    color: var(--gray-400);
+    font-size: 12px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-bottom: 1px dashed var(--gray-300);
+    padding-bottom: 2px;
+    transition: color var(--transition);
+  }
+
+  .compare-link a:hover { color: var(--orange); }
+
+  /* ──────────────── STICKY CTA ──────────────── */
+  .sticky-cta {
+    position: sticky;
+    bottom: 0;
+    background: rgba(247,247,255,.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--gray-200);
+    padding: 12px 16px 20px;
+    z-index: 200;
+  }
+
+  .cta-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .cta-summary-left { display: flex; flex-direction: column; gap: 2px; }
+  .cta-plan-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 8px;
+    background: var(--gold-light);
+    color: #8B6914;
+  }
+
+  .cta-period-label { font-size: 11px; color: var(--gray-400); margin-top: 1px; }
+
+  .cta-price-final {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--navy);
+    font-family: var(--font-en);
+    line-height: 1;
+  }
+
+  .cta-price-savings {
+    font-size: 11px;
+    color: var(--green);
+    font-weight: 700;
+    text-align: left;
+  }
+
+  .cta-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 6px 20px rgba(255,107,53,.35);
+    transition: all var(--transition);
+    font-family: var(--font-fa);
+  }
+
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(255,107,53,.45);
+  }
+
+  .cta-btn:active { transform: translateY(0); }
+
+  /* ──────────────── LTR OVERRIDES ──────────────── */
+  html[dir="ltr"] body { font-family: var(--font-en); }
+  html[dir="ltr"] .faq-question { text-align: left; flex-direction: row-reverse; }
+  html[dir="ltr"] .header-top { flex-direction: row; }
+  html[dir="ltr"] .back-btn i { transform: scaleX(-1); }
+
+  /* ──────────────── HELPERS ──────────────── */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .spacing-xs { height: 4px; }
+  .spacing-sm { height: 8px; }
+  .spacing-md { height: 16px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ LANGUAGE OVERLAY ═══════════════════════════════ -->
+<div id="lang-overlay">
+  <div class="lang-logo">
+    <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 4C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm0 4c4.08 0 7.8 1.47 10.68 3.9L10.9 34.68A15.9 15.9 0 018 24c0-8.84 7.16-16 16-16zm0 32c-4.08 0-7.8-1.47-10.68-3.9L37.1 13.32A15.9 15.9 0 0140 24c0 8.84-7.16 16-16 16z"/>
+    </svg>
+  </div>
+  <div class="lang-brand">Venus Club</div>
+  <div class="lang-tagline" id="lt">Select your preferred language / زبان مورد نظر را انتخاب کنید</div>
+  <div class="lang-prompt">🌐 Language / زبان</div>
+  <div class="lang-buttons">
+    <button class="lang-btn primary" onclick="setLang('fa')">
+      <span>🇮🇷</span> فارسی
+    </button>
+    <button class="lang-btn secondary" onclick="setLang('en')">
+      <span>🇬🇧</span> English
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ PHONE ═══════════════════════════════ -->
+<div class="phone">
+  <div class="screen" id="main-screen">
+
+    <!-- ── HEADER ── -->
+    <div class="page-header">
+      <div class="header-top">
+        <button class="back-btn"><i class="fas fa-chevron-right"></i></button>
+        <div class="header-text">
+          <div class="header-title" data-k="headerTitle">انتخاب عضویت ونوس</div>
+          <div class="header-subtitle" data-k="headerSub">بهترین پیشنهادات در یک عضویت</div>
+        </div>
+        <button class="header-lang-switch" onclick="toggleLang()" id="langSwitch">EN</button>
+      </div>
+
+      <!-- Promo -->
+      <div class="promo-banner">
+        <i class="fas fa-bolt"></i>
+        <span data-k="promoText">فقط <span class="promo-countdown">۲ روز</span> تا پایان تخفیف ویژه!</span>
+      </div>
+    </div>
+
+    <!-- ── TYPE TABS ── -->
+    <div class="section" style="margin-top:14px;">
+      <div class="type-tabs">
+        <button class="type-tab active" onclick="switchTab('subscription')" id="tab-subscription" data-k="tabSub">
+          <i class="fas fa-calendar-check"></i>
+          <span data-k="tabSubLabel">اشتراک زمانی</span>
+        </button>
+        <button class="type-tab" onclick="switchTab('multiuse')" id="tab-multiuse">
+          <i class="fas fa-layer-group"></i>
+          <span data-k="tabMultiLabel">چندبارمصرف</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════════ SUBSCRIPTION TAB ══════════════ -->
+    <div class="tab-content active" id="content-subscription">
+
+      <!-- Period Selector -->
+      <div class="section" style="margin-top:14px;">
+        <div class="section-label" data-k="periodLabel">دوره اشتراک</div>
+        <div class="period-selector">
+          <button class="period-btn" onclick="selectPeriod(1)" id="period-1">
+            <span class="period-label" data-k="p1">ماهانه</span>
+            <span class="period-sub">1 month</span>
+          </button>
+          <button class="period-btn" onclick="selectPeriod(3)" id="period-3">
+            <span class="period-label" data-k="p3">۳ ماهه</span>
+            <span class="period-sub">-10%</span>
+          </button>
+          <button class="period-btn" onclick="selectPeriod(6)" id="period-6">
+            <span class="period-label" data-k="p6">۶ ماهه</span>
+            <span class="period-sub">-20%</span>
+          </button>
+          <button class="period-btn active" onclick="selectPeriod(12)" id="period-12">
+            <div class="period-badge" data-k="bestValue">بهترین ارزش</div>
+            <span class="period-label" data-k="p12">سالانه</span>
+            <span class="period-sub">-30%</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Plan Cards -->
+      <div class="section-label" style="padding: 0 16px; margin-top: 16px;" data-k="plansLabel">انتخاب پلن</div>
+      <div class="plans-scroll">
+
+        <!-- SILVER -->
+        <div class="plan-card" id="card-silver" onclick="selectPlan('silver')">
+          <div class="plan-card-inner">
+            <div class="plan-icon-row">
+              <div class="plan-icon silver"><i class="fas fa-medal"></i></div>
+              <div class="plan-discount-badge silver">25% OFF</div>
+            </div>
+            <div class="plan-name" data-k="silverName">نقره‌ای</div>
+            <div class="plan-tagline" data-k="silverTag">برای شروع عالی است</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check"></i><span data-k="f-s1">تخفیف ۲۵٪ در همه مرچنت‌ها</span></li>
+              <li><i class="fas fa-check"></i><span data-k="f-s2">۱ عضو فرعی</span></li>
+              <li><i class="fas fa-check"></i><span data-k="f-s3">۱ تا ۳ نفر</span></li>
+              <li class="faded"><i class="fas fa-xmark"></i><span data-k="f-s4">BOGO (یکی بخر یکی ببر)</span></li>
+            </ul>
+            <!-- People -->
+            <div class="people-selector">
+              <span class="people-label" data-k="people">نفرات</span>
+              <div class="people-control">
+                <button class="people-btn" onclick="event.stopPropagation();changePeople('silver',-1)">−</button>
+                <span class="people-count" id="people-silver">1</span>
+                <button class="people-btn" onclick="event.stopPropagation();changePeople('silver',1)">+</button>
+              </div>
+            </div>
+            <hr class="plan-divider">
+            <div class="plan-price-row">
+              <div style="display:flex;align-items:baseline;gap:4px;">
+                <div class="plan-price-main" id="price-silver">۳۵۰,۰۰۰</div>
+                <div class="plan-price-unit" data-k="perMonth">تومان/ماه</div>
+              </div>
+              <div class="plan-price-per" id="total-silver"></div>
+              <div class="plan-price-savings" id="savings-silver"><i class="fas fa-tag"></i><span></span></div>
+            </div>
+            <button class="plan-select-btn" data-k="selectBtn">انتخاب</button>
+          </div>
+        </div>
+
+        <!-- GOLD -->
+        <div class="plan-card gold selected" id="card-gold" onclick="selectPlan('gold')">
+          <div class="trial-ribbon"><i class="fas fa-gift"></i><span data-k="trialRibbon">۳۰ روز آزمایشی رایگان</span></div>
+          <div class="plan-card-inner">
+            <div class="popular-badge"><i class="fas fa-fire"></i><span data-k="popularBadge">پرطرفدارترین</span></div>
+            <div class="plan-icon-row">
+              <div class="plan-icon gold"><i class="fas fa-crown"></i></div>
+              <div class="plan-discount-badge gold">50% OFF</div>
+            </div>
+            <div class="plan-name" data-k="goldName">طلایی ✨</div>
+            <div class="plan-tagline" data-k="goldTag">بهترین ارزش برای خانواده</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check"></i><span data-k="f-g1">تخفیف ۵۰٪ در همه مرچنت‌ها</span></li>
+              <li><i class="fas fa-check"></i><span data-k="f-g2">BOGO نامحدود ✅</span></li>
+              <li><i class="fas fa-check"></i><span data-k="f-g3">۳ عضو فرعی</span></li>
+              <li><i class="fas fa-check"></i><span data-k="f-g4">VIP Offers و رزرو اولویت</span></li>
+            </ul>
+            <!-- People -->
+            <div class="people-selector" style="background:#FFF8E1;">
+              <span class="people-label" data-k="people">نفرات</span>
+              <div class="people-control">
+                <button class="people-btn" onclick="event.stopPropagation();changePeople('gold',-1)">−</button>
+                <span class="people-count" id="people-gold">1</span>
+                <button class="people-btn" onclick="event.stopPropagation();changePeople('gold',1)">+</button>
+              </div>
+            </div>
+            <hr class="plan-divider">
+            <div class="plan-price-row">
+              <div style="display:flex;align-items:baseline;gap:4px;">
+                <div class="plan-price-main" id="price-gold">۴۰۰,۰۰۰</div>
+                <div class="plan-price-unit" data-k="perMonth">تومان/ماه</div>
+              </div>
+              <div class="plan-price-per" id="total-gold"></div>
+              <div class="plan-price-savings" id="savings-gold"><i class="fas fa-tag"></i><span></span></div>
+            </div>
+            <button class="plan-select-btn" data-k="startBtn">شروع کنید</button>
+          </div>
+        </div>
+
+        <!-- CORPORATE -->
+        <div class="plan-card" id="card-corporate" onclick="selectPlan('corporate')">
+          <div class="plan-card-inner">
+            <div class="plan-icon-row">
+              <div class="plan-icon corporate"><i class="fas fa-building"></i></div>
+              <div class="plan-discount-badge corporate">50% OFF</div>
+            </div>
+            <div class="plan-name" data-k="corpName">سازمانی</div>
+            <div class="plan-tagline" data-k="corpTag">برای تیم‌ها و شرکت‌ها</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check"></i><span data-k="f-c1">تخفیف ۵۰٪ + BOGO</span></li>
+              <li><i class="fas fa-check"></i><span data-k="f-c2">۴ تا ۱۰۰+ نفر</span></li>
+              <li><i class="fas fa-check"></i><span data-k="f-c3">داشبورد مدیریتی</span></li>
+              <li><i class="fas fa-check"></i><span data-k="f-c4">پشتیبانی اختصاصی</span></li>
+            </ul>
+            <!-- People -->
+            <div class="people-selector">
+              <span class="people-label" data-k="people">نفرات</span>
+              <div class="people-control">
+                <button class="people-btn" onclick="event.stopPropagation();changePeople('corporate',-1)">−</button>
+                <span class="people-count" id="people-corporate">4</span>
+                <button class="people-btn" onclick="event.stopPropagation();changePeople('corporate',1)">+</button>
+              </div>
+            </div>
+            <hr class="plan-divider">
+            <div class="plan-price-row">
+              <div style="display:flex;align-items:baseline;gap:4px;">
+                <div class="plan-price-main" id="price-corporate">۱,۴۰۰,۰۰۰</div>
+                <div class="plan-price-unit" data-k="perMonth">تومان/ماه</div>
+              </div>
+              <div class="plan-price-per" id="total-corporate"></div>
+              <div class="plan-price-savings" id="savings-corporate"><i class="fas fa-tag"></i><span></span></div>
+            </div>
+            <button class="plan-select-btn" data-k="selectBtn">انتخاب</button>
+          </div>
+        </div>
+
+      </div><!-- /plans-scroll -->
+
+      <div class="compare-link">
+        <a href="#"><i class="fas fa-table"></i><span data-k="compareLink">مشاهده جدول مقایسه کامل</span></a>
+      </div>
+
+    </div><!-- /content-subscription -->
+
+    <!-- ══════════════ MULTI-USE TAB ══════════════ -->
+    <div class="tab-content" id="content-multiuse">
+      <div class="section" style="margin-top:14px;">
+        <div class="section-label" data-k="packTypeLabel">نوع پلن</div>
+        <div class="pack-type-tabs">
+          <button class="pack-type-btn active" onclick="selectPackType('silver')" id="packtype-silver" data-k="packSilverBtn">نقره‌ای ۲۵٪</button>
+          <button class="pack-type-btn" onclick="selectPackType('gold')" id="packtype-gold" data-k="packGoldBtn">طلایی ۵۰٪ ✨</button>
+          <button class="pack-type-btn" onclick="selectPackType('corporate')" id="packtype-corporate" data-k="packCorpBtn">سازمانی</button>
+        </div>
+        <div class="section-label" data-k="packSelectLabel">انتخاب بسته</div>
+
+        <!-- Silver Packs -->
+        <div id="packs-silver">
+          <div class="pack-grid">
+            <div class="pack-card" onclick="selectPack(this,3,'silver')">
+              <div class="pack-uses">3</div>
+              <div class="pack-uses-label" data-k="uses">بار</div>
+              <div class="pack-price">۵۵۰,۰۰۰</div>
+            </div>
+            <div class="pack-card featured selected" onclick="selectPack(this,5,'silver')">
+              <div class="pack-card-badge" data-k="popular">محبوب</div>
+              <div class="pack-uses">5</div>
+              <div class="pack-uses-label" data-k="uses">بار</div>
+              <div class="pack-price">۸۵۰,۰۰۰</div>
+            </div>
+            <div class="pack-card" onclick="selectPack(this,10,'silver')">
+              <div class="pack-uses">10</div>
+              <div class="pack-uses-label" data-k="uses">بار</div>
+              <div class="pack-price">۱,۵۰۰,۰۰۰</div>
+            </div>
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--gray-400);text-align:center;" data-k="packNote">اعتبار ۱ ماهه | تخفیف ۲۵٪ در هر بار مصرف</div>
+        </div>
+
+        <!-- Gold Packs -->
+        <div id="packs-gold" style="display:none">
+          <div class="pack-grid">
+            <div class="pack-card" onclick="selectPack(this,5,'gold')">
+              <div class="pack-uses">5</div>
+              <div class="pack-uses-label" data-k="uses">بار</div>
+              <div class="pack-price">۹۵۰,۰۰۰</div>
+            </div>
+            <div class="pack-card featured selected" onclick="selectPack(this,10,'gold')">
+              <div class="pack-card-badge" data-k="popular">محبوب</div>
+              <div class="pack-uses">10</div>
+              <div class="pack-uses-label" data-k="uses">بار</div>
+              <div class="pack-price">۱,۷۵۰,۰۰۰</div>
+            </div>
+            <div class="pack-card" onclick="selectPack(this,20,'gold')">
+              <div class="pack-uses">20</div>
+              <div class="pack-uses-label" data-k="uses">بار</div>
+              <div class="pack-price">۳,۲۰۰,۰۰۰</div>
+            </div>
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--gray-400);text-align:center;" data-k="packNoteGold">اعتبار ۱ ماهه | تخفیف ۵۰٪ + BOGO نامحدود</div>
+        </div>
+
+        <!-- Corporate Packs -->
+        <div id="packs-corporate" style="display:none">
+          <div class="pack-grid">
+            <div class="pack-card" onclick="selectPack(this,20,'corporate')">
+              <div class="pack-uses">20</div>
+              <div class="pack-uses-label" data-k="uses">بار</div>
+              <div class="pack-price">۳,۵۰۰,۰۰۰</div>
+            </div>
+            <div class="pack-card featured selected" onclick="selectPack(this,50,'corporate')">
+              <div class="pack-card-badge" data-k="popular">محبوب</div>
+              <div class="pack-uses">50</div>
+              <div class="pack-uses-label" data-k="uses">بار</div>
+              <div class="pack-price">۷,۵۰۰,۰۰۰</div>
+            </div>
+            <div class="pack-card" onclick="selectPack(this,100,'corporate')">
+              <div class="pack-uses">100+</div>
+              <div class="pack-uses-label" data-k="uses">بار</div>
+              <div class="pack-price">تماس</div>
+            </div>
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--gray-400);text-align:center;" data-k="packNoteCorp">اعتبار ۱ ماهه | شامل داشبورد مدیریتی</div>
+        </div>
+
+      </div>
+    </div><!-- /content-multiuse -->
+
+    <!-- ══════════════ TRUST SIGNALS ══════════════ -->
+    <div class="section">
+      <div class="trust-row">
+        <div class="trust-card">
+          <div class="trust-icon orange"><i class="fas fa-users"></i></div>
+          <div class="trust-number">+100K</div>
+          <div class="trust-label" data-k="trustUsers">کاربر فعال</div>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon green"><i class="fas fa-piggy-bank"></i></div>
+          <div class="trust-number">12B</div>
+          <div class="trust-label" data-k="trustSavings">تومان صرفه‌جویی</div>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon sky"><i class="fas fa-store"></i></div>
+          <div class="trust-number">+500</div>
+          <div class="trust-label" data-k="trustMerchants">مرچنت همکار</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════ GUARANTEE ══════════════ -->
+    <div class="section">
+      <div class="guarantee-card">
+        <div class="guarantee-icon"><i class="fas fa-shield-halved"></i></div>
+        <div class="guarantee-text">
+          <h4 data-k="guarTitle">گارانتی بازگشت وجه ۷ روزه</h4>
+          <p data-k="guarDesc">در صورت عدم رضایت، ظرف ۷ روز بدون سوال وجه شما برگشت داده می‌شود.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════ PARTNERS ══════════════ -->
+    <div class="section">
+      <div class="section-label" data-k="partnersLabel">برندهای همکار</div>
+      <div class="partners-row">
+        <div class="partner-chip"><i class="fas fa-utensils"></i><span data-k="p-c1">رستوران طلایی</span></div>
+        <div class="partner-chip"><i class="fas fa-coffee"></i><span data-k="p-c2">کافه نوآوری</span></div>
+        <div class="partner-chip"><i class="fas fa-pizza-slice"></i><span data-k="p-c3">پیتزا ونوس</span></div>
+        <div class="partner-chip"><i class="fas fa-ice-cream"></i><span data-k="p-c4">بستنی آرتیزان</span></div>
+        <div class="partner-chip"><i class="fas fa-burger"></i><span data-k="p-c5">برگر فستیوال</span></div>
+      </div>
+    </div>
+
+    <!-- ══════════════ FAQ ══════════════ -->
+    <div class="section">
+      <div class="section-label" data-k="faqLabel">سوالات متداول</div>
+      <div class="faq-item open">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-k="faq1q">آیا می‌توانم هر زمان پلن خود را لغو کنم؟</span>
+          <i class="fas fa-chevron-down faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner" data-k="faq1a">بله، شما می‌توانید اشتراک خود را در هر زمان لغو کنید. در صورت لغو، دسترسی شما تا پایان دوره پرداخت شده ادامه خواهد داشت.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-k="faq2q">آیا امکان ارتقاء پلن وجود دارد؟</span>
+          <i class="fas fa-chevron-down faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner" data-k="faq2a">بله، در هر زمان می‌توانید پلن خود را ارتقاء دهید. مبلغ باقی‌مانده پلن فعلی شما به‌صورت تناسبی محاسبه و از هزینه پلن جدید کسر می‌شود.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-k="faq3q">چطور از بُن‌ها استفاده کنم؟</span>
+          <i class="fas fa-chevron-down faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner" data-k="faq3a">پس از عضویت، از بخش «کشف» مرچنت مورد نظر را پیدا کنید، بُن مورد نظر را فعال کرده و در زمان پرداخت کد را به کارمند ارائه دهید.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-k="faq4q">آیا می‌توانم عضویت را با خانواده به اشتراک بگذارم؟</span>
+          <i class="fas fa-chevron-down faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner" data-k="faq4a">بله! پلن نقره‌ای ۱ عضو فرعی، پلن طلایی ۳ عضو فرعی و پلن سازمانی تا ۱۰۰+ نفر را پشتیبانی می‌کند.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacing-md"></div>
+
+  </div><!-- /screen -->
+
+  <!-- ══════════════ STICKY CTA ══════════════ -->
+  <div class="sticky-cta">
+    <div class="cta-summary">
+      <div class="cta-summary-left">
+        <div class="cta-plan-badge"><i class="fas fa-crown"></i><span id="cta-plan-name">طلایی</span></div>
+        <div class="cta-period-label" id="cta-period"></div>
+      </div>
+      <div style="text-align:left;">
+        <div class="cta-price-final" id="cta-price">۴,۸۰۰,۰۰۰</div>
+        <div class="cta-price-savings" id="cta-savings"></div>
+      </div>
+    </div>
+    <button class="cta-btn" onclick="handleCTA()">
+      <i class="fas fa-bolt"></i>
+      <span data-k="ctaBtn">شروع عضویت</span>
+    </button>
+  </div>
+
+</div><!-- /phone -->
+
+<script>
+// ════════════════════════════════════════════════════
+// TRANSLATIONS
+// ════════════════════════════════════════════════════
+const T = {
+  fa: {
+    headerTitle: 'انتخاب عضویت ونوس',
+    headerSub: 'بهترین پیشنهادات رستوران‌ها، کافه‌ها و مراکز تفریحی',
+    promoText: 'فقط <span class="promo-countdown">۲ روز</span> تا پایان تخفیف ویژه!',
+    tabSubLabel: 'اشتراک زمانی',
+    tabMultiLabel: 'چندبارمصرف',
+    periodLabel: 'دوره اشتراک',
+    p1: 'ماهانه', p3: '۳ ماهه', p6: '۶ ماهه', p12: 'سالانه',
+    bestValue: 'بهترین ارزش',
+    plansLabel: 'انتخاب پلن',
+    silverName: 'نقره‌ای', silverTag: 'برای شروع عالی است',
+    'f-s1': 'تخفیف ۲۵٪ در همه مرچنت‌ها', 'f-s2': '۱ عضو فرعی', 'f-s3': '۱ تا ۳ نفر', 'f-s4': 'BOGO (یکی بخر یکی ببر)',
+    goldName: 'طلایی ✨', goldTag: 'بهترین ارزش برای خانواده',
+    trialRibbon: '۳۰ روز آزمایشی رایگان',
+    popularBadge: 'پرطرفدارترین',
+    'f-g1': 'تخفیف ۵۰٪ در همه مرچنت‌ها', 'f-g2': 'BOGO نامحدود ✅', 'f-g3': '۳ عضو فرعی', 'f-g4': 'VIP Offers و رزرو اولویت',
+    corpName: 'سازمانی', corpTag: 'برای تیم‌ها و شرکت‌ها',
+    'f-c1': 'تخفیف ۵۰٪ + BOGO', 'f-c2': '۴ تا ۱۰۰+ نفر', 'f-c3': 'داشبورد مدیریتی', 'f-c4': 'پشتیبانی اختصاصی',
+    people: 'نفرات',
+    perMonth: 'تومان/ماه',
+    selectBtn: 'انتخاب',
+    startBtn: 'شروع کنید',
+    compareLink: 'مشاهده جدول مقایسه کامل',
+    packTypeLabel: 'نوع پلن',
+    packSilverBtn: 'نقره‌ای ۲۵٪',
+    packGoldBtn: 'طلایی ۵۰٪ ✨',
+    packCorpBtn: 'سازمانی',
+    packSelectLabel: 'انتخاب بسته',
+    uses: 'بار',
+    popular: 'محبوب',
+    packNote: 'اعتبار ۱ ماهه | تخفیف ۲۵٪ در هر بار مصرف',
+    packNoteGold: 'اعتبار ۱ ماهه | تخفیف ۵۰٪ + BOGO نامحدود',
+    packNoteCorp: 'اعتبار ۱ ماهه | شامل داشبورد مدیریتی',
+    trustUsers: 'کاربر فعال',
+    trustSavings: 'تومان صرفه‌جویی',
+    trustMerchants: 'مرچنت همکار',
+    guarTitle: 'گارانتی بازگشت وجه ۷ روزه',
+    guarDesc: 'در صورت عدم رضایت، ظرف ۷ روز بدون سوال وجه شما برگشت داده می‌شود.',
+    partnersLabel: 'برندهای همکار',
+    'p-c1': 'رستوران طلایی', 'p-c2': 'کافه نوآوری', 'p-c3': 'پیتزا ونوس', 'p-c4': 'بستنی آرتیزان', 'p-c5': 'برگر فستیوال',
+    faqLabel: 'سوالات متداول',
+    faq1q: 'آیا می‌توانم هر زمان پلن خود را لغو کنم؟',
+    faq1a: 'بله، شما می‌توانید اشتراک خود را در هر زمان لغو کنید. در صورت لغو، دسترسی شما تا پایان دوره پرداخت شده ادامه خواهد داشت.',
+    faq2q: 'آیا امکان ارتقاء پلن وجود دارد؟',
+    faq2a: 'بله، در هر زمان می‌توانید پلن خود را ارتقاء دهید. مبلغ باقی‌مانده پلن فعلی شما به‌صورت تناسبی محاسبه و از هزینه پلن جدید کسر می‌شود.',
+    faq3q: 'چطور از بُن‌ها استفاده کنم؟',
+    faq3a: 'پس از عضویت، از بخش «کشف» مرچنت مورد نظر را پیدا کنید، بُن مورد نظر را فعال کرده و در زمان پرداخت کد را به کارمند ارائه دهید.',
+    faq4q: 'آیا می‌توانم عضویت را با خانواده به اشتراک بگذارم؟',
+    faq4a: 'بله! پلن نقره‌ای ۱ عضو فرعی، پلن طلایی ۳ عضو فرعی و پلن سازمانی تا ۱۰۰+ نفر را پشتیبانی می‌کند.',
+    ctaBtn: 'شروع عضویت',
+    // dynamic
+    periodNames: { 1: 'ماهانه', 3: 'سه‌ماهه', 6: 'شش‌ماهه', 12: 'سالانه' },
+    saving: 'صرفه‌جویی',
+    tooman: 'تومان',
+    perPersonLabel: 'سرانه هر نفر:',
+    totalLabel: 'مجموع:',
+  },
+  en: {
+    headerTitle: 'Choose Your Plan',
+    headerSub: 'The best restaurant & café deals in one membership',
+    promoText: 'Only <span class="promo-countdown">2 days</span> left on this special offer!',
+    tabSubLabel: 'Subscription',
+    tabMultiLabel: 'Multi-Use Packs',
+    periodLabel: 'Billing Period',
+    p1: 'Monthly', p3: '3 Months', p6: '6 Months', p12: 'Annual',
+    bestValue: 'Best Value',
+    plansLabel: 'Choose Plan',
+    silverName: 'Silver', silverTag: 'Great for getting started',
+    'f-s1': '25% off at all merchants', 'f-s2': '1 sub-member', 'f-s3': '1–3 people', 'f-s4': 'BOGO (buy one get one)',
+    goldName: 'Gold ✨', goldTag: 'Best value for families',
+    trialRibbon: '30-Day Free Trial',
+    popularBadge: 'Most Popular',
+    'f-g1': '50% off at all merchants', 'f-g2': 'Unlimited BOGO ✅', 'f-g3': '3 sub-members', 'f-g4': 'VIP Offers & Priority Booking',
+    corpName: 'Corporate', corpTag: 'For teams & companies',
+    'f-c1': '50% off + BOGO', 'f-c2': '4 to 100+ people', 'f-c3': 'Management dashboard', 'f-c4': 'Dedicated support',
+    people: 'Members',
+    perMonth: 'T/mo',
+    selectBtn: 'Select',
+    startBtn: 'Get Started',
+    compareLink: 'View full comparison table',
+    packTypeLabel: 'Plan Type',
+    packSilverBtn: 'Silver 25%',
+    packGoldBtn: 'Gold 50% ✨',
+    packCorpBtn: 'Corporate',
+    packSelectLabel: 'Select Pack',
+    uses: 'uses',
+    popular: 'Popular',
+    packNote: '1-month validity | 25% off per use',
+    packNoteGold: '1-month validity | 50% off + Unlimited BOGO',
+    packNoteCorp: '1-month validity | Includes management dashboard',
+    trustUsers: 'Active Users',
+    trustSavings: 'T Saved',
+    trustMerchants: 'Partner Merchants',
+    guarTitle: '7-Day Money-Back Guarantee',
+    guarDesc: 'Not satisfied? Get a full refund within 7 days, no questions asked.',
+    partnersLabel: 'Partner Brands',
+    'p-c1': 'Golden Restaurant', 'p-c2': 'Innovation Café', 'p-c3': 'Venus Pizza', 'p-c4': 'Artisan Ice Cream', 'p-c5': 'Burger Festival',
+    faqLabel: 'FAQ',
+    faq1q: 'Can I cancel my plan at any time?',
+    faq1a: 'Yes, you can cancel your subscription at any time. Upon cancellation, your access will continue until the end of the paid period.',
+    faq2q: 'Can I upgrade my plan?',
+    faq2a: 'Yes, you can upgrade at any time. The remaining value of your current plan will be calculated proportionally and deducted from the new plan cost.',
+    faq3q: 'How do I use vouchers?',
+    faq3a: 'After joining, find your desired merchant in the "Discover" section, activate the voucher, and show the code to the staff at checkout.',
+    faq4q: 'Can I share my membership with family?',
+    faq4a: 'Yes! Silver supports 1 sub-member, Gold supports 3 sub-members, and Corporate supports 100+ members.',
+    ctaBtn: 'Start Membership',
+    // dynamic
+    periodNames: { 1: 'Monthly', 3: '3-Month', 6: '6-Month', 12: 'Annual' },
+    saving: 'Saving',
+    tooman: 'T',
+    perPersonLabel: 'Per person:',
+    totalLabel: 'Total:',
+  }
+};
+
+// ════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════
+let state = {
+  lang: 'fa',
+  period: 12,
+  plan: 'gold',
+  people: { silver: 1, gold: 1, corporate: 4 },
+  activeTab: 'subscription',
+};
+
+// Base monthly prices (toman)
+const BASE_PRICES = { silver: 350000, gold: 400000, corporate: 350000 };
+const CORP_PER_PERSON = 350000;
+const PERIOD_DISCOUNT = { 1: 0, 3: 0.10, 6: 0.20, 12: 0.30 };
+
+// ════════════════════════════════════════════════════
+// LANGUAGE
+// ════════════════════════════════════════════════════
+function setLang(lang) {
+  state.lang = lang;
+  const html = document.getElementById('html-root');
+  if (lang === 'fa') {
+    html.setAttribute('lang', 'fa');
+    html.setAttribute('dir', 'rtl');
+    document.getElementById('langSwitch').textContent = 'EN';
+  } else {
+    html.setAttribute('lang', 'en');
+    html.setAttribute('dir', 'ltr');
+    document.getElementById('langSwitch').textContent = 'FA';
+  }
+  applyTranslations();
+  updateAllPrices();
+  updateCTA();
+  // Hide overlay
+  document.getElementById('lang-overlay').style.display = 'none';
+}
+
+function toggleLang() {
+  setLang(state.lang === 'fa' ? 'en' : 'fa');
+}
+
+function applyTranslations() {
+  const t = T[state.lang];
+  document.querySelectorAll('[data-k]').forEach(el => {
+    const k = el.getAttribute('data-k');
+    if (t[k] !== undefined) {
+      el.innerHTML = t[k];
+    }
+  });
+}
+
+// ════════════════════════════════════════════════════
+// TABS
+// ════════════════════════════════════════════════════
+function switchTab(tab) {
+  state.activeTab = tab;
+  ['subscription','multiuse'].forEach(t => {
+    document.getElementById('content-'+t).classList.toggle('active', t===tab);
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+  });
+  updateCTA();
+}
+
+// ════════════════════════════════════════════════════
+// PERIOD
+// ════════════════════════════════════════════════════
+function selectPeriod(months) {
+  state.period = months;
+  [1,3,6,12].forEach(m => {
+    document.getElementById('period-'+m).classList.toggle('active', m===months);
+  });
+  updateAllPrices();
+  updateCTA();
+}
+
+// ════════════════════════════════════════════════════
+// PLAN
+// ════════════════════════════════════════════════════
+function selectPlan(plan) {
+  state.plan = plan;
+  ['silver','gold','corporate'].forEach(p => {
+    const card = document.getElementById('card-'+p);
+    card.classList.toggle('selected', p===plan);
+  });
+  updateCTA();
+}
+
+// ════════════════════════════════════════════════════
+// PEOPLE
+// ════════════════════════════════════════════════════
+const PEOPLE_LIMITS = { silver: [1,3], gold: [1,3], corporate: [4,100] };
+
+function changePeople(plan, delta) {
+  const [min, max] = PEOPLE_LIMITS[plan];
+  const n = Math.min(max, Math.max(min, state.people[plan] + delta));
+  state.people[plan] = n;
+  document.getElementById('people-'+plan).textContent = n;
+  updatePlanPrice(plan);
+  if (state.plan === plan) updateCTA();
+}
+
+// ════════════════════════════════════════════════════
+// PRICING LOGIC
+// ════════════════════════════════════════════════════
+function formatNum(n) {
+  return n.toLocaleString('fa-IR');
+}
+
+function formatNumEn(n) {
+  return n.toLocaleString('en-US');
+}
+
+function fmt(n) {
+  return state.lang === 'fa' ? formatNum(n) : formatNumEn(n);
+}
+
+function calcPrice(plan, period, people) {
+  const base = plan === 'corporate'
+    ? CORP_PER_PERSON * people
+    : BASE_PRICES[plan] * (plan === 'silver' ? 1 : 1) * (people === 1 ? 1 : (1 + (people-1)*0.85));
+
+  const discount = PERIOD_DISCOUNT[period];
+  const monthly = Math.round(base * (1 - discount));
+  const total = monthly * period;
+  const original = base * period;
+  const saved = original - total;
+  return { monthly, total, saved, original };
+}
+
+function updatePlanPrice(plan) {
+  const { monthly, total, saved } = calcPrice(plan, state.period, state.people[plan]);
+  const t = T[state.lang];
+
+  document.getElementById('price-'+plan).textContent = fmt(monthly);
+
+  const totalEl = document.getElementById('total-'+plan);
+  if (state.period > 1) {
+    totalEl.textContent = `${t.totalLabel} ${fmt(total)} ${t.tooman}`;
+  } else {
+    const pp = state.people[plan] > 1 ? ` | ${t.perPersonLabel} ${fmt(monthly)} ${t.tooman}` : '';
+    totalEl.textContent = pp;
+  }
+
+  const savingsEl = document.getElementById('savings-'+plan);
+  if (saved > 0) {
+    savingsEl.querySelector('span').textContent = `${t.saving} ${fmt(saved)} ${t.tooman}`;
+    savingsEl.style.display = 'flex';
+  } else {
+    savingsEl.style.display = 'none';
+  }
+}
+
+function updateAllPrices() {
+  ['silver','gold','corporate'].forEach(p => updatePlanPrice(p));
+}
+
+// ════════════════════════════════════════════════════
+// CTA SUMMARY
+// ════════════════════════════════════════════════════
+function updateCTA() {
+  const t = T[state.lang];
+  const planNames = {
+    silver: t.silverName || 'Silver',
+    gold: t.goldName || 'Gold ✨',
+    corporate: t.corpName || 'Corporate',
+  };
+
+  document.getElementById('cta-plan-name').textContent = planNames[state.plan] || state.plan;
+  document.getElementById('cta-period').textContent = t.periodNames[state.period];
+
+  const { total, saved } = calcPrice(state.plan, state.period, state.people[state.plan]);
+  document.getElementById('cta-price').textContent = `${fmt(total)} ${t.tooman}`;
+
+  const savEl = document.getElementById('cta-savings');
+  if (saved > 0) {
+    savEl.textContent = `↓ ${t.saving} ${fmt(saved)} ${t.tooman}`;
+    savEl.style.display = 'block';
+  } else {
+    savEl.style.display = 'none';
+  }
+}
+
+// ════════════════════════════════════════════════════
+// MULTI-USE PACKS
+// ════════════════════════════════════════════════════
+let selectedPackType = 'silver';
+
+function selectPackType(type) {
+  selectedPackType = type;
+  ['silver','gold','corporate'].forEach(t => {
+    document.getElementById('packtype-'+t).classList.toggle('active', t===type);
+    document.getElementById('packs-'+t).style.display = t===type ? 'block' : 'none';
+  });
+}
+
+function selectPack(el, uses, type) {
+  el.closest('#packs-'+type).querySelectorAll('.pack-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ════════════════════════════════════════════════════
+// FAQ
+// ════════════════════════════════════════════════════
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// ════════════════════════════════════════════════════
+// CTA BUTTON
+// ════════════════════════════════════════════════════
+function handleCTA() {
+  const btn = document.querySelector('.cta-btn');
+  btn.style.transform = 'scale(0.97)';
+  setTimeout(() => btn.style.transform = '', 150);
+  // Placeholder for actual checkout flow
+  alert(state.lang === 'fa' ? 'در حال انتقال به درگاه پرداخت...' : 'Redirecting to payment gateway...');
+}
+
+// ════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════
+(function init() {
+  // Pre-select gold
+  selectPlan('gold');
+  // Set period 12 active
+  selectPeriod(12);
+  // Render initial prices
+  updateAllPrices();
+  updateCTA();
+})();
+</script>
+</body>
+</html>
