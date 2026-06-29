@@ -778,7 +778,7 @@
             </div>
             <div class="plan-bottom">
               <div class="plan-price-block">
-                <div class="plan-price-total" id="total-gold" style="font-size:15px;font-weight:800;color:var(--navy);">۳,۶۰۰,۰۰۰ تومان</div>
+                <div class="plan-price-total" id="total-gold" style="font-size:15px;font-weight:800;color:var(--navy);" data-k="priceGoldTotal">۳,۶۰۰,۰۰۰ تومان</div>
                 <div class="plan-price-savings"></div>
               </div>
               <button class="plan-select-btn" data-k="startBtn">شروع کنید</button>
@@ -816,7 +816,7 @@
             </div>
             <div class="plan-bottom">
               <div class="plan-price-block">
-                <div class="plan-price-total" id="total-silver" style="font-size:15px;font-weight:800;color:var(--navy);">۱,۸۰۰,۰۰۰ تومان</div>
+                <div class="plan-price-total" id="total-silver" style="font-size:15px;font-weight:800;color:var(--navy);" data-k="priceSilverTotal">۱,۸۰۰,۰۰۰ تومان</div>
                 <div class="plan-price-savings"></div>
               </div>
               <button class="plan-select-btn" data-k="selectBtn">انتخاب</button>
@@ -1043,6 +1043,11 @@ const T = {
     periodNames:{1:'ماهانه',3:'سه‌ماهه',6:'شش‌ماهه',12:'سالانه'},
     tooman:'تومان',
     nPeople: (n) => `${n} نفر`,
+    // prices
+    priceGoldTotal: '۳,۶۰۰,۰۰۰ تومان',
+    priceSilverTotal: '۱,۸۰۰,۰۰۰ تومان',
+    priceGoldTotalEn: '$72',
+    priceSilverTotalEn: '$36',
   },
   en: {
     headerTitle:'Choose Your Plan', headerSub:'',
@@ -1066,7 +1071,7 @@ const T = {
     faq2q:'Can I upgrade my plan?', faq2a:'Yes, upgrade anytime. The remaining value is calculated proportionally and deducted from the new plan cost.',
     faq3q:'How do I use vouchers?', faq3a:'Find a merchant in the "Discover" section, activate a voucher, and show the code at checkout.',
     faq4q:'Can I share my membership with family?', faq4a:'Yes! Silver supports 1 sub-member, Gold 3 sub-members, and Corporate 100+ members.',
-    faqMulti1:'How long is the validity?', faqMulti1a:'Each multi-use pack is valid for 1 month and expires after that.',
+    faqMulti1:'How long is the validity of multi-use plans?', faqMulti1a:'Each multi-use pack is valid for 1 month and expires after that.',
     faqMulti2:'How many people can use one subscription pack?',
     faqMulti2a:'In a single-use subscription, each person can use the voucher once per meal per restaurant, and cannot reuse it for that restaurant within 5 hours. However, it can still be used at other restaurants during the same meal.',
     discountLabel:'Discount / Referral Code', discountPlaceholder:'Enter your code...', applyBtn:'Apply',
@@ -1085,8 +1090,11 @@ const T = {
     wizBack:'Back', wizNext:'Continue', wizConfirm:'Confirm & Purchase',
     // dynamic
     periodNames:{1:'Monthly',3:'Quarterly',6:'6-Month',12:'Annual'},
-    tooman:'T',
+    tooman:'$',
     nPeople: (n) => `${n} people`,
+    // prices in USD (1 USD = 50,000 Toman)
+    priceGoldTotal: '$72',
+    priceSilverTotal: '$36',
   }
 };
 
@@ -1105,6 +1113,7 @@ const BASE_PRICES = { silver: 150000, gold: 300000 };
 const CORP_PER_PERSON = 250000;
 const PERIOD_DISCOUNT = { 1: 0, 3: 0.10, 6: 0.20, 12: 0.30 };
 const ADD_PERSON_DISCOUNT = { 2: 0.20, 3: 0.30 };
+const USD_RATE = 50000; // 1 USD = 50,000 Toman
 
 let wizState = { step: 0, people: 10, period: 12 };
 
@@ -1137,6 +1146,14 @@ function applyTranslations() {
   document.querySelectorAll('[data-k]').forEach(el => {
     const k = el.getAttribute('data-k');
     if (t[k] !== undefined && typeof t[k] !== 'function') el.innerHTML = t[k];
+  });
+  // Update discount field placeholder specifically
+  const discountInputs = document.querySelectorAll('.discount-field-wrap input');
+  discountInputs.forEach(input => {
+    const placeholderKey = input.getAttribute('data-k');
+    if (placeholderKey && T[state.lang][placeholderKey]) {
+      input.placeholder = T[state.lang][placeholderKey];
+    }
   });
 }
 
@@ -1215,13 +1232,22 @@ function calcPrice(plan, period, people) {
   return { monthly, total };
 }
 
+function formatPriceWithCurrency(amount) {
+  const t = T[state.lang];
+  if (state.lang === 'fa') {
+    return `${fmt(amount)} ${t.tooman}`;
+  } else {
+    // Convert to USD
+    const usdAmount = amount / USD_RATE;
+    return `$${usdAmount.toFixed(0)}`;
+  }
+}
+
 function updatePlanPrice(plan) {
   if (plan === 'corporate') return;
-  const t = T[state.lang];
   const { total } = calcPrice(plan, state.period, state.people[plan]);
-
   const totalEl = document.getElementById('total-'+plan);
-  totalEl.textContent = `${fmt(total)} ${t.tooman}`;
+  totalEl.textContent = formatPriceWithCurrency(total);
 }
 
 function updateAllPrices() {
@@ -1251,7 +1277,7 @@ function updateCTA() {
     price = r.total;
   }
 
-  document.getElementById('cta-price').textContent = `${fmt(price)} ${t.tooman}`;
+  document.getElementById('cta-price').textContent = formatPriceWithCurrency(price);
 }
 
 // ═══════════════════════════
@@ -1320,8 +1346,8 @@ function renderWizSummary() {
 
   document.getElementById('wiz-sum-people').textContent = t.nPeople(wizState.people);
   document.getElementById('wiz-sum-period').textContent = t.periodNames[wizState.period];
-  document.getElementById('wiz-sum-monthly').textContent = `${fmt(perPerson)} ${t.tooman}`;
-  document.getElementById('wiz-sum-total').textContent = `${fmt(total)} ${t.tooman}`;
+  document.getElementById('wiz-sum-monthly').textContent = formatPriceWithCurrency(perPerson);
+  document.getElementById('wiz-sum-total').textContent = formatPriceWithCurrency(total);
 }
 
 function wizConfirm() {
