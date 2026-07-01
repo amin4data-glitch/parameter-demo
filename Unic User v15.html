@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venus Club | باشگاه ونوس</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tahoma:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=B+Nazanin:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* رنگ‌ها */
+            --orange: #FF6B35;
+            --orange-light: #FF8E53;
+            --orange-dark: #E55A2B;
+            --navy: #1A237E;
+            --navy-light: #283593;
+            --navy-dark: #0D1B5C;
+            --gold: #FFD700;
+            --gold-light: #FFE44D;
+            --gold-dark: #E6C300;
+            --lavender: #E6E6FA;
+            --lavender-light: #F0F0FF;
+            --lavender-dark: #D8D8F0;
+            --white: #FFFFFF;
+            --off-white: #F8F9FA;
+            --gray-light: #E9ECEF;
+            --gray: #6C757D;
+            --gray-dark: #343A40;
+            --black: #212529;
+            --success: #28A745;
+            --warning: #FFC107;
+            --danger: #DC3545;
+            --info: #17A2B8;
+            
+            /* سایه‌ها */
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow: 0 4px 8px rgba(0,0,0,0.1);
+            --shadow-md: 0 6px 12px rgba(0,0,0,0.15);
+            --shadow-lg: 0 10px 20px rgba(0,0,0,0.2);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.25);
+            
+            /* شعاع لبه‌ها */
+            --radius-xs: 4px;
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-md: 16px;
+            --radius-lg: 20px;
+            --radius-xl: 24px;
+            --radius-2xl: 32px;
+            --radius-full: 9999px;
+            
+            /* حاشیه‌ها */
+            --border: 1px solid rgba(0,0,0,0.1);
+            --border-thick: 2px solid rgba(0,0,0,0.15);
+            
+            /* فونت‌ها */
+            --font-primary: 'Tahoma', 'B Nazanin', sans-serif;
+            --font-secondary: 'B Nazanin', 'Tahoma', sans-serif;
+            
+            /* متغیرهای جدید برای بهبود کنتراست */
+            --plan-card-bg: #FFFFFF;
+            --plan-card-border: rgba(255, 107, 53, 0.2);
+            --plan-card-shadow: 0 6px 15px rgba(255, 107, 53, 0.1);
+            --plan-featured-bg: linear-gradient(135deg, #FFF9E6 0%, #FFEECC 100%);
+            --plan-featured-border: rgba(255, 215, 0, 0.3);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: var(--font-primary);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--black);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .phone {
+            width: 390px;
+            height: 844px;
+            background-color: var(--white);
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            border: 12px solid var(--black);
+        }
+        
+        .phone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 25px;
+            background-color: var(--black);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            z-index: 1000;
+        }
+        
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            background-color: var(--off-white);
+            overflow: hidden;
+        }
+        
+        .screen.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .scroll {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .scroll::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* هدر */
+        .header {
+            background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+            color: var(--white);
+            padding: 20px 16px;
+            position: relative;
+            z-index: 10;
+            box-shadow: var(--shadow);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-2px);
+        }
+        
+        /* ناوبری پایین */
+        .nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--white);
+            border-top: var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-item.active, .nav-item:hover {
+            color: var(--orange);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        
+        /* کارت‌ها */
+        .card {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 16px;
+            box-shadow: var(--shadow);
+            border: var(--border);
+        }
+        
+        /* کارت پلن - بهبود یافته */
+        .plan-card {
+            background-color: var(--plan-card-bg);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin: 16px;
+            box-shadow: var(--plan-card-shadow);
+            border: 2px solid var(--plan-card-border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(255, 107, 53, 0.4);
+        }
+        
+        .plan-card.featured {
+            background: var(--plan-featured-bg);
+            border: 2px solid var(--plan-featured-border);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.2);
+        }
+        
+        .plan-card.featured::before {
+            content: 'پیشنهاد ویژه';
+            position: absolute;
+            top: 12px;
+            left: -30px;
+            background: var(--gold);
+            color: var(--navy);
+            padding: 4px 30px;
+            font-size: 12px;
+            font-weight: 700;
+            transform: rotate(-45deg);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .plan-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .plan-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 24px;
+            margin-left: 12px;
+        }
+        
+        .plan-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        
+        .plan-tagline {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .plan-badge {
+            display: inline-block;
+            background-color: var(--orange);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        
+        .plan-features {
+            margin: 20px 0;
+        }
+        
+        .plan-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .plan-feature i {
+            margin-left: 10px;
+            font-size: 16px;
+        }
+        
+        .plan-feature.available i {
+            color: var(--success);
+        }
+        
+        .plan-feature.unavailable i {
+            color: var(--danger);
+        }
+        
+        .plan-price {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: var(--border);
+        }
+        
+        .price-amount {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--orange);
+            margin-bottom: 4px;
+        }
+        
+        .price-period {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .plan-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+            color: var(--white);
+            border: none;
+            padding: 14px;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 16px;
+        }
+        
+        .plan-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 107, 53, 0.3);
+        }
+        
+        /* بخش هدیه */
+        .gift-section {
+            background: linear-gradient(135deg, #E6F7FF 0%, #CCEEFF 100%);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin: 20px 16px;
+            border: 2px solid rgba(25, 118, 210, 0.2);
+            box-shadow: var(--shadow);
+        }
+        
+        .gift-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .gift-title i {
+            margin-left: 10px;
+            color: var(--orange);
+            font-size: 24px;
+        }
+        
+        .gift-description {
+            font-size: 14px;
+            color: var(--gray-dark);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .gift-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            padding: 14px 16px;
+            border: var(--border);
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-family: var(--font-primary);
+            background-color: var(--white);
+            transition: all 0.2s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+        }
+        
+        .gift-btn {
+            background: linear-gradient(135deg, var(--success) 0%, #20C997 100%);
+            color: var(--white);
+            border: none;
+            padding: 16px;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+        }
+        
+        .gift-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(40, 167, 69, 0.3);
+        }
+        
+        /* دکمه‌ها */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 107, 53, 0.3);
+        }
+        
+        /* سایر استایل‌ها */
+        .hero {
+            background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+            color: var(--white);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+        
+        .hero-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .hero-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .user-welcome {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 20px 16px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 24px;
+            margin-left: 16px;
+        }
+        
+        .user-info h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        
+        .user-info p {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .banner {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            color: var(--white);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 16px;
+            text-align: center;
+        }
+        
+        .banner-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .banner-text {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 16px;
+        }
+        
+        .category-item {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 16px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+            border: var(--border);
+        }
+        
+        .category-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            border-color: var(--orange);
+        }
+        
+        .category-icon {
+            font-size: 24px;
+            color: var(--orange);
+            margin-bottom: 8px;
+        }
+        
+        .category-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+        
+        /* صفحه احراز هویت */
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .auth-card {
+            background-color: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .auth-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        /* سوالات متداول */
+        .faq-container {
+            padding: 20px 16px;
+        }
+        
+        .faq-item {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: var(--border);
+        }
+        
+        .faq-question {
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            padding: 0 16px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            font-size: 14px;
+            color: var(--gray-dark);
+            line-height: 1.6;
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 0 16px 16px;
+            max-height: 500px;
+        }
+        
+        /* صفحه انتخاب زبان */
+        .lang-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+            color: var(--white);
+            text-align: center;
+        }
+        
+        .lang-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .lang-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+        
+        .lang-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: var(--white);
+            padding: 18px;
+            border-radius: var(--radius);
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        /* صفحه اصلی */
+        .home-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 16px;
+            background-color: var(--white);
+            border-bottom: var(--border);
+        }
+        
+        .home-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+        
+        .home-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            background-color: var(--off-white);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            background-color: var(--orange);
+            color: var(--white);
+        }
+        
+        /* بهبود ظاهری برای صفحات مختلف */
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 24px 16px 16px;
+        }
+        
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--gray);
+            margin: 0 16px 20px;
+        }
+        
+        /* استایل‌های عمومی برای متن‌ها */
+        .text-center {
+            text-align: center;
+        }
+        
+        .mt-1 { margin-top: 8px; }
+        .mt-2 { margin-top: 16px; }
+        .mt-3 { margin-top: 24px; }
+        .mt-4 { margin-top: 32px; }
+        .mb-1 { margin-bottom: 8px; }
+        .mb-2 { margin-bottom: 16px; }
+        .mb-3 { margin-bottom: 24px; }
+        .mb-4 { margin-bottom: 32px; }
+        .p-1 { padding: 8px; }
+        .p-2 { padding: 16px; }
+        .p-3 { padding: 24px; }
+        .p-4 { padding: 32px; }
+    </style>
+</head>
+<body>
+    <div class="phone">
+        <!-- صفحه انتخاب زبان -->
+        <div id="lang-pick" class="screen active">
+            <div class="lang-container">
+                <h1 class="lang-title">Venus Club</h1>
+                <p class="lang-subtitle">باشگاه وفاداری ونوس</p>
+                <div class="lang-buttons">
+                    <button class="lang-btn" onclick="switchScreen('auth')">
+                        <i class="fas fa-language"></i>
+                        فارسی
+                    </button>
+                    <button class="lang-btn" onclick="switchScreen('auth')">
+                        <i class="fas fa-language"></i>
+                        English
+                    </button>
+                    <button class="lang-btn" onclick="switchScreen('auth')">
+                        <i class="fas fa-language"></i>
+                        العربية
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- صفحه احراز هویت -->
+        <div id="auth" class="screen">
+            <div class="header">
+                <div class="header-content">
+                    <button class="back-btn" onclick="switchScreen('lang-pick')">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <div class="header-title">ورود / ثبت‌نام</div>
+                    <div style="width: 40px;"></div>
+                </div>
+            </div>
+            <div class="scroll">
+                <div class="auth-container">
+                    <div class="auth-card">
+                        <h2 class="auth-title">به باشگاه ونوس خوش آمدید</h2>
+                        <form class="auth-form">
+                            <div class="form-group">
+                                <label class="form-label">شماره موبایل</label>
+                                <input type="tel" class="form-input" placeholder="09xxxxxxxxx" dir="ltr">
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="switchScreen('auth-otp')">دریافت کد تایید</button>
+                            <p class="text-center mt-2" style="font-size: 14px; color: var(--gray);">
+                                با ورود یا ثبت‌نام، قوانین و مقررات را می‌پذیرید.
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- صفحه تایید کد یکبار مصرف -->
+        <div id="auth-otp" class="screen">
+            <div class="header">
+                <div class="header-content">
+                    <button class="back-btn" onclick="switchScreen('auth')">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <div class="header-title">تایید شماره موبایل</div>
+                    <div style="width: 40px;"></div>
+                </div>
+            </div>
+            <div class="scroll">
+                <div class="auth-container">
+                    <div class="auth-card">
+                        <h2 class="auth-title">کد تایید را وارد کنید</h2>
+                        <p class="text-center mb-3" style="color: var(--gray);">
+                            کد ۵ رقمی به شماره ۰۹۱۲××××۱۲ ارسال شد
+                        </p>
+                        <form class="auth-form">
+                            <div class="form-group">
+                                <label class="form-label">کد تایید</label>
+                                <input type="text" class="form-input" placeholder="۱۲۳۴۵" dir="ltr" maxlength="5">
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="switchScreen('home')">تایید و ادامه</button>
+                            <div class="text-center mt-2">
+                                <a href="#" style="color: var(--orange); text-decoration: none; font-size: 14px;">ارسال مجدد کد (۶۰ ثانیه)</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- صفحه اصلی -->
+        <div id="home" class="screen">
+            <div class="home-header">
+                <h1 class="home-title">باشگاه ونوس</h1>
+                <div class="home-actions">
+                    <button class="action-btn">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="action-btn" onclick="switchScreen('profile')">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="scroll">
+                <div class="hero">
+                    <h2 class="hero-title">به باشگاه وفاداری ونوس خوش آمدید</h2>
+                    <p class="hero-subtitle">تجربه‌ای متفاوت از خرید و خدمات ویژه</p>
+                </div>
+                
+                <div class="user-welcome">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <h3>کاربر عزیز</h3>
+                        <p>اعتبار شما: ۱۲۵,۰۰۰ تومان</p>
+                    </div>
+                </div>
+                
+                <div class="banner">
+                    <h3 class="banner-title">تخفیف‌های ویژه اعضا</h3>
+                    <p class="banner-text">تا ۵۰٪ تخفیف برای خریدهای بالای ۲۰۰ هزار تومان</p>
+                    <button class="btn btn-primary">مشاهده تخفیف‌ها</button>
+                </div>
+                
+                <h3 class="section-title">دسته‌بندی خدمات</h3>
+                <p class="section-subtitle">خدمات ویژه باشگاه ونوس را بررسی کنید</p>
+                
+                <div class="category-grid">
+                    <div class="category-item">
+                        <div class="category-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="category-name">هدایا</div>
+                    </div>
+                    <div class="category-item">
+                        <div class="category-icon">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div class="category-name">تخفیف‌ها</div>
+                    </div>
+                    <div class="category-item">
+                        <div class="category-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="category-name">امتیازات</div>
+                    </div>
+                    <div class="category-item">
+                        <div class="category-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="category-name">رویدادها</div>
+                    </div>
+                    <div class="category-item">
+                        <div class="category-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <div class="category-name">فروشگاه</div>
+                    </div>
+                    <div class="category-item">
+                        <div class="category-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="category-name">پشتیبانی</div>
+                    </div>
+                </div>
+                
+                <h3 class="section-title mt-4">پلن‌های اشتراک</h3>
+                <p class="section-subtitle">پلن مناسب خود را انتخاب کنید</p>
+                
+                <!-- کارت پلن نقره‌ای -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <div class="plan-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div>
+                            <h3 class="plan-title">پلن نقره‌ای</h3>
+                            <p class="plan-tagline">مناسب برای شروع</p>
+                            <span class="plan-badge">۱۰٪ تخفیف</span>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-features">
+                        <div class="plan-feature available">
+                            <i class="fas fa-check-circle"></i>
+                            <span>دسترسی به تخفیف‌های پایه</span>
+                        </div>
+                        <div class="plan-feature available">
+                            <i class="fas fa-check-circle"></i>
+                            <span>۵ هدیه ماهانه</span>
+                        </div>
+                        <div class="plan-feature available">
+                            <i class="fas fa-check-circle"></i>
+                            <span>پشتیبانی آنلاین</span>
+                        </div>
+                        <div class="plan-feature unavailable">
+                            <i class="fas fa-times-circle"></i>
+                            <span>دسترسی به رویدادهای ویژه</span>
+                        </div>
+                        <div class="plan-feature unavailable">
+                            <i class="fas fa-times-circle"></i>
+                            <span>مشاوره اختصاصی</span>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-price">
+                        <div class="price-amount">۱۹۹,۰۰۰ تومان</div>
+                        <div class="price-period">ماهانه</div>
+                        <button class="plan-btn" onclick="switchScreen('subscription')">انتخاب پلن</button>
+                    </div>
+                </div>
+                
+                <!-- کارت پلن طلایی (ویژه) -->
+                <div class="plan-card featured">
+                    <div class="plan-header">
+                        <div class="plan-icon">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <div>
+                            <h3 class="plan-title">پلن طلایی</h3>
+                            <p class="plan-tagline">پیشنهاد ویژه</p>
+                            <span class="plan-badge">۲۵٪ تخفیف</span>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-features">
+                        <div class="plan-feature available">
+                            <i class="fas fa-check-circle"></i>
+                            <span>دسترسی به تمام تخفیف‌ها</span>
+                        </div>
+                        <div class="plan-feature available">
+                            <i class="fas fa-check-circle"></i>
+                            <span>۱۵ هدیه ماهانه</span>
+                        </div>
+                        <div class="plan-feature available">
+                            <i class="fas fa-check-circle"></i>
+                            <span>پشتیبانی VIP</span>
+                        </div>
+                        <div class="plan-feature available">
+                            <i class="fas fa-check-circle"></i>
+                            <span>دسترسی به رویدادهای ویژه</span>
+                        </div>
+                        <div class="plan-feature available">
+                            <i class="fas fa-check-circle"></i>
+                            <span>مشاوره اختصاصی</span>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-price">
+                        <div class="price-amount">۴۹۹,۰۰۰ تومان</div>
+                        <div class="price-period">ماهانه</div>
+                        <button class="plan-btn" onclick="switchScreen('subscription')">انتخاب پلن</button>
+                    </div>
+                </div>
+                
+                <!-- کارت پلن شرکتی -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <div class="plan-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div>
+                            <h3 class="plan-title">پلن شرکتی</h3>
+                            <p class="plan-tagline">برای سازمان‌ها و شرکت‌ها</p>
+                            <span class="plan-badge">۳۰٪ تخفیف</span>
